@@ -1,7 +1,11 @@
-package com.tech.challenge.tech_challenge.core.domain.entities.services;
+package com.tech.challenge.tech_challenge.core.application.util;
+
+import java.util.Objects;
 
 public class CPFValidator {
     public static boolean isCPF(String cpf) {
+        if (Objects.isNull(cpf)) return false;
+
         cpf = cpf.replaceAll("\\D+", "");
 
         if (cpf.length() != 11) {

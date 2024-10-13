@@ -2,7 +2,7 @@ package com.tech.challenge.tech_challenge.core.domain.entities;
 
 public enum EItemType {
     HAMBURGUER("hamburguer"),
-    SNAK_ADITIONAL("snak_aditional"),
+    SNACK_ADITIONAL("snack_aditional"),
     SALAD("salad"),
     BREAD("bread");
 
