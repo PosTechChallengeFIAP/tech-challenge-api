@@ -1,21 +1,37 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@Entity
 public class Product {
-    private String id;
+
+    @Id
+    @UuidGenerator
+    private UUID id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String description;
+
+    @Enumerated(EnumType.ORDINAL)
     private EProductCategory category;
-    private ArrayList<Item> items;
+
+    @Column(nullable = false)
     private double price;
+
+    public Product() {}
 
     public Error validate() {
         if (this.name.isEmpty() || this.name.equals("")) {
@@ -26,45 +42,6 @@ public class Product {
             return new Error("Invalid price");
         }
 
-        if (this.items.size() <= 0) {
-            return new Error("Invalid product");
-        }
-
-        if (this.category == EProductCategory.CUSTOM_SNAK) {
-            boolean hasBread =  this.hasBread();
-            if (!hasBread) return new Error("Invalid custom snak");
-        }
-
         return null;
     }
-
-    public void addItem(Item item) {
-        if (this.category == EProductCategory.CUSTOM_SNAK) {
-            boolean hasBread = this.hasBread();
-            
-            if (item.getType() == EItemType.BREAD && hasBread) {
-                for (int idx = 0; idx < this.items.size(); idx++) {
-                    if (item.getType() == EItemType.BREAD) {
-                        this.items.set(idx, item);
-                        break;
-                    }
-                }
-            } else {
-                this.items.add(item);
-            }
-        }
-    }
-
-    private boolean hasBread() {
-        boolean hasBread = false;
-        
-        for (Item item : this.items) {
-            if (item.getType() == EItemType.BREAD) {
-                hasBread = true;
-                break;
-            }
-        }
-
-        return hasBread;
-    } 
 }

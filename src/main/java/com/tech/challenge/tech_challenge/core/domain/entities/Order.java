@@ -1,18 +1,37 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
 
-import java.util.ArrayList;
-
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
+
+import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@Entity
 public class Order {
-    private String id;
-    private ArrayList<Product> products;
+    @Id
+    @UuidGenerator
+    private UUID id;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "clientId")
+    private Client client;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "productOrderRelation",
+            joinColumns = {@JoinColumn(name = "orderId")},
+            inverseJoinColumns = {@JoinColumn(name = "productId")})
+    private Set<Product> products;
+
+    @Transient
     private double price;
+
+    public Order() {}
 
     public Error validate() {
         if(this.price == 0) {
@@ -38,12 +57,9 @@ public class Order {
 
     public void addProduct(Product product) {
         this.products.add(product);
-        this.price += product.getPrice();
     }
 
     public void removeProduct(Product product) {
-        int idxToRemove = this.products.indexOf(product);
-        this.products.remove(idxToRemove);
-        this.price -= product.getPrice();
+        this.products.remove(product);
     }
 }
