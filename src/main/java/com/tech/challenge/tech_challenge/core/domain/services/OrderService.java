@@ -26,13 +26,5 @@ public class OrderService {
         );
     }
 
-    public Order create(Order order) {
-        Error error = order.validate();
-        if(!Objects.isNull(error)){
-            throw error;
-        }
-
-        return orderRepository.save(order);
-    }
 
 }
