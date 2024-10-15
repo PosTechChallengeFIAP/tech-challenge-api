@@ -1,4 +1,4 @@
-package com.tech.challenge.tech_challenge.controller;
+package com.tech.challenge.tech_challenge.adapters.driver.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
