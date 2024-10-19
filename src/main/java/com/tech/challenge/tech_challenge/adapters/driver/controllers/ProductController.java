@@ -2,6 +2,9 @@ package com.tech.challenge.tech_challenge.adapters.driver.controllers;
 
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
 import com.tech.challenge.tech_challenge.core.domain.services.ProductService;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@Tag(name = "Product")
 public class ProductController {
 
     @Autowired
