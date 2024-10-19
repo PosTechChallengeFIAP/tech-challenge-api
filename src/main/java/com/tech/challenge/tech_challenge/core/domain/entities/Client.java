@@ -1,19 +1,21 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
 
 import com.tech.challenge.tech_challenge.core.application.util.CPFValidator;
-
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @Entity
+@Table(name = "client")
 public class Client {
     @Id
     @UuidGenerator
@@ -27,8 +29,6 @@ public class Client {
 
     @Column
     private String email;
-
-    public Client(){}
 
     public Error validate() {
         if (!CPFValidator.isCPF(this.cpf)) {
@@ -44,5 +44,17 @@ public class Client {
         }
 
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Client )) return false;
+        return id != null && id.equals(((Client) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 } 
