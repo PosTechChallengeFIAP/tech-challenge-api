@@ -1,6 +1,5 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 import jakarta.persistence.*;
