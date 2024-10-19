@@ -30,8 +30,18 @@ public class OrderController {
         return orderService.create(order);
     }
 
-    @PatchMapping("/order/addItem")
-    public Order addItem(@RequestBody OrderItem orderItem) throws Exception {
-        return orderService.addItem(orderItem);
+    @PatchMapping("/order/{orderId}/addItem")
+    public Order addItem(@PathVariable UUID orderId, @RequestBody OrderItem orderItem) throws Exception {
+        return orderService.addItem(orderId, orderItem);
+    }
+
+    @PatchMapping("/order/{orderId}/removeItem/{itemId}")
+    public Order addItem(@PathVariable UUID orderId, @PathVariable UUID itemId) throws Exception {
+        return orderService.removeItem(orderId, itemId);
+    }
+
+    @PatchMapping("/order/{orderId}/editItem/{itemId}")
+    public Order addItem(@PathVariable UUID orderId, @PathVariable UUID itemId, @RequestBody OrderItem orderItem) throws Exception {
+        return orderService.editItem(orderId, itemId, orderItem);
     }
 }
