@@ -9,12 +9,15 @@ import org.hibernate.annotations.UuidGenerator;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "`order`")
 public class Order {
+    private static final Consumer<? super OrderItem> OrderItem = null;
+
     @Id
     @UuidGenerator
     private UUID id;
@@ -35,12 +38,16 @@ public class Order {
     private double price;
 
     public Error validate() {
-        if(this.price == 0) {
+        if(!hasValidPrice()) {
             return new Error("Invalid price");
         }
 
-        if (this.orderItems.isEmpty()) {
-            return new Error("Order need to have more than one product");
+        if(!hasValidOrderItems()) {
+            return new Error("Invalid order items");
+        }
+
+        if(!hasValidClient()) {
+            return new Error("Invalid client");
         }
 
         return null;
@@ -57,13 +64,49 @@ public class Order {
     }
 
     public void addItem(OrderItem orderItem) {
-        this.orderItems.add(orderItem);
-        orderItem.setOrder(this);
+        OrderItem orderItemFound = findOrderItem(orderItem);
+        
+        if (orderItemFound != null) {
+            int lastQuantity = orderItemFound.getQuantity();
+            orderItemFound.setQuantity(lastQuantity+1);
+        } else {
+            this.orderItems.add(orderItem);
+            orderItem.setOrder(this);
+        }
+
     }
 
     public void removeItem(OrderItem orderItem) {
         this.orderItems.remove(orderItem);
         orderItem.setOrder(null);
+    }
+
+    private OrderItem findOrderItem(OrderItem orderItem) {
+        return orderItems.stream()
+        .filter(item -> item.getId() == orderItem.getId())
+        .findFirst()
+        .orElse(null);
+    }
+
+    private boolean hasValidOrderItems() {
+        Boolean valid = true;
+
+        for (OrderItem item: orderItems) {
+            if (item.getId() == null) {
+                valid = false;
+                break;
+            }
+        }
+
+        return valid;
+    }
+
+    private boolean hasValidClient() {
+        return Objects.nonNull(client) ? Objects.nonNull(client.getId()) : true;
+    }
+
+    private boolean hasValidPrice() {
+        return orderItems.size() > 0 ? price > 0 : true;
     }
 
     @Override

@@ -29,6 +29,11 @@ public class OrderController {
     public Order create(@RequestBody Order order) throws Exception {
         return orderService.create(order);
     }
+    
+    @PostMapping("/order/{orderId}/client/{clientId}")
+    public Order create(@PathVariable(name = "orderId") UUID orderId, @PathVariable(name = "clientId") UUID clientId) throws Exception {
+        return orderService.addClient(orderId, clientId);
+    }
 
     @PatchMapping("/order/{orderId}/addItem")
     public Order addItem(@PathVariable UUID orderId, @RequestBody OrderItem orderItem) throws Exception {
