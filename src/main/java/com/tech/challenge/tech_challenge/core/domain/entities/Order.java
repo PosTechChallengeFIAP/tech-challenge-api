@@ -37,6 +37,10 @@ public class Order {
     @Transient
     private double price;
 
+    @Enumerated(EnumType.ORDINAL)
+    private EOrderStatus status;
+
+
     public Error validate() {
         if(!hasValidPrice()) {
             return new Error("Invalid price");

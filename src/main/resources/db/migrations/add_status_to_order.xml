@@ -4,9 +4,11 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-    <include file="db/migrations/client.xml" />
-    <include file="db/migrations/product.xml" />
-    <include file="db/migrations/order.xml" />
-    <include file="db/migrations/order_item.xml" />
-    <include file="db/migrations/add_status_to_order.xml" />
+    <changeSet id="add_status_to_order" author="gregorisimei">
+        <addColumn tableName="order">
+            <column name="status" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
