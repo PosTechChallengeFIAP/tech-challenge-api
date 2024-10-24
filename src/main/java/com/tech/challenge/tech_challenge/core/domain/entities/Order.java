@@ -144,7 +144,7 @@ public class Order {
     }
 
     private boolean hasValidPrice() {
-        return orderItems.size() > 0 ? price > 0 : true;
+        return orderItems.size() > 0 ? getPrice() > 0 : true;
     }
 
     private boolean hasValidPaymentAndStatus() {
@@ -154,7 +154,7 @@ public class Order {
             EPaymentStatus paymentStatus = payment.getStatus();
 
             valid = (paymentStatus == EPaymentStatus.PENDING && status == EOrderStatus.PAYMENT_PENDING) || 
-                (paymentStatus == EPaymentStatus.PAID && (status == EOrderStatus.PAID || status == EOrderStatus.PREPARING)) ||
+                (paymentStatus == EPaymentStatus.PAID && (status == EOrderStatus.PAID || status == EOrderStatus.PREPARING || status == EOrderStatus.QUEUE)) ||
                 ((paymentStatus == EPaymentStatus.CANCELED || paymentStatus == EPaymentStatus.NOT_PAID)&& status == EOrderStatus.CANCELED);
         }
 
