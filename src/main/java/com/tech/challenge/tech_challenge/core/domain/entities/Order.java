@@ -1,6 +1,8 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.tech.challenge.tech_challenge.core.application.exceptions.UnableToAddPaymentToOrder;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,6 +42,10 @@ public class Order {
     @Enumerated(EnumType.ORDINAL)
     private EOrderStatus status;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "payment_id", referencedColumnName = "id")
+    private Payment payment;
+
 
     public Error validate() {
         if(!hasValidPrice()) {
@@ -54,7 +60,23 @@ public class Order {
             return new Error("Invalid client");
         }
 
+        if(!hasValidPaymentAndStatus()) {
+            return new Error("Invalid status");
+        }
+
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order )) return false;
+        return id != null && id.equals(((Order) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public double getPrice() {
@@ -85,6 +107,18 @@ public class Order {
         orderItem.setOrder(null);
     }
 
+    public void setPayment(Payment newPayment) {
+        if(!Objects.isNull(this.payment)) {
+            if(this.payment.getId() != newPayment.getId()) {
+                throw new UnableToAddPaymentToOrder();
+            }
+
+            this.payment.setSatus(newPayment.getStatus());
+        }
+
+        this.payment = newPayment;
+    }
+
     private OrderItem findOrderItem(OrderItem orderItem) {
         return orderItems.stream()
         .filter(item -> item.getId() == orderItem.getId())
@@ -113,15 +147,17 @@ public class Order {
         return orderItems.size() > 0 ? price > 0 : true;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Order )) return false;
-        return id != null && id.equals(((Order) o).getId());
-    }
+    private boolean hasValidPaymentAndStatus() {
+        boolean valid = status == EOrderStatus.ORDERING;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+        if(!Objects.isNull(payment)) {
+            EPaymentStatus paymentStatus = payment.getStatus();
+
+            valid = (paymentStatus == EPaymentStatus.PENDING && status == EOrderStatus.PAYMENT_PENDING) || 
+                (paymentStatus == EPaymentStatus.PAID && (status == EOrderStatus.PAID || status == EOrderStatus.PREPARING)) ||
+                ((paymentStatus == EPaymentStatus.CANCELED || paymentStatus == EPaymentStatus.NOT_PAID)&& status == EOrderStatus.CANCELED);
+        }
+
+        return valid;
     }
 }

@@ -1,6 +1,6 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
 
-import com.tech.challenge.tech_challenge.core.application.exceptions.UnableToParseProductCategoryException;
+import com.tech.challenge.tech_challenge.core.application.exceptions.UnableToParseOrderStatusException;
 
 public enum EOrderStatus {
     ORDERING("ordering"),
@@ -20,6 +20,6 @@ public enum EOrderStatus {
             if(status.value.equals(value)) return status;
         }
 
-        throw new UnableToParseProductCategoryException(value);
+        throw new UnableToParseOrderStatusException(value);
     }
 }
