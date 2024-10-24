@@ -3,6 +3,7 @@ package com.tech.challenge.tech_challenge.core.domain.services;
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.ClientRepository;
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.OrderRepository;
 import com.tech.challenge.tech_challenge.core.domain.entities.Client;
+import com.tech.challenge.tech_challenge.core.domain.entities.EOrderStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,6 @@ public class OrderService {
     @Autowired
     OrderRepository orderRepository;
 
-    @Autowired
-    private ClientRepository clientRepository;
-
 
     public List<Order> list(){
         return orderRepository.findAll();
@@ -33,14 +31,9 @@ public class OrderService {
         );
     }
 
-    public Client getClientById(UUID id) throws Exception {
-        return clientRepository.findById(id).orElseThrow(
-            () -> new Exception("Unable to Find Client")
-        );
-    }
-
     public Order create(Order order){
         order.setOrderItems(Collections.emptySet());
+        order.setStatus(EOrderStatus.ORDERING);
         return orderRepository.save(order);
     }
 
@@ -88,22 +81,5 @@ public class OrderService {
         return order.getOrderItems().stream()
                 .filter(orderItem -> orderItem.getId().equals(orderItemId)).findFirst()
                 .orElseThrow();
-    }
-    
-    public Order addClient(UUID orderId, UUID clientId) throws Exception {
-        Order order = getById(orderId);
-        Client client = getClientById(clientId);
-        Error err = client.validate();
-        if (err != null) {
-            throw err;
-        }
-
-        order.setClient(client);
-        err = order.validate();
-        if(err != null) {
-            throw err;
-        }
-
-        return order;
     }
 }
