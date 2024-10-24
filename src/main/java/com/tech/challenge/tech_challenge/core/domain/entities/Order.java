@@ -113,10 +113,29 @@ public class Order {
                 throw new UnableToAddPaymentToOrder();
             }
 
-            this.payment.setSatus(newPayment.getStatus());
         }
-
+        
         this.payment = newPayment;
+        this.handleStatusAccourdingPayment();
+    }
+
+    private void handleStatusAccourdingPayment() {
+        EPaymentStatus paymentStatus = this.payment.getStatus();
+
+        switch (paymentStatus.name()) {
+            case "NOT_PAID":
+                this.status = EOrderStatus.CANCELED;
+                break;
+            case "PAID":
+                this.status = EOrderStatus.QUEUE;
+                break;
+            case "CANCELED":
+                this.status = EOrderStatus.CANCELED;
+                break;
+            case "PENDING":
+                this.status = EOrderStatus.PAYMENT_PENDING;
+                break;
+        }
     }
 
     private OrderItem findOrderItem(OrderItem orderItem) {

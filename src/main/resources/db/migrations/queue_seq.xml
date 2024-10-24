@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    
+    <changeSet id="create-queue-sequence-table" author="gregorisimei">
+        <createTable tableName="queue_seq">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="next_val" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <insert tableName="queue_seq">
+            <column name="id" value="1"/>
+            <column name="next_val" value="1"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
