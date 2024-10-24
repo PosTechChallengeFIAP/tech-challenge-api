@@ -153,9 +153,16 @@ public class Order {
         if(!Objects.isNull(payment)) {
             EPaymentStatus paymentStatus = payment.getStatus();
 
-            valid = (paymentStatus == EPaymentStatus.PENDING && status == EOrderStatus.PAYMENT_PENDING) || 
-                (paymentStatus == EPaymentStatus.PAID && (status == EOrderStatus.PAID || status == EOrderStatus.PREPARING || status == EOrderStatus.QUEUE)) ||
-                ((paymentStatus == EPaymentStatus.CANCELED || paymentStatus == EPaymentStatus.NOT_PAID)&& status == EOrderStatus.CANCELED);
+            boolean ifPaymentStatusIsPendingShouldBePending = paymentStatus == EPaymentStatus.PENDING && 
+                status == EOrderStatus.PAYMENT_PENDING;
+            boolean ifPaymentStatusIsPaidShouldBePaidPreparingOrQueue = paymentStatus == EPaymentStatus.PAID && 
+                (status == EOrderStatus.PAID || status == EOrderStatus.PREPARING || status == EOrderStatus.QUEUE);
+            boolean ifPaymentStatusCanceledOrNotPaidShouldBeCanceled = (paymentStatus == EPaymentStatus.CANCELED || paymentStatus == EPaymentStatus.NOT_PAID) && 
+                status == EOrderStatus.CANCELED;
+
+            valid = ifPaymentStatusIsPendingShouldBePending || 
+                ifPaymentStatusIsPaidShouldBePaidPreparingOrQueue ||
+                ifPaymentStatusCanceledOrNotPaidShouldBeCanceled;
         }
 
         return valid;

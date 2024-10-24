@@ -8,7 +8,8 @@ public enum EOrderStatus {
     PAID("paid"),
     PREPARING("preparing"),
     CANCELED("canceled"),
-    QUEUE("queue");
+    QUEUE("queue"),
+    DONE("done");
 
     private String value;
 
