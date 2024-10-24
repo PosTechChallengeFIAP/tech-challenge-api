@@ -9,4 +9,6 @@
     <include file="db/migrations/order.xml" />
     <include file="db/migrations/order_item.xml" />
     <include file="db/migrations/add_status_to_order.xml" />
+    <include file="db/migrations/payment.xml" />
+    <include file="db/migrations/add_payment_to_order.xml" />
 </databaseChangeLog>

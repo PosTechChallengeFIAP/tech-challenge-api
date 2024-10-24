@@ -1,7 +1,6 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
 
 import org.hibernate.annotations.UuidGenerator;
-import org.hibernate.validator.constraints.UUID;
 
 import com.tech.challenge.tech_challenge.core.application.exceptions.UnableToChangePaymentStatus;
 
@@ -16,6 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -32,7 +32,7 @@ public class Payment {
     @Enumerated(EnumType.ORDINAL)
     private EPaymentStatus status;
 
-    @OneToOne(mappedBy = "order")
+    @OneToOne
     private Order order;
 
     public Error valid() {
