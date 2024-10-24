@@ -7,7 +7,8 @@ public enum EOrderStatus {
     PAYMENT_PENDING("payment pending"),
     PAID("paid"),
     PREPARING("preparing"),
-    CANCELED("canceled");
+    CANCELED("canceled"),
+    QUEUE("queue");
 
     private String value;
 

@@ -3,7 +3,8 @@ package com.tech.challenge.tech_challenge.adapters.driver.controllers;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
 import com.tech.challenge.tech_challenge.core.domain.services.OrderService;
-import com.tech.challenge.tech_challenge.core.domain.services.oder.AddClientToOrderService;
+import com.tech.challenge.tech_challenge.core.domain.services.order.AddClientToOrderService;
+import com.tech.challenge.tech_challenge.core.domain.services.order.AddPaymentToOrderService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,9 @@ public class OrderController {
 
     @Autowired
     AddClientToOrderService addClientToOrderService;
+
+    @Autowired
+    AddPaymentToOrderService addPaymentToOrderService;
 
     @GetMapping("/order")
     public List<Order> all(){
@@ -53,5 +57,10 @@ public class OrderController {
     @PatchMapping("/order/{orderId}/editItem/{itemId}")
     public Order addItem(@PathVariable UUID orderId, @PathVariable UUID itemId, @RequestBody OrderItem orderItem) throws Exception {
         return orderService.editItem(orderId, itemId, orderItem);
+    }
+
+    @PostMapping("/order/{orderId}/payment")
+    public Order addPaymentoToOrder(@PathVariable UUID orderId) throws Exception {
+        return addPaymentToOrderService.handle(orderId);
     }
 }

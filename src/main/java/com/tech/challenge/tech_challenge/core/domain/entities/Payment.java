@@ -32,10 +32,7 @@ public class Payment {
     @Enumerated(EnumType.ORDINAL)
     private EPaymentStatus status;
 
-    @OneToOne
-    private Order order;
-
-    public Error valid() {
+    public Error validate() {
         if (Objects.isNull(this.value) || this.value == 0) {
             return new Error("Invalid value");
         }

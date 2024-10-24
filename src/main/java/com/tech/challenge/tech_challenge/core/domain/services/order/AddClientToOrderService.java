@@ -1,4 +1,4 @@
-package com.tech.challenge.tech_challenge.core.domain.services.oder;
+package com.tech.challenge.tech_challenge.core.domain.services.order;
 
 import java.util.UUID;
 
