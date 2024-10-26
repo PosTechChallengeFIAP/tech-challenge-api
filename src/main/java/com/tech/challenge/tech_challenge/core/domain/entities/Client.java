@@ -13,7 +13,6 @@ import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Objects;
 import java.util.UUID;
-import java.util.Objects;
 
 @Getter
 @Setter

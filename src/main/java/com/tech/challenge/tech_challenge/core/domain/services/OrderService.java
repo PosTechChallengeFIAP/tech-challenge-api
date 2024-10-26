@@ -1,8 +1,6 @@
 package com.tech.challenge.tech_challenge.core.domain.services;
 
-import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.ClientRepository;
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.OrderRepository;
-import com.tech.challenge.tech_challenge.core.domain.entities.Client;
 import com.tech.challenge.tech_challenge.core.domain.entities.EOrderStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
