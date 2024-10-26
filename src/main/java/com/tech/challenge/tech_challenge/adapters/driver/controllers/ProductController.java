@@ -1,11 +1,14 @@
 package com.tech.challenge.tech_challenge.adapters.driver.controllers;
 
+import com.tech.challenge.tech_challenge.core.domain.entities.EProductCategory;
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
 import com.tech.challenge.tech_challenge.core.domain.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -14,9 +17,15 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @GetMapping("/productCategory")
+    public List<EProductCategory> all(){
+        return Arrays.stream(EProductCategory.values()).toList();
+    }
+
     @GetMapping("/product")
-    public List<Product> all(){
-        return productService.list();
+    public List<Product> all(@RequestParam EProductCategory category){
+        if(Objects.isNull(category)) return productService.list();
+        else return productService.listByCategory(category);
     }
 
     @GetMapping("/product/{id}")
