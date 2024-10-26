@@ -22,10 +22,16 @@ public class ClientController {
     public List<Client> all(){
         return clientService.list();
     }
-
+   /*
     @GetMapping("/client/{id}")
     public Client one(@PathVariable UUID id) throws Exception {
         return clientService.getById(id);
+    }
+    */
+
+    @GetMapping("/client/{cpf}")
+    public Client getClientByCpf(@PathVariable String cpf) throws Exception {
+        return clientService.getByCpf(cpf);
     }
 
     @PostMapping("/client")
