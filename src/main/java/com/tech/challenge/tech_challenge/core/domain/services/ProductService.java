@@ -1,6 +1,7 @@
 package com.tech.challenge.tech_challenge.core.domain.services;
 
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.ProductRepository;
+import com.tech.challenge.tech_challenge.core.domain.entities.EProductCategory;
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,10 @@ public class ProductService {
 
     public List<Product> list(){
         return productRepository.findAll();
+    }
+
+    public List<Product> listByCategory(EProductCategory category){
+        return productRepository.getProductByCategory(category.ordinal());
     }
 
     public Product getById(UUID id) throws Exception {

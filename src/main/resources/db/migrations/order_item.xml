@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="create-order-item" author="gteixeira">
+        <createTable tableName="order_item">
+            <column name="id" type="binary(16)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_id" type="binary(16)">
+                <constraints foreignKeyName="fk_orderItem_product"
+                             referencedTableName="product"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+            <column name="order_id" type="binary(16)">
+                <constraints foreignKeyName="fk_orderItem_order"
+                             referencedTableName="order"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+            <column name="quantity" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

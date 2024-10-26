@@ -1,17 +1,16 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
-
-import java.util.UUID;
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.Objects;
+import java.util.UUID;
+
 @Getter
 @Setter
-@AllArgsConstructor
 @Entity
+@Table(name = "product")
 public class Product {
 
     @Id
@@ -30,10 +29,8 @@ public class Product {
     @Column(nullable = false)
     private double price;
 
-    public Product() {}
-
     public Error validate() {
-        if (this.name.isEmpty() || this.name.equals("")) {
+        if (Objects.isNull(this.name) || this.name.isEmpty()) {
             return new Error("Invalid name");
         }
 
@@ -42,5 +39,17 @@ public class Product {
         }
 
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Product )) return false;
+        return id != null && id.equals(((Product) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
