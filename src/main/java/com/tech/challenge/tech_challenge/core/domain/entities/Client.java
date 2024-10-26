@@ -1,5 +1,7 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
 
+import com.tech.challenge.tech_challenge.core.application.exceptions.ClientMustHaveNameAndEmailOrValidCPFException;
+import com.tech.challenge.tech_challenge.core.application.exceptions.InvalidClientCPF;
 import com.tech.challenge.tech_challenge.core.application.util.CPFValidator;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +13,7 @@ import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Objects;
 import java.util.UUID;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -31,16 +34,17 @@ public class Client {
     private String email;
 
     public Error validate() {
-        if (!CPFValidator.isCPF(this.cpf)) {
-            return new Error("Invalid CPF");
+        boolean hasName = !Objects.isNull(this.name);
+        boolean hasEmail = !Objects.isNull(this.email);
+        boolean hasCPF = !Objects.isNull(this.cpf);
+        
+        if (!hasCPF && !(hasName && hasEmail)) {
+            return new ClientMustHaveNameAndEmailOrValidCPFException();
         }
 
-        if (this.name == null || this.name.isEmpty()) {
-            return new Error("Invalid name");
-        }
-
-        if (this.email == null || this.email.isEmpty()){
-            return new Error("Invalid email");
+        boolean hasValidCPF = CPFValidator.isCPF(this.cpf);
+        if (!hasValidCPF && hasCPF) {
+            return new InvalidClientCPF(this.cpf);
         }
 
         return null;
