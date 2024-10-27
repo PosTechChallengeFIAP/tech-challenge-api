@@ -2,7 +2,9 @@ package com.tech.challenge.tech_challenge.core.domain.entities;
 
 import com.tech.challenge.tech_challenge.core.application.exceptions.ClientMustHaveNameAndEmailOrValidCPFException;
 import com.tech.challenge.tech_challenge.core.application.exceptions.InvalidClientCPF;
+import com.tech.challenge.tech_challenge.core.application.exceptions.InvalidEmailAddress;
 import com.tech.challenge.tech_challenge.core.application.util.CPFValidator;
+import com.tech.challenge.tech_challenge.core.application.util.EmailValidator;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -44,6 +46,11 @@ public class Client {
         boolean hasValidCPF = CPFValidator.isCPF(this.cpf);
         if (!hasValidCPF && hasCPF) {
             return new InvalidClientCPF(this.cpf);
+        }
+
+        boolean hasValidEmail = EmailValidator.isValidEmail(this.email);
+        if(!hasValidEmail && hasEmail){
+            return new InvalidEmailAddress(this.email);
         }
 
         return null;
