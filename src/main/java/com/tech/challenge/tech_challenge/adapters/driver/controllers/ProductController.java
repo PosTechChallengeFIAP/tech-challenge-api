@@ -27,7 +27,7 @@ public class ProductController {
     }
 
     @GetMapping("/product")
-    public List<Product> all(@RequestParam EProductCategory category){
+    public List<Product> all(@RequestParam(required = false) EProductCategory category){
         if(Objects.isNull(category)) return productService.list();
         else return productService.listByCategory(category);
     }
