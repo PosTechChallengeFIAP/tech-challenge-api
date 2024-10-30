@@ -1,20 +1,22 @@
 package com.tech.challenge.tech_challenge.core.domain.services;
 
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.ProductRepository;
+import com.tech.challenge.tech_challenge.core.application.exceptions.UsedProductCannotBeDeletedException;
 import com.tech.challenge.tech_challenge.core.domain.entities.EProductCategory;
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
+import com.tech.challenge.tech_challenge.core.domain.services.generic.Patcher;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class ProductServiceTest {
@@ -24,6 +26,9 @@ public class ProductServiceTest {
 
     @MockBean
     private ProductRepository productRepository;
+
+    @MockBean
+    private Patcher<Product> productPatcher;
 
     @Test
     public void listTest(){
@@ -109,5 +114,33 @@ public class ProductServiceTest {
         });
 
         assertEquals(error, errorResult);
+    }
+
+    @Test
+    public void deleteTest() throws Exception {
+        Product product = mock(Product.class);
+        Error error = mock(Error.class);
+
+        doThrow(DataIntegrityViolationException.class).when(productRepository).delete(product);
+        when(productRepository.findById(any())).thenReturn(Optional.of(product));
+        when(product.validate()).thenReturn(error);
+
+        UsedProductCannotBeDeletedException ex = assertThrows(UsedProductCannotBeDeletedException.class, ()->{
+            productService.delete(UUID.randomUUID());
+        });
+    }
+
+    @Test
+    public void updateTest() throws Exception {
+        Product product1 = mock(Product.class);
+        Product product2 = mock(Product.class);
+
+        when(productRepository.findById(any())).thenReturn(Optional.of(product1));
+        when(productPatcher.execute(product1, product2)).thenReturn(product1);
+        when(productRepository.save(product1)).thenReturn(product1);
+
+        Product productResult = productService.update(UUID.randomUUID(), product2);
+
+        assertEquals(product1, productResult);
     }
 }

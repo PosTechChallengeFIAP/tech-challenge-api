@@ -1,10 +1,9 @@
-package com.tech.challenge.tech_challenge.core.domain.services.order;
+package com.tech.challenge.tech_challenge.core.domain.services.extended;
 
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.OrderRepository;
 import com.tech.challenge.tech_challenge.core.domain.entities.*;
 import com.tech.challenge.tech_challenge.core.domain.services.PaymentService;
 import com.tech.challenge.tech_challenge.core.domain.services.QueueService;
-import com.tech.challenge.tech_challenge.core.domain.services.extended.OrderPaymentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
