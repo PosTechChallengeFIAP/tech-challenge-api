@@ -29,7 +29,7 @@ public class OrderItem {
     private Order order;
 
     @Column(nullable = false)
-    private int quantity;
+    private Integer quantity;
 
     public double getPrice(){
         return product.getPrice() * quantity;

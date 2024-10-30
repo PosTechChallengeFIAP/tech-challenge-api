@@ -25,8 +25,8 @@ public class Payment {
     @UuidGenerator
     private UUID id;
 
-    @Column(nullable = false, name = "´value´")
-    private double value;
+    @Column(nullable = false)
+    private Double value;
 
     @Enumerated(EnumType.ORDINAL)
     private EPaymentStatus status;

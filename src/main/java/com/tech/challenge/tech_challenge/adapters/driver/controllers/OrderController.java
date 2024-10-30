@@ -21,7 +21,7 @@ public class OrderController {
 
     @Autowired
     OrderClientService orderClientService;
-
+  
     @Autowired
     OrderPaymentService orderPaymentService;
 
@@ -43,30 +43,5 @@ public class OrderController {
     @PostMapping("/order/{orderId}/client/{clientId}")
     public Order create(@PathVariable(name = "orderId") UUID orderId, @PathVariable(name = "clientId") UUID clientId) throws Exception {
         return orderClientService.addClientToOrder(orderId, clientId);
-    }
-
-    @PatchMapping("/order/{orderId}/addItem")
-    public Order addItem(@PathVariable UUID orderId, @RequestBody OrderItem orderItem) throws Exception {
-        return orderService.addItem(orderId, orderItem);
-    }
-
-    @PatchMapping("/order/{orderId}/removeItem/{itemId}")
-    public Order addItem(@PathVariable UUID orderId, @PathVariable UUID itemId) throws Exception {
-        return orderService.removeItem(orderId, itemId);
-    }
-
-    @PatchMapping("/order/{orderId}/editItem/{itemId}")
-    public Order addItem(@PathVariable UUID orderId, @PathVariable UUID itemId, @RequestBody OrderItem orderItem) throws Exception {
-        return orderService.editItem(orderId, itemId, orderItem);
-    }
-
-    @PostMapping("/order/{orderId}/payment")
-    public Order addPaymentoToOrder(@PathVariable UUID orderId) throws Exception {
-        return orderPaymentService.addPaymentToOrder(orderId);
-    }
-
-    @PatchMapping("/order/{orderId}/payment/{paymentId}")
-    public Payment updateOrderPayment(@PathVariable UUID orderId, @PathVariable UUID paymentId, @RequestBody Payment payment) throws Exception {
-        return orderPaymentService.updateOrderPayment(orderId, paymentId, payment.getStatus());
     }
 }
