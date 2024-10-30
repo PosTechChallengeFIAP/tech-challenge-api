@@ -212,6 +212,33 @@ public class OrderServiceTest {
         assertEquals(ex.getMessage(), "Only the 'quantity' property can be edited for order items.");
     }
 
+    @Test
+    public void updateTest_Success() throws Exception {
+        Order order = mock(Order.class);
+
+        when(orderRepository.save(order)).thenReturn(order);
+        when(order.validate()).thenReturn(null);
+
+        Order orderResult = orderService.update(order);
+
+        assertEquals(order,orderResult);
+    }
+
+    @Test
+    public void updateTest_Exception() throws Exception {
+        Order order = mock(Order.class);
+        Error error = mock(Error.class);
+
+        when(orderRepository.save(order)).thenReturn(order);
+        when(order.validate()).thenReturn(error);
+
+        Error thrownError = assertThrows(Error.class, ()->{
+            orderService.update(order);
+        });
+
+        assertEquals(thrownError,error);
+    }
+
     private OrderItem buildOrderItem(Order order, Product product, Integer quantity){
         OrderItem orderItem = new OrderItem();
         orderItem.setId(UUID.randomUUID());

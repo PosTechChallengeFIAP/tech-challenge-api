@@ -4,9 +4,8 @@ import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
 import com.tech.challenge.tech_challenge.core.domain.services.OrderService;
-import com.tech.challenge.tech_challenge.core.domain.services.order.AddClientToOrderService;
-import com.tech.challenge.tech_challenge.core.domain.services.order.AddPaymentToOrderService;
-import com.tech.challenge.tech_challenge.core.domain.services.order.UpdateOrderPaymentService;
+import com.tech.challenge.tech_challenge.core.domain.services.extended.OrderClientService;
+import com.tech.challenge.tech_challenge.core.domain.services.extended.OrderPaymentService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +20,10 @@ public class OrderController {
     OrderService orderService;
 
     @Autowired
-    AddClientToOrderService addClientToOrderService;
+    OrderClientService orderClientService;
 
     @Autowired
-    AddPaymentToOrderService addPaymentToOrderService;
-
-    @Autowired
-    UpdateOrderPaymentService updateOrderPaymentService;
+    OrderPaymentService orderPaymentService;
 
     @GetMapping("/order")
     public List<Order> all(){
@@ -46,7 +42,7 @@ public class OrderController {
     
     @PostMapping("/order/{orderId}/client/{clientId}")
     public Order create(@PathVariable(name = "orderId") UUID orderId, @PathVariable(name = "clientId") UUID clientId) throws Exception {
-        return addClientToOrderService.handle(orderId, clientId);
+        return orderClientService.addClientToOrder(orderId, clientId);
     }
 
     @PatchMapping("/order/{orderId}/addItem")
@@ -66,11 +62,11 @@ public class OrderController {
 
     @PostMapping("/order/{orderId}/payment")
     public Order addPaymentoToOrder(@PathVariable UUID orderId) throws Exception {
-        return addPaymentToOrderService.handle(orderId);
+        return orderPaymentService.addPaymentToOrder(orderId);
     }
 
     @PatchMapping("/order/{orderId}/payment/{paymentId}")
     public Payment updateOrderPayment(@PathVariable UUID orderId, @PathVariable UUID paymentId, @RequestBody Payment payment) throws Exception {
-        return updateOrderPaymentService.handle(orderId, paymentId, payment.getStatus());
+        return orderPaymentService.updateOrderPayment(orderId, paymentId, payment.getStatus());
     }
 }

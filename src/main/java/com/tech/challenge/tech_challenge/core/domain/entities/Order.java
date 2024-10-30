@@ -118,7 +118,9 @@ public class Order {
         }
         
         this.payment = newPayment;
-        this.handleStatusAccourdingPayment();
+
+        if(Objects.nonNull(newPayment))
+            this.handleStatusAccourdingPayment();
     }
 
     private void handleStatusAccourdingPayment() {
@@ -150,6 +152,8 @@ public class Order {
     private boolean hasValidOrderItems() {
         Boolean valid = true;
 
+        if(Objects.isNull(orderItems)) return valid;
+
         for (OrderItem item: orderItems) {
             if (item.getId() == null) {
                 valid = false;
@@ -165,7 +169,7 @@ public class Order {
     }
 
     private boolean hasValidPrice() {
-        return orderItems.size() > 0 ? getPrice() > 0 : true;
+        return (Objects.nonNull(orderItems) && orderItems.size() > 0) ? getPrice() > 0 : true;
     }
 
     private boolean hasValidPaymentAndStatus() {
