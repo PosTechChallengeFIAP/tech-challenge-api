@@ -25,6 +25,12 @@ public class ClientService {
         );
     }
 
+    public Client getByCpf(String cpf) throws Exception {
+        return clientRepository.FindByCpf(cpf).orElseThrow(
+                () -> new Exception("Unable to Find Client")
+        );
+    }
+
     public Client create(Client client) {
         Error error = client.validate();
         if(!Objects.isNull(error)){

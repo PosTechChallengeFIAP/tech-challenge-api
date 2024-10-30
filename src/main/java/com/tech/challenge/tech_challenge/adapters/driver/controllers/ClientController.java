@@ -5,10 +5,12 @@ import com.tech.challenge.tech_challenge.core.domain.services.ClientService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -19,8 +21,11 @@ public class ClientController {
     private ClientService clientService;
 
     @GetMapping("/client")
-    public List<Client> all(){
-        return clientService.list();
+    public List<Client> all(@RequestParam(required = false) String cpf) throws Exception {
+        if(StringUtils.isEmpty(cpf))
+            return clientService.list();
+        else
+            return List.of(clientService.getByCpf(cpf));
     }
 
     @GetMapping("/client/{id}")
