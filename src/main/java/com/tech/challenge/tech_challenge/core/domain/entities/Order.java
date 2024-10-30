@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -90,12 +91,13 @@ public class Order {
     }
 
     public void addItem(OrderItem orderItem) {
+        if(Objects.isNull(this.orderItems)) this.orderItems = new HashSet<>();
         OrderItem orderItemFound = findOrderItem(orderItem);
         
         if (orderItemFound != null) {
             int lastQuantity = orderItemFound.getQuantity();
             orderItemFound.setQuantity(lastQuantity+1);
-        } else {
+        } else{
             this.orderItems.add(orderItem);
             orderItem.setOrder(this);
         }
@@ -116,7 +118,9 @@ public class Order {
         }
         
         this.payment = newPayment;
-        this.handleStatusAccourdingPayment();
+
+        if(Objects.nonNull(newPayment))
+            this.handleStatusAccourdingPayment();
     }
 
     private void handleStatusAccourdingPayment() {
@@ -148,6 +152,8 @@ public class Order {
     private boolean hasValidOrderItems() {
         Boolean valid = true;
 
+        if(Objects.isNull(orderItems)) return valid;
+
         for (OrderItem item: orderItems) {
             if (item.getId() == null) {
                 valid = false;
@@ -163,7 +169,7 @@ public class Order {
     }
 
     private boolean hasValidPrice() {
-        return orderItems.size() > 0 ? getPrice() > 0 : true;
+        return (Objects.nonNull(orderItems) && orderItems.size() > 0) ? getPrice() > 0 : true;
     }
 
     private boolean hasValidPaymentAndStatus() {

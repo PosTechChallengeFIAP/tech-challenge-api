@@ -27,7 +27,7 @@ public class ProductService {
     }
 
     public List<Product> listByCategory(EProductCategory category){
-        return productRepository.getProductByCategory(category.ordinal());
+        return productRepository.findProductByCategory(category.ordinal());
     }
 
     public Product getById(UUID id) throws Exception {

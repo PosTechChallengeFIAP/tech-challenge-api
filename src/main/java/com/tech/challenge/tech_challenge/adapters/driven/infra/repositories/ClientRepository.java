@@ -13,5 +13,5 @@ import java.util.UUID;
 public interface ClientRepository extends JpaRepository<Client, UUID> {
 
     @Query("SELECT c FROM Client c WHERE c.cpf =:cpf")
-    Optional<Client>  FindByCpf ( @Param("cpf") String cpf);
+    Optional<Client>  findByCpf ( @Param("cpf") String cpf);
 }

@@ -29,6 +29,12 @@ public class OrderService {
         );
     }
 
+    public Order update(Order order) throws Exception {
+        validateOrder(order);
+
+        return orderRepository.save(order);
+    }
+
     public Order create(Order order){
         order.setOrderItems(Collections.emptySet());
         order.setStatus(EOrderStatus.ORDERING);
@@ -79,5 +85,12 @@ public class OrderService {
         return order.getOrderItems().stream()
                 .filter(orderItem -> orderItem.getId().equals(orderItemId)).findFirst()
                 .orElseThrow();
+    }
+
+    public void validateOrder(Order order) throws Exception {
+        Error err = order.validate();
+        if(err != null) {
+            throw err;
+        }
     }
 }
