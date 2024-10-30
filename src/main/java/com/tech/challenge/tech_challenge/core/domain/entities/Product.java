@@ -27,7 +27,10 @@ public class Product {
     private EProductCategory category;
 
     @Column(nullable = false)
-    private double price;
+    private Double price;
+
+    @Column
+    private Boolean active;
 
     public Error validate() {
         if (Objects.isNull(this.name) || this.name.isEmpty()) {

@@ -26,7 +26,7 @@ public class Payment {
     private UUID id;
 
     @Column(nullable = false)
-    private double value;
+    private Double value;
 
     @Enumerated(EnumType.ORDINAL)
     private EPaymentStatus status;
