@@ -12,5 +12,5 @@ import java.util.UUID;
 public interface ProductRepository extends JpaRepository<Product, UUID> {
 
     @Query(value = "SELECT * FROM product WHERE category = ?1", nativeQuery = true)
-    List<Product> getProductByCategory(int categoryId);
+    List<Product> findProductByCategory(int categoryId);
 }

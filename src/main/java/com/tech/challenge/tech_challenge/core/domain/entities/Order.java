@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -90,12 +91,13 @@ public class Order {
     }
 
     public void addItem(OrderItem orderItem) {
+        if(Objects.isNull(this.orderItems)) this.orderItems = new HashSet<>();
         OrderItem orderItemFound = findOrderItem(orderItem);
         
         if (orderItemFound != null) {
             int lastQuantity = orderItemFound.getQuantity();
             orderItemFound.setQuantity(lastQuantity+1);
-        } else {
+        } else{
             this.orderItems.add(orderItem);
             orderItem.setOrder(this);
         }
