@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@Tag(name = "Client", description = "Endpoint to manage" )
+@Tag(name = "Client", description = "Endpoint to manage client" )
 public class ClientController {
 
     @Autowired
