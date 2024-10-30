@@ -26,7 +26,7 @@ public class ClientService {
     }
 
     public Client getByCpf(String cpf) throws Exception {
-        return clientRepository.FindByCpf(cpf).orElseThrow(
+        return clientRepository.findByCpf(cpf).orElseThrow(
                 () -> new Exception("Unable to Find Client")
         );
     }
