@@ -63,7 +63,6 @@ public class ClientController {
     }
 
     @PostMapping("/client")
-
     @Operation(summary = "Create client", description = "This endpoint is used to create a new client",
             tags = {"Client"},
             responses ={
