@@ -69,7 +69,7 @@ public class ClientController {
             responses ={
                     @ApiResponse(description = "Success", responseCode = "200",
                             content = {
-                                    @Content(mediaType = "application/json",array = @ArraySchema(schema = @Schema(implementation = Client.class)))
+                                    @Content(schema = @Schema(implementation = Client.class))
                             }),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
                     @ApiResponse(description = "Unauthorized Access", responseCode = "401", content = @Content),
