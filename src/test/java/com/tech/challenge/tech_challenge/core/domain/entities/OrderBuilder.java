@@ -24,6 +24,7 @@ public class OrderBuilder {
         Product product = new Product();
         product.setId(UUID.randomUUID());
         product.setPrice(30.0);
+        product.setActive(true);
 
         OrderItem orderItem = new OrderItem();
         orderItem.setId(UUID.randomUUID());
