@@ -1,9 +1,6 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 
 public class OrderBuilder {
@@ -12,10 +9,13 @@ public class OrderBuilder {
     private Payment payment;
     private List<OrderItem> orderItems;
     private EOrderStatus status;
+    private Client client;
 
     public OrderBuilder(){
         id = UUID.randomUUID();
         status = EOrderStatus.PAYMENT_PENDING;
+
+        client = null;
 
         payment = new Payment();
         payment.setId(UUID.randomUUID());
@@ -51,6 +51,11 @@ public class OrderBuilder {
         return this;
     }
 
+    public OrderBuilder withClient(Client client){
+        this.client = client;
+        return this;
+    }
+
     public OrderBuilder withOrderItem(OrderItem orderItem){
         this.orderItems = new ArrayList<>();
         orderItems.add(orderItem);
@@ -72,6 +77,8 @@ public class OrderBuilder {
         order.setId(id);
         order.setPayment(payment);
         order.setStatus(status);
+        order.setOrderItems(new HashSet<>());
+        order.setClient(client);
 
         if(Objects.nonNull(orderItems)){
             for(OrderItem orderItem : orderItems){
