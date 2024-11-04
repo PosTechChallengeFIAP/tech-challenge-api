@@ -1,8 +1,11 @@
 package com.tech.challenge.tech_challenge.adapters.driver.controllers;
 
+import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
+import com.tech.challenge.tech_challenge.core.application.message.EMessageType;
+import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
-import com.tech.challenge.tech_challenge.core.domain.entities.Product;
 import com.tech.challenge.tech_challenge.core.domain.services.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -10,10 +13,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @RestController
@@ -25,23 +30,29 @@ public class OrderItemController {
 
     @PostMapping("/order/{orderId}/orderItem")
     @Operation(summary = "Add item in an order and creates OrderItem", description = "This endpoint is used to add item in an order and creates OrderItem",
-              tags = {"OrderItem"},
-              responses ={
-                      @ApiResponse(description = "Success", responseCode = "200",
-                              content = {
-                                      @Content(schema = @Schema(implementation = Order.class))
-                              }),
-                      @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
-                      @ApiResponse(description = "Unauthorized Access", responseCode = "401", content = @Content),
-                      @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
-              }
-      )
-    public ResponseEntity addItem(@PathVariable UUID orderId, @RequestBody OrderItem orderItem) throws Exception {
+            tags = {"OrderItem"},
+            responses ={
+                    @ApiResponse(description = "Created", responseCode = "201",
+                            content = {
+                                    @Content(schema = @Schema(implementation = Order.class))
+                            }),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Unauthorized Access", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
+            }
+    )
+    public ResponseEntity addItem(@PathVariable UUID orderId, @RequestBody OrderItem orderItem) {
         try{
-            Order order = orderService.addItem(orderId, orderItem);
-            return ResponseEntity.status(HttpStatus.OK).body(order);
-        }catch (IllegalArgumentException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.CREATED).body(orderService.addItem(orderId, orderItem));
+        }catch (ValidationException | DataIntegrityViolationException | IllegalArgumentException ex){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));
+        }catch (ResourceNotFoundException ex){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));
         }
     }
 
@@ -59,9 +70,14 @@ public class OrderItemController {
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
             }
     )
-    public ResponseEntity deleteItem(@PathVariable UUID orderId, @PathVariable UUID itemId) throws Exception {
-        Order order = orderService.removeItem(orderId, itemId);
-        return ResponseEntity.status(HttpStatus.OK).body(order);
+    public ResponseEntity removeItem(@PathVariable UUID orderId, @PathVariable UUID itemId) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(orderService.removeItem(orderId, itemId));
+        }catch (ResourceNotFoundException | NoSuchElementException ex){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));
+        }
     }
 
     @PatchMapping("/order/{orderId}/orderItem/{itemId}")
@@ -78,7 +94,17 @@ public class OrderItemController {
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
             }
     )
-    public Order editItem(@PathVariable UUID orderId, @PathVariable UUID itemId, @RequestBody OrderItem orderItem) throws Exception {
-        return orderService.editItem(orderId, itemId, orderItem);
+    public ResponseEntity editItem(@PathVariable UUID orderId, @PathVariable UUID itemId, @RequestBody OrderItem orderItem) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(orderService.editItem(orderId, itemId, orderItem));
+        } catch (ResourceNotFoundException | NoSuchElementException ex) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));
+        } catch (ValidationException | DataIntegrityViolationException ex) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));
+        }
     }
 }

@@ -1,7 +1,9 @@
 package com.tech.challenge.tech_challenge.core.domain.services;
 
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.ProductRepository;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
 import com.tech.challenge.tech_challenge.core.application.exceptions.UsedProductCannotBeDeletedException;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.EProductCategory;
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
 import com.tech.challenge.tech_challenge.core.domain.services.generic.Patcher;
@@ -82,11 +84,9 @@ public class ProductServiceTest {
 
         when(productRepository.findById(id)).thenReturn(Optional.empty());
 
-        Exception ex = assertThrows(Exception.class, ()->{
+        assertThrows(ResourceNotFoundException.class, ()->{
             productService.getById(id);
         });
-
-        assertEquals(ex.getMessage(), "Unable to Find Product");
     }
 
     @Test
@@ -94,7 +94,6 @@ public class ProductServiceTest {
         Product product = mock(Product.class);
 
         when(productRepository.save(product)).thenReturn(product);
-        when(product.validate()).thenReturn(null);
 
         Product productResult = productService.create(product);
 
@@ -104,26 +103,21 @@ public class ProductServiceTest {
     @Test
     public void createTest_Exception() throws Exception {
         Product product = mock(Product.class);
-        Error error = mock(Error.class);
 
         when(productRepository.save(product)).thenReturn(product);
-        when(product.validate()).thenReturn(error);
+        doThrow(ValidationException.class).doNothing().when(product).validate();
 
-        Error errorResult = assertThrows(Error.class, ()->{
+        assertThrows(ValidationException.class, ()->{
             productService.create(product);
         });
-
-        assertEquals(error, errorResult);
     }
 
     @Test
     public void deleteTest() throws Exception {
         Product product = mock(Product.class);
-        Error error = mock(Error.class);
 
         doThrow(DataIntegrityViolationException.class).when(productRepository).delete(product);
         when(productRepository.findById(any())).thenReturn(Optional.of(product));
-        when(product.validate()).thenReturn(error);
 
         UsedProductCannotBeDeletedException ex = assertThrows(UsedProductCannotBeDeletedException.class, ()->{
             productService.delete(UUID.randomUUID());

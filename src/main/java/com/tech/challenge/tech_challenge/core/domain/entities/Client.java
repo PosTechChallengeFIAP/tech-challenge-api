@@ -3,6 +3,7 @@ package com.tech.challenge.tech_challenge.core.domain.entities;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ClientMustHaveNameAndEmailOrValidCPFException;
 import com.tech.challenge.tech_challenge.core.application.exceptions.InvalidClientCPF;
 import com.tech.challenge.tech_challenge.core.application.exceptions.InvalidEmailAddress;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.application.util.CPFValidator;
 import com.tech.challenge.tech_challenge.core.application.util.EmailValidator;
 import jakarta.persistence.Column;
@@ -35,23 +36,21 @@ public class Client {
     @Column
     private String email;
 
-    public Error validate() {
+    public void validate() {
         if (StringUtils.isEmpty(this.cpf) && (StringUtils.isEmpty(this.name) || StringUtils.isEmpty(this.email))) {
-            return new ClientMustHaveNameAndEmailOrValidCPFException();
+            throw new ClientMustHaveNameAndEmailOrValidCPFException();
         }
 
         if (!StringUtils.isEmpty(this.cpf)) {
             if (!CPFValidator.isCPF(this.cpf)) {
-                return new InvalidClientCPF(this.cpf);
+                throw new InvalidClientCPF(this.cpf);
             }
             this.cpf = CPFValidator.formatCPF(this.cpf);
         }
 
         if (!StringUtils.isEmpty(this.email) && !EmailValidator.isValidEmail(this.email)) {
-            return new InvalidEmailAddress(this.email);
+            throw new InvalidEmailAddress(this.email);
         }
-
-        return null;
     }
 
     @Override

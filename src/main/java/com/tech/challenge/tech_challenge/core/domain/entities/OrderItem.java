@@ -1,6 +1,7 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,5 +46,15 @@ public class OrderItem {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public void validate() throws ValidationException {
+        if(Objects.isNull(product) || Objects.isNull(product.getId())){
+            throw new ValidationException("Invalid Product");
+        }
+
+        if(Objects.isNull(quantity) || quantity < 1){
+            throw new ValidationException("Quantity is lower than 1");
+        }
     }
 }
