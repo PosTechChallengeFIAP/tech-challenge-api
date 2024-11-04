@@ -2,6 +2,7 @@ package com.tech.challenge.tech_challenge.core.domain.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -72,8 +73,10 @@ public class OrderBuilder {
         order.setPayment(payment);
         order.setStatus(status);
 
-        for(OrderItem orderItem : orderItems){
-            order.addItem(orderItem);
+        if(Objects.nonNull(orderItems)){
+            for(OrderItem orderItem : orderItems){
+                order.addItem(orderItem);
+            }
         }
 
         return order;
