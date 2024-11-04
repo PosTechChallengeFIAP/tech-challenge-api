@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Objects;
@@ -35,22 +36,19 @@ public class Client {
     @Column
     private String email;
 
-    public void validate() throws ValidationException {
-        boolean hasName = !Objects.isNull(this.name);
-        boolean hasEmail = !Objects.isNull(this.email);
-        boolean hasCPF = !Objects.isNull(this.cpf);
-        
-        if (!hasCPF && !(hasName && hasEmail)) {
+    public void validate() {
+        if (StringUtils.isEmpty(this.cpf) && (StringUtils.isEmpty(this.name) || StringUtils.isEmpty(this.email))) {
             throw new ClientMustHaveNameAndEmailOrValidCPFException();
         }
 
-        boolean hasValidCPF = CPFValidator.isCPF(this.cpf);
-        if (!hasValidCPF && hasCPF) {
-            throw new InvalidClientCPF(this.cpf);
+        if (!StringUtils.isEmpty(this.cpf)) {
+            if (!CPFValidator.isCPF(this.cpf)) {
+                throw new InvalidClientCPF(this.cpf);
+            }
+            this.cpf = CPFValidator.formatCPF(this.cpf);
         }
 
-        boolean hasValidEmail = EmailValidator.isValidEmail(this.email);
-        if(!hasValidEmail && hasEmail){
+        if (!StringUtils.isEmpty(this.email) && !EmailValidator.isValidEmail(this.email)) {
             throw new InvalidEmailAddress(this.email);
         }
     }

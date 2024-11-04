@@ -7,6 +7,7 @@ import com.tech.challenge.tech_challenge.core.domain.entities.EOrderStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
+import com.tech.challenge.tech_challenge.core.domain.entities.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +26,9 @@ public class OrderServiceTest {
 
     @MockBean
     private OrderRepository orderRepository;
+
+    @MockBean
+    private ProductService productService;
 
     @Test
     public void listTest(){
@@ -83,10 +87,12 @@ public class OrderServiceTest {
 
     @Test
     public void addItemTest() throws Exception {
-        Order order = new Order();
-        OrderItem orderItem = mock(OrderItem.class);
-        order.setId(UUID.randomUUID());
+        Order order = new OrderBuilder().build();
+        OrderItem orderItem = order.getOrderItems().iterator().next();
+        order.setOrderItems(new HashSet<>());
+        orderItem.setOrder(null);
 
+        when(productService.getById(orderItem.getProduct().getId())).thenReturn(orderItem.getProduct());
         when(orderRepository.findById(order.getId())).thenReturn(Optional.of(order));
         when(orderRepository.save(order)).thenReturn(order);
 

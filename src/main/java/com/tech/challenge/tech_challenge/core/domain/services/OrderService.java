@@ -6,6 +6,7 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationE
 import com.tech.challenge.tech_challenge.core.domain.entities.EOrderStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
+import com.tech.challenge.tech_challenge.core.domain.entities.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,10 @@ import java.util.*;
 public class OrderService {
 
     @Autowired
-    OrderRepository orderRepository;
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private ProductService productService;
 
     public List<Order> list(){
         return orderRepository.findAll();
@@ -46,6 +50,11 @@ public class OrderService {
         order.addItem(orderItem);
         orderItem.validate();
 
+        if(!checkIfProductIsActive(orderItem)){
+            throw new IllegalArgumentException("Product is Inactive.");
+        }
+
+        order.addItem(orderItem);
         return orderRepository.save(order);
     }
 
@@ -88,4 +97,15 @@ public class OrderService {
                 .filter(orderItem -> orderItem.getId().equals(orderItemId)).findFirst()
                 .orElseThrow();
     }
+
+    private boolean checkIfProductIsActive(OrderItem orderItem) throws Exception {
+        if(Objects.isNull(orderItem.getProduct()) ||
+                Objects.isNull(orderItem.getProduct().getId()))
+            throw new IllegalArgumentException("Product is Invalid.");
+
+        Product product = productService.getById(orderItem.getProduct().getId());
+
+        return product.getActive();
+    }
 }
+
