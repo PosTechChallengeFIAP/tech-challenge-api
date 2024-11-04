@@ -1,5 +1,7 @@
 package com.tech.challenge.tech_challenge.core.application.util;
 
+import com.tech.challenge.tech_challenge.core.application.exceptions.InvalidClientCPF;
+
 import java.util.Objects;
 
 public class CPFValidator {
@@ -26,7 +28,7 @@ public class CPFValidator {
         }
     }
 
-    private static int calcularDigito(String str, int peso) {
+    protected static int calcularDigito(String str, int peso) {
         int soma = 0;
         for (int i = 0; i < str.length(); i++) {
             int num = Integer.parseInt(str.substring(i, i + 1));
@@ -34,5 +36,15 @@ public class CPFValidator {
         }
         int resto = 11 - (soma % 11);
         return (resto > 9) ? 0 : resto;
+    }
+
+    public static String formatCPF(String cpf){
+        if(isCPF(cpf)){
+            cpf = cpf.replaceAll("\\D+", "");
+            return cpf.substring(0,3) + "." + cpf.substring(3,6) + "."
+                    + cpf.substring(6,9) + "-" + cpf.substring(9);
+        }
+
+        throw new InvalidClientCPF(cpf);
     }
 }
