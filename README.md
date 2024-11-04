@@ -21,7 +21,8 @@ O projeto conta com endpoints desenvolvidos e disponíveis para consumo. Além d
 
 
 ## Configuração
-Primeiro, é necessário criar um arquivo chamado `.env` e configurar as variáveis de ambiente como:
+Primeiro, faça um clone do projeto local.
+Em segundo, é necessário criar um arquivo chamado `.env` e configurar as variáveis de ambiente como:
 ```
 PORT=8080
 
