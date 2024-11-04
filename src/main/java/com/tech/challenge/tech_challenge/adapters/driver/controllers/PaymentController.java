@@ -31,7 +31,7 @@ public class PaymentController {
     @Operation(summary = "Add new payment to an order", description = "This endpoint is used to add a new payment to an order",
             tags = {"Payment"},
             responses ={
-                    @ApiResponse(description = "Success", responseCode = "200",
+                    @ApiResponse(description = "Created", responseCode = "201",
                             content = {
                                     @Content(schema = @Schema(implementation = Order.class))
                             }),
@@ -43,7 +43,7 @@ public class PaymentController {
     )
     public ResponseEntity addPaymentoToOrder(@PathVariable UUID orderId){
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(orderPaymentService.addPaymentToOrder(orderId));
+            return ResponseEntity.status(HttpStatus.CREATED).body(orderPaymentService.addPaymentToOrder(orderId));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)

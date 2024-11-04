@@ -164,7 +164,7 @@ public class ProductController {
                     @ApiResponse(description = "Unauthorized Access", responseCode = "401", content = @Content),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
                     @ApiResponse(description = "Method Not Allowed", responseCode = "405", content = @Content),
-                    @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
+                    @ApiResponse(description = "Internal  Error", responseCode = "500", content = @Content)
             }
     )
     public ResponseEntity<MessageResponse> deleteProduct(@PathVariable UUID id) {
