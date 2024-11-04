@@ -1,6 +1,7 @@
 package com.tech.challenge.tech_challenge.core.application.util;
 
 import com.tech.challenge.tech_challenge.core.application.exceptions.InvalidClientCPF;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 
 import java.util.Objects;
 
@@ -38,7 +39,7 @@ public class CPFValidator {
         return (resto > 9) ? 0 : resto;
     }
 
-    public static String formatCPF(String cpf){
+    public static String formatCPF(String cpf) throws ValidationException {
         if(isCPF(cpf)){
             cpf = cpf.replaceAll("\\D+", "");
             return cpf.substring(0,3) + "." + cpf.substring(3,6) + "."

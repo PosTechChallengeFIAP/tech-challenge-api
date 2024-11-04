@@ -36,7 +36,7 @@ public class Client {
     @Column
     private String email;
 
-    public void validate() {
+    public void validate() throws ValidationException {
         if (StringUtils.isEmpty(this.cpf) && (StringUtils.isEmpty(this.name) || StringUtils.isEmpty(this.email))) {
             throw new ClientMustHaveNameAndEmailOrValidCPFException();
         }

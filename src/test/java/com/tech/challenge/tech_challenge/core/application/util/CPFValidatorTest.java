@@ -1,6 +1,7 @@
 package com.tech.challenge.tech_challenge.core.application.util;
 
 import com.tech.challenge.tech_challenge.core.application.exceptions.InvalidClientCPF;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,7 +34,7 @@ public class CPFValidatorTest {
     }
 
     @Test
-    public void formatCPFTest(){
+    public void formatCPFTest() throws ValidationException {
         assertEquals(CPFValidator.formatCPF("07844120061"), "078.441.200-61");
         assertEquals(CPFValidator.formatCPF("078......44120061"), "078.441.200-61");
         assertEquals(CPFValidator.formatCPF("078.441.200-61"), "078.441.200-61");

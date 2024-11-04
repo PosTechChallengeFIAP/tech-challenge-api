@@ -45,7 +45,7 @@ public class OrderItemController {
     public ResponseEntity addItem(@PathVariable UUID orderId, @RequestBody OrderItem orderItem) {
         try{
             return ResponseEntity.status(HttpStatus.CREATED).body(orderService.addItem(orderId, orderItem));
-        }catch (ValidationException | DataIntegrityViolationException | IllegalArgumentException ex){
+        }catch (ValidationException | DataIntegrityViolationException ex){
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));

@@ -98,10 +98,10 @@ public class OrderService {
                 .orElseThrow();
     }
 
-    private boolean checkIfProductIsActive(OrderItem orderItem) throws Exception {
+    private boolean checkIfProductIsActive(OrderItem orderItem) throws ValidationException, ResourceNotFoundException {
         if(Objects.isNull(orderItem.getProduct()) ||
                 Objects.isNull(orderItem.getProduct().getId()))
-            throw new IllegalArgumentException("Product is Invalid.");
+            throw new ValidationException("Product is Invalid.");
 
         Product product = productService.getById(orderItem.getProduct().getId());
 
