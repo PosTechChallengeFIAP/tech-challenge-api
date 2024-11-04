@@ -3,6 +3,7 @@ package com.tech.challenge.tech_challenge.core.domain.entities;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ClientMustHaveNameAndEmailOrValidCPFException;
 import com.tech.challenge.tech_challenge.core.application.exceptions.InvalidClientCPF;
 import com.tech.challenge.tech_challenge.core.application.exceptions.InvalidEmailAddress;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.application.util.CPFValidator;
 import com.tech.challenge.tech_challenge.core.application.util.EmailValidator;
 import jakarta.persistence.Column;
@@ -34,26 +35,24 @@ public class Client {
     @Column
     private String email;
 
-    public Error validate() {
+    public void validate() throws ValidationException {
         boolean hasName = !Objects.isNull(this.name);
         boolean hasEmail = !Objects.isNull(this.email);
         boolean hasCPF = !Objects.isNull(this.cpf);
         
         if (!hasCPF && !(hasName && hasEmail)) {
-            return new ClientMustHaveNameAndEmailOrValidCPFException();
+            throw new ClientMustHaveNameAndEmailOrValidCPFException();
         }
 
         boolean hasValidCPF = CPFValidator.isCPF(this.cpf);
         if (!hasValidCPF && hasCPF) {
-            return new InvalidClientCPF(this.cpf);
+            throw new InvalidClientCPF(this.cpf);
         }
 
         boolean hasValidEmail = EmailValidator.isValidEmail(this.email);
         if(!hasValidEmail && hasEmail){
-            return new InvalidEmailAddress(this.email);
+            throw new InvalidEmailAddress(this.email);
         }
-
-        return null;
     }
 
     @Override

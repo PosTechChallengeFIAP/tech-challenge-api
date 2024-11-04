@@ -1,5 +1,6 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
 
+import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import org.hibernate.annotations.UuidGenerator;
 
 import com.tech.challenge.tech_challenge.core.application.exceptions.UnableToChangePaymentStatus;
@@ -31,12 +32,10 @@ public class Payment {
     @Enumerated(EnumType.ORDINAL)
     private EPaymentStatus status;
 
-    public Error validate() {
+    public void validate() throws ValidationException {
         if (Objects.isNull(this.value) || this.value == 0) {
-            return new Error("Invalid value");
+            throw new ValidationException("Invalid payment value");
         }
-
-        return null;
     }
 
     public void setSatus(EPaymentStatus newStatus) {

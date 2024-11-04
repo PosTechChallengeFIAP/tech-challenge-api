@@ -1,6 +1,8 @@
 package com.tech.challenge.tech_challenge.core.domain.services.extended;
 
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.OrderRepository;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.Client;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.services.ClientService;
@@ -19,19 +21,13 @@ public class OrderClientService extends OrderService{
     @Autowired
     private ClientService clientService;
 
-    public Order addClientToOrder(UUID orderId, UUID clientId) throws Exception {
+    public Order addClientToOrder(UUID orderId, UUID clientId) throws ValidationException, ResourceNotFoundException {
         Order order = getById(orderId);
         Client client = clientService.getById(clientId);
-        Error err = client.validate();
-        if (err != null) {
-            throw err;
-        }
+        client.validate();
 
         order.setClient(client);
-        err = order.validate();
-        if(err != null) {
-            throw err;
-        }
+        order.validate();
 
         return orderRepository.save(order);
     }

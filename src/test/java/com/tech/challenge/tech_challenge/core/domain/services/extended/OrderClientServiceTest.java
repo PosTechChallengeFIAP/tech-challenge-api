@@ -1,6 +1,7 @@
 package com.tech.challenge.tech_challenge.core.domain.services.extended;
 
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.OrderRepository;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.Client;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderBuilder;
@@ -14,8 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class OrderClientServiceTest {
@@ -40,7 +40,6 @@ public class OrderClientServiceTest {
         when(clientService.getById(clientId)).thenReturn(client);
         when(orderRepository.findById(order.getId())).thenReturn(Optional.of(order));
         when(orderRepository.save(order)).thenReturn(order);
-        when(client.validate()).thenReturn(null);
         when(client.getId()).thenReturn(clientId);
 
         Order orderResult = orderClientService.addClientToOrder(order.getId(),clientId);
@@ -51,7 +50,6 @@ public class OrderClientServiceTest {
     @Test
     public void addClientToOrderTest_Exception_InvalidClient() throws Exception {
         Client client = mock(Client.class);
-        Error error = mock(Error.class);
         UUID clientId = UUID.randomUUID();
 
         OrderBuilder orderBuilder = new OrderBuilder();
@@ -60,14 +58,12 @@ public class OrderClientServiceTest {
         when(clientService.getById(clientId)).thenReturn(client);
         when(orderRepository.findById(order.getId())).thenReturn(Optional.of(order));
         when(orderRepository.save(order)).thenReturn(order);
-        when(client.validate()).thenReturn(error);
+        doThrow(ValidationException.class).doNothing().when(client).validate();
         when(client.getId()).thenReturn(clientId);
 
-        Error thrownError = assertThrows(Error.class, ()->{
+        assertThrows(ValidationException.class, ()->{
             orderClientService.addClientToOrder(order.getId(),clientId);
         });
-
-        assertEquals(error, thrownError);
     }
 
     @Test
@@ -75,19 +71,19 @@ public class OrderClientServiceTest {
         Client client = mock(Client.class);
         UUID clientId = UUID.randomUUID();
 
-        Order order = new Order();
-        order.setId(UUID.randomUUID());
+        Order order = mock(Order.class);
+        UUID id = UUID.randomUUID();
 
+        when(order.getId()).thenReturn(id);
+        when(client.getId()).thenReturn(clientId);
         when(clientService.getById(clientId)).thenReturn(client);
-        when(orderRepository.findById(order.getId())).thenReturn(Optional.of(order));
+        when(orderRepository.findById(id)).thenReturn(Optional.of(order));
         when(orderRepository.save(order)).thenReturn(order);
-        when(client.validate()).thenReturn(null);
+        doThrow(ValidationException.class).doNothing().when(order).validate();
         when(client.getId()).thenReturn(clientId);
 
-        Error thrownError = assertThrows(Error.class, ()->{
+        assertThrows(ValidationException.class, ()->{
             orderClientService.addClientToOrder(order.getId(),clientId);
         });
-
-        assertTrue(thrownError.getMessage().contains("Invalid"));
     }
 }

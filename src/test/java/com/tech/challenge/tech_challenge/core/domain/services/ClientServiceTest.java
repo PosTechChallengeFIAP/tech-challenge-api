@@ -1,6 +1,8 @@
 package com.tech.challenge.tech_challenge.core.domain.services;
 
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.ClientRepository;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.Client;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class ClientServiceTest {
@@ -60,11 +61,9 @@ public class ClientServiceTest {
 
         when(clientRepository.findById(id)).thenReturn(Optional.empty());
 
-        Exception ex = assertThrows(Exception.class, ()->{
+        assertThrows(ResourceNotFoundException.class, ()->{
             clientService.getById(id);
         });
-
-        assertEquals(ex.getMessage(), "Unable to Find Client");
     }
 
     @Test
@@ -89,11 +88,9 @@ public class ClientServiceTest {
 
         when(clientRepository.findByCpf(cpf)).thenReturn(Optional.empty());
 
-        Exception ex = assertThrows(Exception.class, ()->{
+        assertThrows(ResourceNotFoundException.class, ()->{
             clientService.getByCpf(cpf);
         });
-
-        assertEquals(ex.getMessage(), "Unable to Find Client");
     }
 
     @Test
@@ -101,7 +98,6 @@ public class ClientServiceTest {
         Client client = mock(Client.class);
 
         when(clientRepository.save(client)).thenReturn(client);
-        when(client.validate()).thenReturn(null);
 
         Client clientResult = clientService.create(client);
 
@@ -111,15 +107,12 @@ public class ClientServiceTest {
     @Test
     public void createTest_Exception() throws Exception {
         Client client = mock(Client.class);
-        Error error = mock(Error.class);
 
         when(clientRepository.save(client)).thenReturn(client);
-        when(client.validate()).thenReturn(error);
+        doThrow(ValidationException.class).doNothing().when(client).validate();
 
-        Error errorResult = assertThrows(Error.class, ()->{
+        assertThrows(ValidationException.class, ()->{
             clientService.create(client);
         });
-
-        assertEquals(error, errorResult);
     }
 }

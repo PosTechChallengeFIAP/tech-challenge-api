@@ -3,6 +3,7 @@ package com.tech.challenge.tech_challenge.core.domain.entities;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tech.challenge.tech_challenge.core.application.exceptions.UnableToAddPaymentToOrder;
 
+import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -48,24 +49,22 @@ public class Order {
     private Payment payment;
 
 
-    public Error validate() {
+    public void validate() throws ValidationException {
         if(!hasValidPrice()) {
-            return new Error("Invalid price");
+            throw new ValidationException("Invalid price");
         }
 
         if(!hasValidOrderItems()) {
-            return new Error("Invalid order items");
+            throw new ValidationException("Invalid order items");
         }
 
         if(!hasValidClient()) {
-            return new Error("Invalid client");
+            throw new ValidationException("Invalid client");
         }
 
         if(!hasValidPaymentAndStatus()) {
-            return new Error("Invalid status");
+            throw new ValidationException("Invalid status");
         }
-
-        return null;
     }
 
     @Override
@@ -127,14 +126,11 @@ public class Order {
         EPaymentStatus paymentStatus = this.payment.getStatus();
 
         switch (paymentStatus.name()) {
-            case "NOT_PAID":
+            case "NOT_PAID", "CANCELED":
                 this.status = EOrderStatus.CANCELED;
                 break;
             case "PAID":
                 this.status = EOrderStatus.QUEUE;
-                break;
-            case "CANCELED":
-                this.status = EOrderStatus.CANCELED;
                 break;
             case "PENDING":
                 this.status = EOrderStatus.PAYMENT_PENDING;
@@ -150,46 +146,50 @@ public class Order {
     }
 
     private boolean hasValidOrderItems() {
-        Boolean valid = true;
-
-        if(Objects.isNull(orderItems)) return valid;
+        if(Objects.isNull(orderItems)) return true;
 
         for (OrderItem item: orderItems) {
             if (item.getId() == null) {
-                valid = false;
-                break;
+                return false;
             }
         }
 
-        return valid;
+        return true;
     }
 
     private boolean hasValidClient() {
-        return Objects.nonNull(client) ? Objects.nonNull(client.getId()) : true;
+        return Objects.isNull(client) || Objects.nonNull(client.getId());
     }
 
     private boolean hasValidPrice() {
-        return (Objects.nonNull(orderItems) && orderItems.size() > 0) ? getPrice() > 0 : true;
+        return Objects.isNull(orderItems) || orderItems.isEmpty() || getPrice() > 0;
     }
 
     private boolean hasValidPaymentAndStatus() {
-        boolean valid = status == EOrderStatus.ORDERING;
-
         if(!Objects.isNull(payment)) {
             EPaymentStatus paymentStatus = payment.getStatus();
 
-            boolean ifPaymentStatusIsPendingShouldBePending = paymentStatus == EPaymentStatus.PENDING && 
-                status == EOrderStatus.PAYMENT_PENDING;
-            boolean ifPaymentStatusIsPaidShouldBePaidPreparingOrQueue = paymentStatus == EPaymentStatus.PAID && 
-                (status == EOrderStatus.PAID || status == EOrderStatus.PREPARING || status == EOrderStatus.QUEUE);
-            boolean ifPaymentStatusCanceledOrNotPaidShouldBeCanceled = (paymentStatus == EPaymentStatus.CANCELED || paymentStatus == EPaymentStatus.NOT_PAID) && 
-                status == EOrderStatus.CANCELED;
+            switch (paymentStatus){
+                case PENDING -> {
+                    return status == EOrderStatus.PAYMENT_PENDING;
+                }
+                case PAID -> {
+                    return (
+                        status == EOrderStatus.PAID ||
+                        status == EOrderStatus.PREPARING ||
+                        status == EOrderStatus.QUEUE
+                    );
+                }
+                case CANCELED, NOT_PAID -> {
+                    return status == EOrderStatus.CANCELED;
+                }
+                default -> {
+                    return false;
+                }
+            }
 
-            valid = ifPaymentStatusIsPendingShouldBePending || 
-                ifPaymentStatusIsPaidShouldBePaidPreparingOrQueue ||
-                ifPaymentStatusCanceledOrNotPaidShouldBeCanceled;
+        }else{
+            return status == EOrderStatus.ORDERING;
         }
-
-        return valid;
     }
 }

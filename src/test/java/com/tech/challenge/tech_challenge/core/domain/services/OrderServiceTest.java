@@ -1,6 +1,8 @@
 package com.tech.challenge.tech_challenge.core.domain.services;
 
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.OrderRepository;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.EOrderStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
@@ -13,8 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class OrderServiceTest {
@@ -61,15 +62,13 @@ public class OrderServiceTest {
 
         when(orderRepository.findById(id)).thenReturn(Optional.empty());
 
-        Exception ex = assertThrows(Exception.class, ()->{
+        assertThrows(ResourceNotFoundException.class, ()->{
             orderService.getById(id);
         });
-
-        assertEquals(ex.getMessage(), "Unable to Find Order");
     }
 
     @Test
-    public void createTest() {
+    public void createTest() throws ValidationException {
         Order order = new Order();
         order.setId(UUID.randomUUID());
 
@@ -213,11 +212,10 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void updateTest_Success() throws Exception {
+    public void updateTest_Success() throws ValidationException {
         Order order = mock(Order.class);
 
         when(orderRepository.save(order)).thenReturn(order);
-        when(order.validate()).thenReturn(null);
 
         Order orderResult = orderService.update(order);
 
@@ -227,16 +225,13 @@ public class OrderServiceTest {
     @Test
     public void updateTest_Exception() throws Exception {
         Order order = mock(Order.class);
-        Error error = mock(Error.class);
 
         when(orderRepository.save(order)).thenReturn(order);
-        when(order.validate()).thenReturn(error);
+        doThrow(ValidationException.class).doNothing().when(order).validate();
 
-        Error thrownError = assertThrows(Error.class, ()->{
+        assertThrows(ValidationException.class, ()->{
             orderService.update(order);
         });
-
-        assertEquals(thrownError,error);
     }
 
     private OrderItem buildOrderItem(Order order, Product product, Integer quantity){

@@ -1,13 +1,12 @@
 package com.tech.challenge.tech_challenge.adapters.driver.controllers;
 
-import com.tech.challenge.tech_challenge.core.domain.entities.Client;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
+import com.tech.challenge.tech_challenge.core.application.message.EMessageType;
+import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
-import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
-import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
 import com.tech.challenge.tech_challenge.core.domain.services.OrderService;
 import com.tech.challenge.tech_challenge.core.domain.services.extended.OrderClientService;
-import com.tech.challenge.tech_challenge.core.domain.services.extended.OrderPaymentService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,9 +14,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -29,9 +30,6 @@ public class OrderController {
 
     @Autowired
     OrderClientService orderClientService;
-  
-    @Autowired
-    OrderPaymentService orderPaymentService;
 
     @GetMapping("/order")
     @Operation(summary = "Finds all orders", description = "This endpoint is used to find all orders",
@@ -43,12 +41,11 @@ public class OrderController {
                             }),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
                     @ApiResponse(description = "Unauthorized Access", responseCode = "401", content = @Content),
-                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
             }
     )
-    public List<Order> all(){
-        return orderService.list();
+    public ResponseEntity all(){
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.list());
     }
 
     @GetMapping("/order/{id}")
@@ -65,15 +62,21 @@ public class OrderController {
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
             }
     )
-    public Order one(@PathVariable UUID id) throws Exception {
-        return orderService.getById(id);
+    public ResponseEntity one(@PathVariable UUID id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(orderService.getById(id));
+        }catch (ResourceNotFoundException ex){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));
+        }
     }
 
     @PostMapping("/order")
     @Operation(summary = "Create order", description = "This endpoint is used to create order",
             tags = {"Order"},
             responses ={
-                    @ApiResponse(description = "Success", responseCode = "200",
+                    @ApiResponse(description = "Created", responseCode = "201",
                             content = {
                                     @Content(schema = @Schema(implementation = Order.class))
                             }),
@@ -82,8 +85,14 @@ public class OrderController {
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
             }
     )
-    public Order create(@RequestBody Order order) throws Exception {
-        return orderService.create(order);
+    public ResponseEntity create(@RequestBody Order order) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(orderService.create(order));
+        }catch (ValidationException ex){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));
+        }
     }
     
     @PostMapping("/order/{orderId}/client/{clientId}")
@@ -96,10 +105,21 @@ public class OrderController {
                             }),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
                     @ApiResponse(description = "Unauthorized Access", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
             }
     )
-    public Order create(@PathVariable(name = "orderId") UUID orderId, @PathVariable(name = "clientId") UUID clientId) throws Exception {
-        return orderClientService.addClientToOrder(orderId, clientId);
+    public ResponseEntity addClient(@PathVariable(name = "orderId") UUID orderId, @PathVariable(name = "clientId") UUID clientId) throws Exception {
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(orderClientService.addClientToOrder(orderId, clientId));
+        }catch (ValidationException | DataIntegrityViolationException ex){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));
+        }catch (ResourceNotFoundException ex){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));
+        }
     }
 }

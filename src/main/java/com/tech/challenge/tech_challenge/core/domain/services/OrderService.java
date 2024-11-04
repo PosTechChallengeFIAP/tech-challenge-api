@@ -1,16 +1,15 @@
 package com.tech.challenge.tech_challenge.core.domain.services;
 
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.OrderRepository;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.EOrderStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -18,44 +17,46 @@ public class OrderService {
     @Autowired
     OrderRepository orderRepository;
 
-
     public List<Order> list(){
         return orderRepository.findAll();
     }
 
-    public Order getById(UUID id) throws Exception {
+    public Order getById(UUID id) throws ResourceNotFoundException {
         return orderRepository.findById(id).orElseThrow(
-                () -> new Exception("Unable to Find Order")
+                () -> new ResourceNotFoundException(Order.class, String.format("No order with ID %s.", id))
         );
     }
 
-    public Order update(Order order) throws Exception {
-        validateOrder(order);
+    public Order update(Order order) throws ValidationException {
+       order.validate();
 
-        return orderRepository.save(order);
+       return orderRepository.save(order);
     }
 
-    public Order create(Order order){
+    public Order create(Order order) throws ValidationException{
         order.setOrderItems(Collections.emptySet());
         order.setStatus(EOrderStatus.ORDERING);
+        order.validate();
+
         return orderRepository.save(order);
     }
 
-    public Order addItem(UUID orderId, OrderItem orderItem) throws Exception {
+    public Order addItem(UUID orderId, OrderItem orderItem) throws ResourceNotFoundException, ValidationException {
         Order order = getById(orderId);
         order.addItem(orderItem);
+        orderItem.validate();
 
         return orderRepository.save(order);
     }
 
-    public Order removeItem(UUID orderId, UUID itemId) throws Exception {
+    public Order removeItem(UUID orderId, UUID itemId) throws ResourceNotFoundException, NoSuchElementException {
         Order order = getById(orderId);
         order.removeItem(getOrdemItemById(order, itemId));
 
         return orderRepository.save(order);
     }
 
-    public Order editItem(UUID orderId, UUID itemId, OrderItem newOrderItem) throws Exception {
+    public Order editItem(UUID orderId, UUID itemId, OrderItem newOrderItem) throws ResourceNotFoundException, ValidationException {
         Order order = getById(orderId);
         OrderItem oldOrderItem = getOrdemItemById(order, itemId);
 
@@ -64,7 +65,8 @@ public class OrderService {
             newOrderItem.setId(oldOrderItem.getId());
             newOrderItem.setProduct(oldOrderItem.getProduct());
             order.addItem(newOrderItem);
-        }else throw new Exception("Only the 'quantity' property can be edited for order items.");
+            newOrderItem.validate();
+        }else throw new ValidationException("Only the 'quantity' property can be edited for order items.");
 
         return orderRepository.save(order);
     }
@@ -85,12 +87,5 @@ public class OrderService {
         return order.getOrderItems().stream()
                 .filter(orderItem -> orderItem.getId().equals(orderItemId)).findFirst()
                 .orElseThrow();
-    }
-
-    public void validateOrder(Order order) throws Exception {
-        Error err = order.validate();
-        if(err != null) {
-            throw err;
-        }
     }
 }

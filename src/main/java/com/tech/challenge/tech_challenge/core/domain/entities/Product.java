@@ -1,4 +1,5 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,16 +33,14 @@ public class Product {
     @Column
     private Boolean active;
 
-    public Error validate() {
+    public void validate() throws ValidationException {
         if (Objects.isNull(this.name) || this.name.isEmpty()) {
-            return new Error("Invalid name");
+            throw new ValidationException("Invalid product name");
         }
 
         if (this.price <= 0) {
-            return new Error("Invalid price");
+            throw new ValidationException("Invalid product price");
         }
-
-        return null;
     }
 
     @Override

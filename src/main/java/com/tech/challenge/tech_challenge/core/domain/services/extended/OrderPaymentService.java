@@ -1,6 +1,8 @@
 package com.tech.challenge.tech_challenge.core.domain.services.extended;
 
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.OrderRepository;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.EOrderStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.EPaymentStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
@@ -24,7 +26,7 @@ public class OrderPaymentService extends OrderService {
     @Autowired
     private QueueService queueService;
 
-    public Order addPaymentToOrder(UUID orderId) throws Exception {
+    public Order addPaymentToOrder(UUID orderId) throws ResourceNotFoundException, ValidationException {
         Order order = getById(orderId);
 
         Payment createdPayment = paymentService.createNewPayment(order.getPrice());
@@ -34,7 +36,7 @@ public class OrderPaymentService extends OrderService {
         return update(order);
     }
 
-    public Payment updateOrderPayment(UUID orderId, UUID paymentId, EPaymentStatus status) throws Exception {
+    public Payment updateOrderPayment(UUID orderId, UUID paymentId, EPaymentStatus status) throws ResourceNotFoundException, ValidationException {
         Payment payment = paymentService.getById(paymentId);
         payment.setSatus(status);
 

@@ -1,6 +1,8 @@
 package com.tech.challenge.tech_challenge.core.domain.services;
 
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.PaymentRepository;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
+import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.EPaymentStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
 import org.junit.jupiter.api.Test;
@@ -14,8 +16,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class PaymentServiceTest {
@@ -55,11 +56,9 @@ public class PaymentServiceTest {
 
         when(paymentRepository.findById(id)).thenReturn(Optional.empty());
 
-        Exception ex = assertThrows(Exception.class, ()->{
+        assertThrows(ResourceNotFoundException.class, ()->{
             paymentService.getById(id);
         });
-
-        assertEquals(ex.getMessage(), "Unable to find payment");
     }
 
     @Test
@@ -67,7 +66,6 @@ public class PaymentServiceTest {
         Payment payment = mock(Payment.class);
 
         when(paymentRepository.save(payment)).thenReturn(payment);
-        when(payment.validate()).thenReturn(null);
 
         Payment paymentResult = paymentService.update(payment);
 
@@ -77,15 +75,12 @@ public class PaymentServiceTest {
     @Test
     public void updateTest_Exception() throws Exception {
         Payment payment = mock(Payment.class);
-        Error error = mock(Error.class);
 
         when(paymentRepository.save(payment)).thenReturn(payment);
-        when(payment.validate()).thenReturn(error);
+        doThrow(ValidationException.class).doNothing().when(payment).validate();
 
-        Error thrownError = assertThrows(Error.class, ()->{
+        assertThrows(ValidationException.class, ()->{
             paymentService.update(payment);
         });
-
-        assertEquals(thrownError,error);
     }
 }
