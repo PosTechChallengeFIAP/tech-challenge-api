@@ -60,7 +60,7 @@ public class ClientController {
 
                 Client client = clientService.getByCpf(cpf);
                 return ResponseEntity.status(HttpStatus.OK).body(List.of(client));
-            }catch (ResourceNotFoundException ex){
+            }catch (ResourceNotFoundException | ValidationException ex){
                 return ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
                         .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));
