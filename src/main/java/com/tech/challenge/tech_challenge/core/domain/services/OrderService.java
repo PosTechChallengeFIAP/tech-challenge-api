@@ -48,13 +48,13 @@ public class OrderService {
     public Order addItem(UUID orderId, OrderItem orderItem) throws ResourceNotFoundException, ValidationException {
         Order order = getById(orderId);
         order.addItem(orderItem);
+        orderItem.setOrder(order);
         orderItem.validate();
 
         if(!checkIfProductIsActive(orderItem)){
             throw new IllegalArgumentException("Product is Inactive.");
         }
 
-        order.addItem(orderItem);
         return orderRepository.save(order);
     }
 
@@ -73,6 +73,7 @@ public class OrderService {
             order.removeItem(oldOrderItem);
             newOrderItem.setId(oldOrderItem.getId());
             newOrderItem.setProduct(oldOrderItem.getProduct());
+            newOrderItem.setOrder(order);
             order.addItem(newOrderItem);
             newOrderItem.validate();
         }else throw new ValidationException("Only the 'quantity' property can be edited for order items.");
