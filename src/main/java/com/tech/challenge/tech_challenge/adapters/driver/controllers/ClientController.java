@@ -52,17 +52,15 @@ public class ClientController {
         }
         else {
             try {
-                if(!CPFValidator.isCPF(cpf)){
-                    return ResponseEntity
-                            .status(HttpStatus.BAD_REQUEST)
-                            .body(MessageResponse.type(EMessageType.ERROR).withMessage("Invalid CPF"));
-                }
-
                 Client client = clientService.getByCpf(cpf);
                 return ResponseEntity.status(HttpStatus.OK).body(List.of(client));
-            }catch (ResourceNotFoundException | ValidationException ex){
+            }catch (ResourceNotFoundException ex){
                 return ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
+                        .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));
+            }catch (ValidationException ex){
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
                         .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));
             }
         }

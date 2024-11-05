@@ -99,8 +99,9 @@ public class ClientControllerTest {
     }
 
     @Test
-    void listByCPFTest_BadRequest() {
+    void listByCPFTest_BadRequest() throws ValidationException, ResourceNotFoundException {
         String cpf = "324.553.080-3";
+        when(clientService.getByCpf(cpf)).thenThrow(ValidationException.class);
 
         ResponseEntity<MessageResponse> resultList = this.restTemplate.getForEntity(getFullUrl("/client?cpf=" + cpf),
                 MessageResponse.class);
