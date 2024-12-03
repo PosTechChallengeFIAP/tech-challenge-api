@@ -20,7 +20,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASS }}
 
       - name: Build Docker Image
-        run: docker build -t ${{ secrets.DOCKER_HUB_USER }}/tech-challenge:latest devops/
+        run: docker build -t ${{ secrets.DOCKER_HUB_USER }}/tech-challenge:latest -f devops/Dockerfile .
 
       - name: Push Docker Image
         run: docker push ${{ secrets.DOCKER_HUB_USER }}/tech-challenge:latest
