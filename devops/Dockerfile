@@ -1,12 +1,22 @@
-FROM maven:3.8.8-eclipse-temurin-17 AS builder
+FROM openjdk:17-jdk-slim as build
+
+ENV JAVA_HOME=/usr/local/openjdk-17
+ENV PATH="$JAVA_HOME/bin:$PATH"
+
+RUN apt-get update && apt-get install -y maven
+
 WORKDIR /app
-COPY . .
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+COPY src ./src
 RUN mvn clean package -DskipTests
+
 
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
-COPY --from=builder /app/target/*.jar app.jar
+COPY --from=build /app/target/*.jar app.jar
 
-EXPOSE 3000
+EXPOSE 8080
 
 CMD ["java", "-jar", "app.jar"]
