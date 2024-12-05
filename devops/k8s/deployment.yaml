@@ -4,7 +4,7 @@ metadata:
   name: tech-challenge-deployment
   namespace: tech-challenge
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: tech-challenge-app
@@ -21,7 +21,10 @@ spec:
                 name: tech-challenge-config-map
             - secretRef:
                 name: tech-challenge-secret
-
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
           ports:
             - containerPort: 8080
               name: http
