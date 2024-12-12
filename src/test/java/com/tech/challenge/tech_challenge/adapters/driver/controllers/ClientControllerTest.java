@@ -69,7 +69,7 @@ public class ClientControllerTest {
     }
 
     @Test
-    void listByCPFTest_Success() throws ResourceNotFoundException {
+    void listByCPFTest_Success() throws ResourceNotFoundException, ValidationException {
         Client client1 = new ClientBuilder().build();
 
         when(clientService.getByCpf(client1.getCpf())).thenReturn(client1);
@@ -88,7 +88,7 @@ public class ClientControllerTest {
     }
 
     @Test
-    void listByCPFTest_NotFound() throws ResourceNotFoundException {
+    void listByCPFTest_NotFound() throws ResourceNotFoundException, ValidationException {
         String cpf = "324.553.080-30";
         when(clientService.getByCpf(cpf)).thenThrow(ResourceNotFoundException.class);
 
@@ -99,8 +99,9 @@ public class ClientControllerTest {
     }
 
     @Test
-    void listByCPFTest_BadRequest() {
+    void listByCPFTest_BadRequest() throws ValidationException, ResourceNotFoundException {
         String cpf = "324.553.080-3";
+        when(clientService.getByCpf(cpf)).thenThrow(ValidationException.class);
 
         ResponseEntity<MessageResponse> resultList = this.restTemplate.getForEntity(getFullUrl("/client?cpf=" + cpf),
                 MessageResponse.class);

@@ -98,7 +98,6 @@ public class Order {
             orderItemFound.setQuantity(lastQuantity+1);
         } else{
             this.orderItems.add(orderItem);
-            orderItem.setOrder(this);
         }
 
     }

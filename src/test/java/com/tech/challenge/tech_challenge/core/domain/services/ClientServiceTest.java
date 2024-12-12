@@ -3,6 +3,7 @@ package com.tech.challenge.tech_challenge.core.domain.services;
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.ClientRepository;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
+import com.tech.challenge.tech_challenge.core.application.util.CPFValidator;
 import com.tech.challenge.tech_challenge.core.domain.entities.Client;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void getByIdTest_Success() throws Exception {
+    public void getByIdTest_Success() throws ResourceNotFoundException {
         Client client = new Client();
 
         client.setId(UUID.randomUUID());
@@ -56,7 +57,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void getByIdTest_Exception() throws Exception {
+    public void getByIdTest_Exception() {
         UUID id = UUID.randomUUID();
 
         when(clientRepository.findById(id)).thenReturn(Optional.empty());
@@ -67,14 +68,15 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void getByCpfTest_Success() throws Exception {
-        String cpf = "123456";
+    public void getByCpfTest_Success() throws ValidationException, ResourceNotFoundException {
+        String cpf = "71595107045";
+        String formattedCpf = CPFValidator.formatCPF(cpf);
         Client client = new Client();
 
         client.setId(UUID.randomUUID());
         client.setCpf(cpf);
 
-        when(clientRepository.findByCpf(cpf)).thenReturn(Optional.of(client));
+        when(clientRepository.findByCpf(formattedCpf)).thenReturn(Optional.of(client));
 
         Client clientResult = clientService.getByCpf(cpf);
 
@@ -83,10 +85,11 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void getByCpfTest_Exception() throws Exception {
-        String cpf = "123456";
+    public void getByCpfTest_NotFound() throws ValidationException {
+        String cpf = "71595107045";
+        String formattedCpf = CPFValidator.formatCPF(cpf);
 
-        when(clientRepository.findByCpf(cpf)).thenReturn(Optional.empty());
+        when(clientRepository.findByCpf(formattedCpf)).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, ()->{
             clientService.getByCpf(cpf);
@@ -94,7 +97,16 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void createTest_Success() throws Exception {
+    public void getByCpfTest_Invalid() throws ValidationException {
+        String cpf = "8787678";
+
+        assertThrows(ValidationException.class, ()->{
+            clientService.getByCpf(cpf);
+        });
+    }
+
+    @Test
+    public void createTest_Success() throws ValidationException {
         Client client = mock(Client.class);
 
         when(clientRepository.save(client)).thenReturn(client);
@@ -105,7 +117,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void createTest_Exception() throws Exception {
+    public void createTest_Exception() throws ValidationException {
         Client client = mock(Client.class);
 
         when(clientRepository.save(client)).thenReturn(client);

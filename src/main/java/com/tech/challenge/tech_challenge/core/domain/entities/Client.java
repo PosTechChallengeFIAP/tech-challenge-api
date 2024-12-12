@@ -2,6 +2,7 @@ package com.tech.challenge.tech_challenge.core.domain.entities;
 
 import com.tech.challenge.tech_challenge.core.application.exceptions.ClientMustHaveNameAndEmailOrValidCPFException;
 import com.tech.challenge.tech_challenge.core.application.exceptions.InvalidClientCPF;
+import com.tech.challenge.tech_challenge.core.application.exceptions.InvalidClientName;
 import com.tech.challenge.tech_challenge.core.application.exceptions.InvalidEmailAddress;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.application.util.CPFValidator;
@@ -37,19 +38,17 @@ public class Client {
     private String email;
 
     public void validate() throws ValidationException {
-        if (StringUtils.isEmpty(this.cpf) && (StringUtils.isEmpty(this.name) || StringUtils.isEmpty(this.email))) {
-            throw new ClientMustHaveNameAndEmailOrValidCPFException();
+        if (StringUtils.isEmpty(cpf) || !CPFValidator.isCPF(this.cpf)) {
+            throw new InvalidClientCPF(cpf);
         }
+        this.cpf = CPFValidator.formatCPF(this.cpf);
 
-        if (!StringUtils.isEmpty(this.cpf)) {
-            if (!CPFValidator.isCPF(this.cpf)) {
-                throw new InvalidClientCPF(this.cpf);
-            }
-            this.cpf = CPFValidator.formatCPF(this.cpf);
-        }
-
-        if (!StringUtils.isEmpty(this.email) && !EmailValidator.isValidEmail(this.email)) {
+        if (StringUtils.isEmpty(this.email) && !EmailValidator.isValidEmail(this.email)) {
             throw new InvalidEmailAddress(this.email);
+        }
+
+        if (StringUtils.isEmpty(name)) {
+            throw new InvalidClientName();
         }
     }
 
