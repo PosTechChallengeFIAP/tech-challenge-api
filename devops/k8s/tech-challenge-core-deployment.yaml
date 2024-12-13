@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tech-challenge-deployment
+  name: tech-challenge-core-deployment
   namespace: tech-challenge
 spec:
   replicas: 1
@@ -14,13 +14,13 @@ spec:
         app: tech-challenge-app
     spec:
       containers:
-        - name: tech-challenge
+        - name: tech-challenge-app
           image: loadinggreg/tech-challenge:latest
           envFrom:
             - configMapRef:
                 name: tech-challenge-config-map
             - secretRef:
-                name: tech-challenge-secret
+                name: tech-challenge-admin-secret
           resources:
             limits:
               memory: "512Mi"

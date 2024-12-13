@@ -4,5 +4,5 @@ metadata:
   name: tech-challenge-config-map
   namespace: tech-challenge
 data:
-  PORT: "8080"
-  DB_HOST: "192.168.1.109" ## Descobrir IP da sua maquina local e informar aqui
+  DB_HOST: "tech-challenge-svc-db" ## Descobrir IP da sua maquina local e informar aqui
+  MYSQL_INITDB_SKIP_TZINFO: 'yes'

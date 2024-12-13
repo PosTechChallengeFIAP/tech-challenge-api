@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: tech-challenge-svc
+  name: tech-challenge-svc-db
   namespace: tech-challenge
 spec:
   selector:
-    app: tech-challenge-app
+    app: tech-challenge-db
   ports:
-    - port: 8080
+    - port: 3306
       protocol: TCP
-      targetPort: 8080
-      nodePort: 30808
+      targetPort: 3306
+      nodePort: 32060
   type: NodePort
