@@ -5,6 +5,8 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationE
 import com.tech.challenge.tech_challenge.core.application.message.EMessageType;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
+import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
+import com.tech.challenge.tech_challenge.core.domain.entities.Product;
 import com.tech.challenge.tech_challenge.core.domain.services.OrderService;
 import com.tech.challenge.tech_challenge.core.domain.services.extended.OrderClientService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @RestController
@@ -122,4 +125,33 @@ public class OrderController {
                     .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));
         }
     }
+
+    @PatchMapping("/order/{id}")
+    @Operation(summary = "Update order", description = "This endpoint is used to update order",
+            tags = {"Order"},
+            responses ={
+                    @ApiResponse(description = "Success", responseCode = "200",
+                            content = {
+                                    @Content(schema = @Schema(implementation = Order.class))
+                            }),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Unauthorized Access", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
+            }
+    )
+    public ResponseEntity updateOrder(@PathVariable UUID id, @RequestBody Order product) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(orderService.update(id, product));
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));
+        } catch (ValidationException | IllegalAccessException ex) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));
+        }
+    }
+
 }

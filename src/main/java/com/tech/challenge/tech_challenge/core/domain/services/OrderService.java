@@ -7,6 +7,7 @@ import com.tech.challenge.tech_challenge.core.domain.entities.EOrderStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
+import com.tech.challenge.tech_challenge.core.domain.services.generic.Patcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,9 @@ public class OrderService {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private Patcher<Order> orderPatcher;
+
     public List<Order> list(){
         return orderRepository.findAll();
     }
@@ -32,9 +36,20 @@ public class OrderService {
     }
 
     public Order update(Order order) throws ValidationException {
-       order.validate();
+        order.validate();
 
-       return orderRepository.save(order);
+        return orderRepository.save(order);
+    }
+
+    public Order update(UUID id,Order order) throws ResourceNotFoundException, ValidationException, IllegalAccessException  {
+
+        Order orderRecord = getById(id);
+
+        Order updatedOrder = orderPatcher.execute(orderRecord,order);
+
+        updatedOrder.validate();
+
+        return orderRepository.save(updatedOrder);
     }
 
     public Order create(Order order) throws ValidationException{
@@ -109,4 +124,3 @@ public class OrderService {
         return product.getActive();
     }
 }
-
