@@ -1,5 +1,8 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
 
+import com.tech.challenge.tech_challenge.core.domain.services.AddItemToOrderUseCase;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.*;
 
 
@@ -10,7 +13,8 @@ public class OrderBuilder {
     private List<OrderItem> orderItems;
     private EOrderStatus status;
     private Client client;
-
+    @Autowired
+    private AddItemToOrderUseCase addItemtoOrderUseCase;
     public OrderBuilder(){
         id = UUID.randomUUID();
         status = EOrderStatus.PAYMENT_PENDING;
@@ -82,7 +86,7 @@ public class OrderBuilder {
 
         if(Objects.nonNull(orderItems)){
             for(OrderItem orderItem : orderItems){
-                order.addItem(orderItem);
+                addItemtoOrderUseCase.addItem(orderItem,order);
             }
         }
 

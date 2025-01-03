@@ -231,9 +231,10 @@ public class OrderServiceTest {
     @Test
     public void updateTest_Exception() throws Exception {
         Order order = mock(Order.class);
+        ValidateOrderUseCase orderValidator = new ValidateOrderUseCase();
 
         when(orderRepository.save(order)).thenReturn(order);
-        doThrow(ValidationException.class).doNothing().when(order).validate();
+        //doThrow(ValidationException.class).doNothing().when(order).validate();
 
         assertThrows(ValidationException.class, ()->{
             orderService.update(order);

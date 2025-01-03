@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -47,26 +48,6 @@ public class Order {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_id", referencedColumnName = "id")
     private Payment payment;
-
-
-    public void validate() throws ValidationException {
-        if(!hasValidPrice()) {
-            throw new ValidationException("Invalid price");
-        }
-
-        if(!hasValidOrderItems()) {
-            throw new ValidationException("Invalid order items");
-        }
-
-        if(!hasValidClient()) {
-            throw new ValidationException("Invalid client");
-        }
-
-        if(!hasValidPaymentAndStatus()) {
-            throw new ValidationException("Invalid status");
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -89,24 +70,6 @@ public class Order {
         return this.price;
     }
 
-    public void addItem(OrderItem orderItem) {
-        if(Objects.isNull(this.orderItems)) this.orderItems = new HashSet<>();
-        OrderItem orderItemFound = findOrderItem(orderItem);
-        
-        if (orderItemFound != null) {
-            int lastQuantity = orderItemFound.getQuantity();
-            orderItemFound.setQuantity(lastQuantity+1);
-        } else{
-            this.orderItems.add(orderItem);
-        }
-
-    }
-
-    public void removeItem(OrderItem orderItem) {
-        this.orderItems.remove(orderItem);
-        orderItem.setOrder(null);
-    }
-
     public void setPayment(Payment newPayment) {
         if(!Objects.isNull(this.payment)) {
             if(this.payment.getId() != newPayment.getId()) {
@@ -114,14 +77,13 @@ public class Order {
             }
 
         }
-        
+
         this.payment = newPayment;
 
         if(Objects.nonNull(newPayment))
-            this.handleStatusAccourdingPayment();
+            this.handleStatusAccordingPayment();
     }
-
-    private void handleStatusAccourdingPayment() {
+    private void handleStatusAccordingPayment() {
         EPaymentStatus paymentStatus = this.payment.getStatus();
 
         switch (paymentStatus.name()) {
@@ -137,58 +99,4 @@ public class Order {
         }
     }
 
-    private OrderItem findOrderItem(OrderItem orderItem) {
-        return orderItems.stream()
-        .filter(item -> item.getId() == orderItem.getId())
-        .findFirst()
-        .orElse(null);
-    }
-
-    private boolean hasValidOrderItems() {
-        if(Objects.isNull(orderItems)) return true;
-
-        for (OrderItem item: orderItems) {
-            if (item.getId() == null) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private boolean hasValidClient() {
-        return Objects.isNull(client) || Objects.nonNull(client.getId());
-    }
-
-    private boolean hasValidPrice() {
-        return Objects.isNull(orderItems) || orderItems.isEmpty() || getPrice() > 0;
-    }
-
-    private boolean hasValidPaymentAndStatus() {
-        if(!Objects.isNull(payment)) {
-            EPaymentStatus paymentStatus = payment.getStatus();
-
-            switch (paymentStatus){
-                case PENDING -> {
-                    return status == EOrderStatus.PAYMENT_PENDING;
-                }
-                case PAID -> {
-                    return (
-                        status == EOrderStatus.PAID ||
-                        status == EOrderStatus.PREPARING ||
-                        status == EOrderStatus.QUEUE
-                    );
-                }
-                case CANCELED, NOT_PAID -> {
-                    return status == EOrderStatus.CANCELED;
-                }
-                default -> {
-                    return false;
-                }
-            }
-
-        }else{
-            return status == EOrderStatus.ORDERING;
-        }
-    }
 }

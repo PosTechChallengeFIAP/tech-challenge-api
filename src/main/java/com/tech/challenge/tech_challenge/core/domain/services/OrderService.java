@@ -21,6 +21,15 @@ public class OrderService {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private ValidateOrderUseCase orderValidator;
+
+    @Autowired
+    private AddItemToOrderUseCase addItemtoOrderUseCase;
+
+    @Autowired
+    private RemoveItemFromOrderUseCase removeItemFromOrderUseCase;
+
     public List<Order> list(){
         return orderRepository.findAll();
     }
@@ -32,7 +41,7 @@ public class OrderService {
     }
 
     public Order update(Order order) throws ValidationException {
-       order.validate();
+        orderValidator.validate(order);
 
        return orderRepository.save(order);
     }
@@ -40,15 +49,19 @@ public class OrderService {
     public Order create(Order order) throws ValidationException{
         order.setOrderItems(Collections.emptySet());
         order.setStatus(EOrderStatus.ORDERING);
-        order.validate();
+        orderValidator.validate(order);
 
         return orderRepository.save(order);
     }
 
     public Order addItem(UUID orderId, OrderItem orderItem) throws ResourceNotFoundException, ValidationException {
+
         Order order = getById(orderId);
-        order.addItem(orderItem);
+
+        addItemtoOrderUseCase.addItem(orderItem,order);
+
         orderItem.setOrder(order);
+
         orderItem.validate();
 
         if(!checkIfProductIsActive(orderItem)){
@@ -60,7 +73,7 @@ public class OrderService {
 
     public Order removeItem(UUID orderId, UUID itemId) throws ResourceNotFoundException, NoSuchElementException {
         Order order = getById(orderId);
-        order.removeItem(getOrdemItemById(order, itemId));
+        removeItemFromOrderUseCase.removeItem(getOrdemItemById(order, itemId), order);
 
         return orderRepository.save(order);
     }
@@ -70,11 +83,11 @@ public class OrderService {
         OrderItem oldOrderItem = getOrdemItemById(order, itemId);
 
         if(validateNewOrderItem(newOrderItem, oldOrderItem)){
-            order.removeItem(oldOrderItem);
+            removeItemFromOrderUseCase.removeItem(oldOrderItem,order);
             newOrderItem.setId(oldOrderItem.getId());
             newOrderItem.setProduct(oldOrderItem.getProduct());
             newOrderItem.setOrder(order);
-            order.addItem(newOrderItem);
+            addItemtoOrderUseCase.addItem(newOrderItem,order);
             newOrderItem.validate();
         }else throw new ValidationException("Only the 'quantity' property can be edited for order items.");
 
