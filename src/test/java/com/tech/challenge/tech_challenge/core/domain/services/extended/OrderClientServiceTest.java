@@ -79,7 +79,7 @@ public class OrderClientServiceTest {
         when(clientService.getById(clientId)).thenReturn(client);
         when(orderRepository.findById(id)).thenReturn(Optional.of(order));
         when(orderRepository.save(order)).thenReturn(order);
-        doThrow(ValidationException.class).doNothing().when(order).validate();
+        //doThrow(ValidationException.class).doNothing().when(order).validate();
         when(client.getId()).thenReturn(clientId);
 
         assertThrows(ValidationException.class, ()->{
