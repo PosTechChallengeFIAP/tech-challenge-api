@@ -7,6 +7,8 @@ import com.tech.challenge.tech_challenge.core.domain.entities.Client;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.services.ClientService;
 import com.tech.challenge.tech_challenge.core.domain.services.OrderService;
+import com.tech.challenge.tech_challenge.core.domain.services.ValidateOrderUseCase;
+import liquibase.util.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +23,16 @@ public class OrderClientService extends OrderService{
     @Autowired
     private ClientService clientService;
 
+    @Autowired
+    private ValidateOrderUseCase orderValidator;
+
     public Order addClientToOrder(UUID orderId, UUID clientId) throws ValidationException, ResourceNotFoundException {
         Order order = getById(orderId);
         Client client = clientService.getById(clientId);
         client.validate();
 
         order.setClient(client);
-        order.validate();
+        orderValidator.validate(order);
 
         return orderRepository.save(order);
     }
