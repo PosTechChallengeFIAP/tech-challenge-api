@@ -22,8 +22,6 @@ public class OrderClientService extends OrderService{
     @Autowired
     private ClientService clientService;
 
-    @Autowired
-    private ValidateOrder orderValidator;
 
     public Order addClientToOrder(UUID orderId, UUID clientId) throws ValidationException, ResourceNotFoundException {
         Order order = getById(orderId);
@@ -31,7 +29,7 @@ public class OrderClientService extends OrderService{
         client.validate();
 
         order.setClient(client);
-        orderValidator.validate(order);
+        ValidateOrder.validate(order);
 
         return orderRepository.save(order);
     }

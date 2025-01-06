@@ -22,9 +22,6 @@ public class OrderService {
     private ProductService productService;
 
     @Autowired
-    private ValidateOrder orderValidator;
-
-    @Autowired
     private AddItemToOrderUseCase addItemtoOrderUseCase;
 
     @Autowired
@@ -41,7 +38,7 @@ public class OrderService {
     }
 
     public Order update(Order order) throws ValidationException {
-        orderValidator.validate(order);
+        ValidateOrder.validate(order);
 
        return orderRepository.save(order);
     }
@@ -49,7 +46,7 @@ public class OrderService {
     public Order create(Order order) throws ValidationException{
         order.setOrderItems(Collections.emptySet());
         order.setStatus(EOrderStatus.ORDERING);
-        orderValidator.validate(order);
+        ValidateOrder.validate(order);
 
         return orderRepository.save(order);
     }

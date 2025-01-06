@@ -12,7 +12,7 @@ import java.util.Objects;
 @Service
 public class ValidateOrder {
 
-    public void validate(Order order) throws ValidationException {
+    public static void validate(Order order) throws ValidationException {
         if(!hasValidPrice(order)) {
             throw new ValidationException("Invalid price");
         }
@@ -30,7 +30,7 @@ public class ValidateOrder {
         }
     }
 
-    private boolean hasValidOrderItems(Order order) {
+    private static boolean hasValidOrderItems(Order order) {
         if(Objects.isNull(order.getOrderItems())) return true;
 
         for (OrderItem item: order.getOrderItems()) {
@@ -42,15 +42,15 @@ public class ValidateOrder {
         return true;
     }
 
-    private boolean hasValidClient(Order order) {
+    private static boolean hasValidClient(Order order) {
         return Objects.isNull(order.getClient()) || Objects.nonNull(order.getClient().getId());
     }
 
-    private boolean hasValidPrice(Order order) {
+    private static boolean hasValidPrice(Order order) {
         return Objects.isNull(order.getOrderItems()) || order.getOrderItems().isEmpty() || order.getPrice() > 0;
     }
 
-    private boolean hasValidPaymentAndStatus(Order order) {
+    private static boolean hasValidPaymentAndStatus(Order order) {
 
         EOrderStatus status = order.getStatus();
 
