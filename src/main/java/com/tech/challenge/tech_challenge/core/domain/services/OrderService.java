@@ -22,7 +22,7 @@ public class OrderService {
     private ProductService productService;
 
     @Autowired
-    private ValidateOrderUseCase orderValidator;
+    private ValidateOrder orderValidator;
 
     @Autowired
     private AddItemToOrderUseCase addItemtoOrderUseCase;

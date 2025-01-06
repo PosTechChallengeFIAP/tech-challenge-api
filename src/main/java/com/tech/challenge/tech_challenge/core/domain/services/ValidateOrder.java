@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 @Service
-public class ValidateOrderUseCase {
+public class ValidateOrder {
 
     public void validate(Order order) throws ValidationException {
         if(!hasValidPrice(order)) {
