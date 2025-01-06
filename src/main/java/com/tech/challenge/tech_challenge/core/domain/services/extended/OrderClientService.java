@@ -7,7 +7,7 @@ import com.tech.challenge.tech_challenge.core.domain.entities.Client;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.services.ClientService;
 import com.tech.challenge.tech_challenge.core.domain.services.OrderService;
-import com.tech.challenge.tech_challenge.core.domain.services.ValidateClientUseCase;
+import com.tech.challenge.tech_challenge.core.domain.services.ValidateClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ public class OrderClientService extends OrderService{
         Order order = getById(orderId);
         Client client = clientService.getById(clientId);
 
-        ValidateClientUseCase.validate(client);
+        ValidateClient.validate(client);
 
         order.setClient(client);
         order.validate();
