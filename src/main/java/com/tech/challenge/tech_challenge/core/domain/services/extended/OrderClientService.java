@@ -7,6 +7,7 @@ import com.tech.challenge.tech_challenge.core.domain.entities.Client;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.services.ClientService;
 import com.tech.challenge.tech_challenge.core.domain.services.OrderService;
+import com.tech.challenge.tech_challenge.core.domain.services.ValidateClientUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,8 @@ public class OrderClientService extends OrderService{
     public Order addClientToOrder(UUID orderId, UUID clientId) throws ValidationException, ResourceNotFoundException {
         Order order = getById(orderId);
         Client client = clientService.getById(clientId);
-        client.validate();
+
+        ValidateClientUseCase.validate(client);
 
         order.setClient(client);
         order.validate();

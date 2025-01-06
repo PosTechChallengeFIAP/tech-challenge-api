@@ -37,21 +37,6 @@ public class Client {
     @Column
     private String email;
 
-    public void validate() throws ValidationException {
-        if (StringUtils.isEmpty(cpf) || !CPFValidator.isCPF(this.cpf)) {
-            throw new InvalidClientCPF(cpf);
-        }
-        this.cpf = CPFValidator.formatCPF(this.cpf);
-
-        if (StringUtils.isEmpty(this.email) && !EmailValidator.isValidEmail(this.email)) {
-            throw new InvalidEmailAddress(this.email);
-        }
-
-        if (StringUtils.isEmpty(name)) {
-            throw new InvalidClientName();
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

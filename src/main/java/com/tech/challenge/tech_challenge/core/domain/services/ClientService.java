@@ -36,7 +36,9 @@ public class ClientService {
     }
 
     public Client create(Client client) throws ValidationException {
-        client.validate();
+
+        ValidateClientUseCase.validate(client);
+
         return clientRepository.save(client);
     }
 }
