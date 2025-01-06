@@ -8,6 +8,7 @@ import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderBuilder;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
 import com.tech.challenge.tech_challenge.core.domain.services.OrderService;
+import com.tech.challenge.tech_challenge.core.domain.services.RemoveItemFromOrderUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,7 +105,9 @@ public class OrderItemControllerTest {
     void removeItemTest_Success() throws ValidationException, ResourceNotFoundException {
         Order order = new OrderBuilder().build();
         OrderItem orderItem = order.getOrderItems().iterator().next();
-        order.removeItem(orderItem);
+
+        RemoveItemFromOrderUseCase removeItemFromOrderUseCase = new RemoveItemFromOrderUseCase();
+        removeItemFromOrderUseCase.removeItem(orderItem,order);
 
         when(orderService.removeItem(order.getId(),orderItem.getId())).thenReturn(order);
 
@@ -125,7 +128,8 @@ public class OrderItemControllerTest {
     void removeItemTest_NotFound() throws ValidationException, ResourceNotFoundException {
         Order order = new OrderBuilder().build();
         OrderItem orderItem = order.getOrderItems().iterator().next();
-        order.removeItem(orderItem);
+        RemoveItemFromOrderUseCase removeItemFromOrderUseCase = new RemoveItemFromOrderUseCase();
+        removeItemFromOrderUseCase.removeItem(orderItem,order);
 
         when(orderService.removeItem(order.getId(),orderItem.getId())).thenThrow(ResourceNotFoundException.class);
 
