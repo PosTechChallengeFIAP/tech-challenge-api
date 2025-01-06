@@ -48,13 +48,4 @@ public class OrderItem {
         return Objects.hash(id);
     }
 
-    public void validate() throws ValidationException {
-        if(Objects.isNull(product) || Objects.isNull(product.getId())){
-            throw new ValidationException("Invalid Product");
-        }
-
-        if(Objects.isNull(quantity) || quantity < 1){
-            throw new ValidationException("Quantity is lower than 1");
-        }
-    }
 }

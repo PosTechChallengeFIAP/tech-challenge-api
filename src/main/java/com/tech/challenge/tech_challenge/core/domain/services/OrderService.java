@@ -49,7 +49,7 @@ public class OrderService {
         Order order = getById(orderId);
         order.addItem(orderItem);
         orderItem.setOrder(order);
-        orderItem.validate();
+        ValidateOrderItem.validate(orderItem);
 
         if(!checkIfProductIsActive(orderItem)){
             throw new IllegalArgumentException("Product is Inactive.");
@@ -75,7 +75,7 @@ public class OrderService {
             newOrderItem.setProduct(oldOrderItem.getProduct());
             newOrderItem.setOrder(order);
             order.addItem(newOrderItem);
-            newOrderItem.validate();
+            ValidateOrderItem.validate(newOrderItem);
         }else throw new ValidationException("Only the 'quantity' property can be edited for order items.");
 
         return orderRepository.save(order);
