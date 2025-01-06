@@ -121,7 +121,7 @@ public class ClientServiceTest {
         Client client = mock(Client.class);
 
         when(clientRepository.save(client)).thenReturn(client);
-        doThrow(ValidationException.class).doNothing().when(client).validate();
+        //doThrow(ValidationException.class).doNothing().when(client).validate();
 
         assertThrows(ValidationException.class, ()->{
             clientService.create(client);
