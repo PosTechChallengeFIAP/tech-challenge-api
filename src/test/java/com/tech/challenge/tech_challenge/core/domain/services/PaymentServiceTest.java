@@ -77,7 +77,7 @@ public class PaymentServiceTest {
         Payment payment = mock(Payment.class);
 
         when(paymentRepository.save(payment)).thenReturn(payment);
-        doThrow(ValidationException.class).doNothing().when(payment).validate();
+        //doThrow(ValidationException.class).doNothing().when(payment).validate();
 
         assertThrows(ValidationException.class, ()->{
             paymentService.update(payment);

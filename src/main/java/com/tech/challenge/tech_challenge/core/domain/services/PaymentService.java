@@ -20,12 +20,12 @@ public class PaymentService {
         Payment payment = new Payment();
         payment.setSatus(EPaymentStatus.PENDING);
         payment.setValue(value);
-        payment.validate();
+        ValidatePayment.validate(payment.getValue());
         return paymentRepository.save(payment);
     }
 
     public Payment update(Payment payment) throws ValidationException {
-        payment.validate();
+        ValidatePayment.validate(payment.getValue());
 
         return paymentRepository.save(payment);
     }
