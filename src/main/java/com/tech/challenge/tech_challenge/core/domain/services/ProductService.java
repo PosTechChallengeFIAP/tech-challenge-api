@@ -39,7 +39,7 @@ public class ProductService {
     }
 
     public Product create(Product product) throws ValidationException {
-        product.validate();
+        ValidateProduct.validate(product);
 
         return productRepository.save(product);
     }
@@ -57,7 +57,7 @@ public class ProductService {
     public Product update(UUID id, Product incompleteProduct) throws ResourceNotFoundException, ValidationException, IllegalAccessException {
         Product product = getById(id);
         Product updatedProduct = productPatcher.execute(product, incompleteProduct);
-        updatedProduct.validate();
+        ValidateProduct.validate(updatedProduct);
 
         return productRepository.save(updatedProduct);
     }

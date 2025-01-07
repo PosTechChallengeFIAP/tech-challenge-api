@@ -105,7 +105,7 @@ public class ProductServiceTest {
         Product product = mock(Product.class);
 
         when(productRepository.save(product)).thenReturn(product);
-        doThrow(ValidationException.class).doNothing().when(product).validate();
+        //doThrow(ValidationException.class).doNothing().when(product).validate();
 
         assertThrows(ValidationException.class, ()->{
             productService.create(product);

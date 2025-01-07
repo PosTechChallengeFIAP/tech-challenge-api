@@ -33,16 +33,6 @@ public class Product {
     @Column
     private Boolean active;
 
-    public void validate() throws ValidationException {
-        if (Objects.isNull(this.name) || this.name.isEmpty()) {
-            throw new ValidationException("Invalid product name");
-        }
-
-        if (this.price <= 0) {
-            throw new ValidationException("Invalid product price");
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
