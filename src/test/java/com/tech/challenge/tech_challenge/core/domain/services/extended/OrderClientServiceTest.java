@@ -5,7 +5,7 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationE
 import com.tech.challenge.tech_challenge.core.domain.entities.Client;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderBuilder;
-import com.tech.challenge.tech_challenge.core.domain.services.ClientService;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByIdUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +27,7 @@ public class OrderClientServiceTest {
     private OrderRepository orderRepository;
 
     @MockBean
-    private ClientService clientService;
+    private FindClientByIdUseCase findClientByIdUseCase;
 
     @Test
     public void addClientToOrderTest_Success() throws Exception {
@@ -37,7 +37,7 @@ public class OrderClientServiceTest {
         OrderBuilder orderBuilder = new OrderBuilder();
         Order order = orderBuilder.build();
 
-        when(clientService.getById(clientId)).thenReturn(client);
+        when(findClientByIdUseCase.execute(clientId)).thenReturn(client);
         when(orderRepository.findById(order.getId())).thenReturn(Optional.of(order));
         when(orderRepository.save(order)).thenReturn(order);
         when(client.getId()).thenReturn(clientId);
@@ -55,7 +55,7 @@ public class OrderClientServiceTest {
         OrderBuilder orderBuilder = new OrderBuilder();
         Order order = orderBuilder.build();
 
-        when(clientService.getById(clientId)).thenReturn(client);
+        when(findClientByIdUseCase.execute(clientId)).thenReturn(client);
         when(orderRepository.findById(order.getId())).thenReturn(Optional.of(order));
         when(orderRepository.save(order)).thenReturn(order);
         doThrow(ValidationException.class).doNothing().when(client).validate();
@@ -76,7 +76,7 @@ public class OrderClientServiceTest {
 
         when(order.getId()).thenReturn(id);
         when(client.getId()).thenReturn(clientId);
-        when(clientService.getById(clientId)).thenReturn(client);
+        when(findClientByIdUseCase.execute(clientId)).thenReturn(client);
         when(orderRepository.findById(id)).thenReturn(Optional.of(order));
         when(orderRepository.save(order)).thenReturn(order);
         doThrow(ValidationException.class).doNothing().when(order).validate();
