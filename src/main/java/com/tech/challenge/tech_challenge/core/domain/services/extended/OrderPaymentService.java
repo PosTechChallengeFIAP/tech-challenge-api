@@ -8,8 +8,10 @@ import com.tech.challenge.tech_challenge.core.domain.entities.EPaymentStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
 import com.tech.challenge.tech_challenge.core.domain.services.OrderService;
-import com.tech.challenge.tech_challenge.core.domain.services.PaymentService;
 import com.tech.challenge.tech_challenge.core.domain.services.QueueService;
+import com.tech.challenge.tech_challenge.core.domain.useCases.CreatePaymentUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindPaymentByIdUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdatePaymentUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +23,13 @@ public class OrderPaymentService extends OrderService {
     private OrderRepository orderRepository;
 
     @Autowired
-    private PaymentService paymentService;
+    private CreatePaymentUseCase createPaymentUseCase;
+
+    @Autowired
+    private FindPaymentByIdUseCase findPaymentByIdUseCase;
+
+    @Autowired
+    private UpdatePaymentUseCase updatePaymentUseCase;
 
     @Autowired
     private QueueService queueService;
@@ -29,7 +37,7 @@ public class OrderPaymentService extends OrderService {
     public Order addPaymentToOrder(UUID orderId) throws ResourceNotFoundException, ValidationException {
         Order order = getById(orderId);
 
-        Payment createdPayment = paymentService.createNewPayment(order.getPrice());
+        Payment createdPayment = createPaymentUseCase.execute(order.getPrice());
         order.setStatus(EOrderStatus.PAYMENT_PENDING);
         order.setPayment(createdPayment);
 
@@ -37,13 +45,13 @@ public class OrderPaymentService extends OrderService {
     }
 
     public Payment updateOrderPayment(UUID orderId, UUID paymentId, EPaymentStatus status) throws ResourceNotFoundException, ValidationException {
-        Payment payment = paymentService.getById(paymentId);
+        Payment payment = findPaymentByIdUseCase.execute(paymentId);
         payment.setSatus(status);
 
         Order order = getById(orderId);
         order.setPayment(payment);
 
-        Payment updatedPayment = paymentService.update(payment);
+        Payment updatedPayment = updatePaymentUseCase.execute(payment);
         update(order);
 
         if(status == EPaymentStatus.PAID) {

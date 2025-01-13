@@ -6,7 +6,6 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationE
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.*;
 import com.tech.challenge.tech_challenge.core.domain.services.ClientService;
-import com.tech.challenge.tech_challenge.core.domain.services.PaymentService;
 import com.tech.challenge.tech_challenge.core.domain.services.extended.OrderPaymentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
