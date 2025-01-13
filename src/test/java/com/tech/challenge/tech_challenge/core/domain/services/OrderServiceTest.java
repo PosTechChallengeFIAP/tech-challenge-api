@@ -8,6 +8,7 @@ import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
 import com.tech.challenge.tech_challenge.core.domain.entities.*;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindProductByIdUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,7 +29,7 @@ public class OrderServiceTest {
     private OrderRepository orderRepository;
 
     @MockBean
-    private ProductService productService;
+    private FindProductByIdUseCase findProductByIdUseCase;
 
     @Test
     public void listTest(){
@@ -92,7 +93,7 @@ public class OrderServiceTest {
         order.setOrderItems(new HashSet<>());
         orderItem.setOrder(null);
 
-        when(productService.getById(orderItem.getProduct().getId())).thenReturn(orderItem.getProduct());
+        when(findProductByIdUseCase.execute(orderItem.getProduct().getId())).thenReturn(orderItem.getProduct());
         when(orderRepository.findById(order.getId())).thenReturn(Optional.of(order));
         when(orderRepository.save(order)).thenReturn(order);
 
