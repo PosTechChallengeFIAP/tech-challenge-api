@@ -5,8 +5,10 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNot
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.*;
-import com.tech.challenge.tech_challenge.core.domain.services.OrderService;
 import com.tech.challenge.tech_challenge.core.domain.services.extended.OrderClientService;
+import com.tech.challenge.tech_challenge.core.domain.useCases.CreateOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindOrderByIdUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindOrdersUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +40,16 @@ public class OrderControllerTest {
     private TestRestTemplate restTemplate;
 
     @MockBean
-    @Qualifier("orderService")
-    private OrderService orderService;
+    @Qualifier("findOrdersUseCase")
+    private FindOrdersUseCase findOrdersUseCase;
+
+    @MockBean
+    @Qualifier("findOrderByIdUseCase")
+    private FindOrderByIdUseCase findOrderByIdUseCase;
+
+    @MockBean
+    @Qualifier("createOrderUseCase")
+    private CreateOrderUseCase createOrderUseCase;
 
     @MockBean
     private OrderClientService orderClientService;
@@ -65,7 +75,7 @@ public class OrderControllerTest {
                 .withStatus(EOrderStatus.ORDERING)
                 .build();
 
-        when(orderService.list()).thenReturn(List.of(order2,order1));
+        when(findOrdersUseCase.execute()).thenReturn(List.of(order2,order1));
 
         ResponseEntity<List> resultList  = this.restTemplate.getForEntity(getFullUrl("/order"),
                 List.class);
@@ -89,7 +99,7 @@ public class OrderControllerTest {
                 .withStatus(EOrderStatus.ORDERING)
                 .build();
 
-        when(orderService.getById(order.getId())).thenReturn(order);
+        when(findOrderByIdUseCase.execute(order.getId())).thenReturn(order);
         ResponseEntity<Order> result = this.restTemplate.getForEntity(getFullUrl("/order/" + order.getId()),
                 Order.class);
 
@@ -103,7 +113,7 @@ public class OrderControllerTest {
     void getByIdTest_NotFound() throws ResourceNotFoundException {
         UUID id = UUID.randomUUID();
 
-        when(orderService.getById(id)).thenThrow(ResourceNotFoundException.class);
+        when(findOrderByIdUseCase.execute(id)).thenThrow(ResourceNotFoundException.class);
         ResponseEntity<MessageResponse> result = this.restTemplate.getForEntity(getFullUrl("/order/" + id),
                 MessageResponse.class);
 
@@ -125,7 +135,7 @@ public class OrderControllerTest {
         Order order = new OrderBuilder().withId(null).build();
         Order createdOrder = new OrderBuilder().build();
 
-        when(orderService.create(any())).thenReturn(createdOrder);
+        when(createOrderUseCase.execute(any())).thenReturn(createdOrder);
 
         ResponseEntity<Order> result = this.restTemplate.postForEntity(
                 getFullUrl("/order"),
@@ -143,7 +153,7 @@ public class OrderControllerTest {
     void createTest_BadRequest() throws ValidationException {
         Order order = new OrderBuilder().build();
 
-        when(orderService.create(any())).thenThrow(ValidationException.class);
+        when(createOrderUseCase.execute(any())).thenThrow(ValidationException.class);
 
         ResponseEntity<MessageResponse> result = this.restTemplate.postForEntity(
                 getFullUrl("/order"),

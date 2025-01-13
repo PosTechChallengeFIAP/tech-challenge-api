@@ -7,7 +7,9 @@ import com.tech.challenge.tech_challenge.core.application.message.MessageRespons
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderBuilder;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
-import com.tech.challenge.tech_challenge.core.domain.services.OrderService;
+import com.tech.challenge.tech_challenge.core.domain.useCases.AddItemToOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.EditItemFromOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.RemoveItemFromOrderUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +38,16 @@ public class OrderItemControllerTest {
     private TestRestTemplate restTemplate;
 
     @MockBean
-    @Qualifier("orderService")
-    private OrderService orderService;
+    @Qualifier("addItemToOrderUseCase")
+    private AddItemToOrderUseCase addItemToOrderUseCase;
+
+    @MockBean
+    @Qualifier("removeItemFromOrderUseCase")
+    private RemoveItemFromOrderUseCase removeItemFromOrderUseCase;
+
+    @MockBean
+    @Qualifier("editItemFromOrderUseCase")
+    private EditItemFromOrderUseCase editItemFromOrderUseCase;
 
     private String BASE_URL;
     private final ObjectMapper mapper = new ObjectMapper();
@@ -53,7 +63,7 @@ public class OrderItemControllerTest {
         Order order = new OrderBuilder().build();
         OrderItem orderItem = order.getOrderItems().iterator().next();
 
-        when(orderService.addItem(order.getId(),orderItem)).thenReturn(order);
+        when(addItemToOrderUseCase.execute(order.getId(),orderItem)).thenReturn(order);
 
         ResponseEntity<Order> result = this.restTemplate.postForEntity(
                 getFullUrl(String.format("/order/%s/orderItem", order.getId())),
@@ -73,7 +83,7 @@ public class OrderItemControllerTest {
         Order order = new OrderBuilder().build();
         OrderItem orderItem = order.getOrderItems().iterator().next();
 
-        when(orderService.addItem(order.getId(),orderItem)).thenThrow(ResourceNotFoundException.class);
+        when(addItemToOrderUseCase.execute(order.getId(),orderItem)).thenThrow(ResourceNotFoundException.class);
 
         ResponseEntity<MessageResponse> result = this.restTemplate.postForEntity(
                 getFullUrl(String.format("/order/%s/orderItem", order.getId())),
@@ -89,7 +99,7 @@ public class OrderItemControllerTest {
         Order order = new OrderBuilder().build();
         OrderItem orderItem = order.getOrderItems().iterator().next();
 
-        when(orderService.addItem(order.getId(),orderItem)).thenThrow(ValidationException.class);
+        when(addItemToOrderUseCase.execute(order.getId(),orderItem)).thenThrow(ValidationException.class);
 
         ResponseEntity<MessageResponse> result = this.restTemplate.postForEntity(
                 getFullUrl(String.format("/order/%s/orderItem", order.getId())),
@@ -106,7 +116,7 @@ public class OrderItemControllerTest {
         OrderItem orderItem = order.getOrderItems().iterator().next();
         order.removeItem(orderItem);
 
-        when(orderService.removeItem(order.getId(),orderItem.getId())).thenReturn(order);
+        when(removeItemFromOrderUseCase.execute(order.getId(),orderItem.getId())).thenReturn(order);
 
         ResponseEntity<Order> result = this.restTemplate.exchange(
                 getFullUrl(String.format("/order/%s/orderItem/%s", order.getId(), orderItem.getId())),
@@ -127,7 +137,7 @@ public class OrderItemControllerTest {
         OrderItem orderItem = order.getOrderItems().iterator().next();
         order.removeItem(orderItem);
 
-        when(orderService.removeItem(order.getId(),orderItem.getId())).thenThrow(ResourceNotFoundException.class);
+        when(removeItemFromOrderUseCase.execute(order.getId(),orderItem.getId())).thenThrow(ResourceNotFoundException.class);
 
         ResponseEntity<MessageResponse> result = this.restTemplate.exchange(
                 getFullUrl(String.format("/order/%s/orderItem/%s", order.getId(), orderItem.getId())),
@@ -144,7 +154,7 @@ public class OrderItemControllerTest {
         Order order = new OrderBuilder().build();
         OrderItem orderItem = order.getOrderItems().iterator().next();
 
-        when(orderService.editItem(order.getId(),orderItem.getId(),orderItem)).thenReturn(order);
+        when(editItemFromOrderUseCase.execute(order.getId(),orderItem.getId(),orderItem)).thenReturn(order);
 
         HttpEntity<OrderItem> entity = new HttpEntity<>(orderItem);
 
@@ -165,7 +175,7 @@ public class OrderItemControllerTest {
         Order order = new OrderBuilder().build();
         OrderItem orderItem = order.getOrderItems().iterator().next();
 
-        when(orderService.editItem(order.getId(),orderItem.getId(),orderItem)).thenThrow(ResourceNotFoundException.class);
+        when(editItemFromOrderUseCase.execute(order.getId(),orderItem.getId(),orderItem)).thenThrow(ResourceNotFoundException.class);
 
         HttpEntity<OrderItem> entity = new HttpEntity<>(orderItem);
 
@@ -184,7 +194,7 @@ public class OrderItemControllerTest {
         Order order = new OrderBuilder().build();
         OrderItem orderItem = order.getOrderItems().iterator().next();
 
-        when(orderService.editItem(order.getId(),orderItem.getId(),orderItem)).thenThrow(ValidationException.class);
+        when(editItemFromOrderUseCase.execute(order.getId(),orderItem.getId(),orderItem)).thenThrow(ValidationException.class);
 
         HttpEntity<OrderItem> entity = new HttpEntity<>(orderItem);
 
