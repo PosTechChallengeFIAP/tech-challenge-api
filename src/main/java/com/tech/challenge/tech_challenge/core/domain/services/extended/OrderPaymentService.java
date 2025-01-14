@@ -9,7 +9,7 @@ import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
 import com.tech.challenge.tech_challenge.core.domain.services.OrderService;
 import com.tech.challenge.tech_challenge.core.domain.services.PaymentService;
-import com.tech.challenge.tech_challenge.core.domain.services.QueueService;
+import com.tech.challenge.tech_challenge.core.domain.useCases.ReceiveOrderUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class OrderPaymentService extends OrderService {
     private PaymentService paymentService;
 
     @Autowired
-    private QueueService queueService;
+    private ReceiveOrderUseCase receiveOrderUseCase;
 
     public Order addPaymentToOrder(UUID orderId) throws ResourceNotFoundException, ValidationException {
         Order order = getById(orderId);
@@ -47,7 +47,7 @@ public class OrderPaymentService extends OrderService {
         update(order);
 
         if(status == EPaymentStatus.PAID) {
-            queueService.receiveOrder(order);
+            receiveOrderUseCase.execute(order);
         }
 
         return updatedPayment;

@@ -4,9 +4,11 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNot
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.application.message.EMessageType;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
-import com.tech.challenge.tech_challenge.core.application.util.CPFValidator;
 import com.tech.challenge.tech_challenge.core.domain.entities.Client;
-import com.tech.challenge.tech_challenge.core.domain.services.ClientService;
+import com.tech.challenge.tech_challenge.core.domain.useCases.CreateClientUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByCpfUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByIdUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientsUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,7 +30,16 @@ import java.util.UUID;
 public class ClientController {
 
     @Autowired
-    private ClientService clientService;
+    private CreateClientUseCase createClientUseCase;
+
+    @Autowired
+    private FindClientsUseCase findClientsUseCase;
+
+    @Autowired
+    private FindClientByIdUseCase findClientByIdUseCase;
+
+    @Autowired
+    private FindClientByCpfUseCase findClientByCpfUseCase;
 
     @GetMapping("/client")
     @Operation(summary = "Finds clients", description = "This endpoint is used to find client. " +
@@ -47,12 +58,12 @@ public class ClientController {
     )
     public ResponseEntity all(@RequestParam(required = false) String cpf){
         if(StringUtils.isEmpty(cpf)) {
-            List<Client> clients = clientService.list();
+            List<Client> clients = findClientsUseCase.execute();
             return ResponseEntity.status(HttpStatus.OK).body(clients);
         }
         else {
             try {
-                Client client = clientService.getByCpf(cpf);
+                Client client = findClientByCpfUseCase.execute(cpf);
                 return ResponseEntity.status(HttpStatus.OK).body(List.of(client));
             }catch (ResourceNotFoundException ex){
                 return ResponseEntity
@@ -82,7 +93,7 @@ public class ClientController {
     )
     public ResponseEntity one(@PathVariable UUID id){
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(clientService.getById(id));
+            return ResponseEntity.status(HttpStatus.OK).body(findClientByIdUseCase.execute(id));
         }catch (ResourceNotFoundException ex){
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
@@ -105,7 +116,7 @@ public class ClientController {
     )
     public ResponseEntity newClient(@RequestBody Client client){
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(clientService.create(client));
+            return ResponseEntity.status(HttpStatus.CREATED).body(createClientUseCase.execute(client));
         }catch (ValidationException | DataIntegrityViolationException ex){
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
