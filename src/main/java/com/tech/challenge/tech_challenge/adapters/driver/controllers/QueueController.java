@@ -2,12 +2,12 @@ package com.tech.challenge.tech_challenge.adapters.driver.controllers;
 
 import java.util.List;
 
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindNotFinishedItemsUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tech.challenge.tech_challenge.core.domain.entities.Queue;
-import com.tech.challenge.tech_challenge.core.domain.services.QueueService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class QueueController {
     
     @Autowired
-    private QueueService queueService;
+    private FindNotFinishedItemsUseCase findNotFinishedItemsUseCase;
 
     @GetMapping("/queue")
     @Operation(summary = "Finds all not finished queue orders", description = "This endpoint is used to find all queue not finished",
@@ -32,6 +32,6 @@ public class QueueController {
             }
     )
     public List<Queue> findAllPendingQueue() {
-        return this.queueService.findNotFinishedItems();
+        return this.findNotFinishedItemsUseCase.execute();
     }
 }

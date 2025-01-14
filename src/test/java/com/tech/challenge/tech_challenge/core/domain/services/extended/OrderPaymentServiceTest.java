@@ -3,7 +3,7 @@ package com.tech.challenge.tech_challenge.core.domain.services.extended;
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.OrderRepository;
 import com.tech.challenge.tech_challenge.core.domain.entities.*;
 import com.tech.challenge.tech_challenge.core.domain.services.PaymentService;
-import com.tech.challenge.tech_challenge.core.domain.services.QueueService;
+import com.tech.challenge.tech_challenge.core.domain.useCases.ReceiveOrderUseCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,7 +29,7 @@ public class OrderPaymentServiceTest {
     private PaymentService paymentService;
 
     @MockBean
-    private QueueService queueService;
+    private ReceiveOrderUseCase receiveOrderUseCase;
 
     @Test
     public void addClientToOrderTest() throws Exception {
@@ -58,7 +58,7 @@ public class OrderPaymentServiceTest {
         when(orderRepository.save(any(Order.class))).thenAnswer(i -> i.getArguments()[0]);
         when(paymentService.update(order.getPayment())).thenReturn(order.getPayment());
         when(orderRepository.findById(order.getId())).thenReturn(Optional.of(order));
-        when(queueService.receiveOrder(order)).thenReturn(mock(Queue.class));
+        when(receiveOrderUseCase.execute(order)).thenReturn(mock(Queue.class));
 
         Payment paymentResult = orderPaymentService.updateOrderPayment(order.getId(), order.getPayment().getId(), EPaymentStatus.PAID);
 
