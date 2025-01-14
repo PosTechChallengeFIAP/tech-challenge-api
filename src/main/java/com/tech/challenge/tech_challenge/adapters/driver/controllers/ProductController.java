@@ -5,12 +5,10 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.UsedProduct
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.application.message.EMessageType;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
-import com.tech.challenge.tech_challenge.core.domain.entities.Client;
 import com.tech.challenge.tech_challenge.core.domain.entities.EProductCategory;
-import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
-import com.tech.challenge.tech_challenge.core.domain.services.ProductService;
 
+import com.tech.challenge.tech_challenge.core.domain.useCases.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,7 +33,22 @@ import java.util.UUID;
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
+    private CreateProductUseCase createProductUseCase;
+
+    @Autowired
+    private DeleteProductUseCase deleteProductUseCase;
+
+    @Autowired
+    private FindProductByIdUseCase findProductByIdUseCase;
+
+    @Autowired
+    private FindProductsByCategoryUseCase findProductsByCategoryUseCase;
+
+    @Autowired
+    private FindProductsUseCase findProductsUseCase;
+
+    @Autowired
+    private UpdateProductUseCase updateProductUseCase;
 
     @GetMapping("/productCategory")
     @Operation(summary = "Finds all product categories", description = "This endpoint is used to find all product categories",
@@ -70,10 +83,10 @@ public class ProductController {
     )
     public ResponseEntity all(@RequestParam(required = false) EProductCategory category){
         if(Objects.isNull(category)){
-            return ResponseEntity.status(HttpStatus.OK).body(productService.list());
+            return ResponseEntity.status(HttpStatus.OK).body(findProductsUseCase.execute());
         }
         else{
-            return ResponseEntity.status(HttpStatus.OK).body(productService.listByCategory(category));
+            return ResponseEntity.status(HttpStatus.OK).body(findProductsByCategoryUseCase.execute(category));
         }
     }
 
@@ -93,7 +106,7 @@ public class ProductController {
     )
     public ResponseEntity one(@PathVariable UUID id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(productService.getById(id));
+            return ResponseEntity.status(HttpStatus.OK).body(findProductByIdUseCase.execute(id));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
@@ -116,7 +129,7 @@ public class ProductController {
     )
     public ResponseEntity newProduct(@RequestBody Product product){
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(productService.create(product));
+            return ResponseEntity.status(HttpStatus.CREATED).body(createProductUseCase.execute(product));
         } catch (ValidationException | DataIntegrityViolationException ex) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -140,7 +153,7 @@ public class ProductController {
     )
     public ResponseEntity updateProduct(@PathVariable UUID id, @RequestBody Product product) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(productService.update(id, product));
+            return ResponseEntity.status(HttpStatus.OK).body(updateProductUseCase.execute(id, product));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
@@ -169,7 +182,7 @@ public class ProductController {
     )
     public ResponseEntity<MessageResponse> deleteProduct(@PathVariable UUID id) {
         try {
-            productService.delete(id);
+            deleteProductUseCase.execute(id);
 
             return ResponseEntity
                     .status(HttpStatus.OK)

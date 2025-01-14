@@ -7,6 +7,7 @@ import com.tech.challenge.tech_challenge.core.domain.entities.EOrderStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindProductByIdUseCase;
 import com.tech.challenge.tech_challenge.core.domain.services.generic.Patcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     @Autowired
-    private ProductService productService;
+    private FindProductByIdUseCase findProductByIdUseCase;
 
     @Autowired
     private Patcher<Order> orderPatcher;
@@ -119,7 +120,7 @@ public class OrderService {
                 Objects.isNull(orderItem.getProduct().getId()))
             throw new ValidationException("Product is Invalid.");
 
-        Product product = productService.getById(orderItem.getProduct().getId());
+        Product product = findProductByIdUseCase.execute(orderItem.getProduct().getId());
 
         return product.getActive();
     }
