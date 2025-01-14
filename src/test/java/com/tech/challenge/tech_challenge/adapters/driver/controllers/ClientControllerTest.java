@@ -6,9 +6,13 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationE
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.Client;
 import com.tech.challenge.tech_challenge.core.domain.entities.ClientBuilder;
-import com.tech.challenge.tech_challenge.core.domain.services.ClientService;
+import com.tech.challenge.tech_challenge.core.domain.useCases.CreateClientUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByCpfUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByIdUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientsUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -37,7 +41,16 @@ public class ClientControllerTest {
     private TestRestTemplate restTemplate;
 
     @MockBean
-    private ClientService clientService;
+    private CreateClientUseCase createClientUseCase;
+
+    @MockBean
+    private FindClientsUseCase findClientsUseCase;
+
+    @MockBean
+    private FindClientByIdUseCase findClientByIdUseCase;
+
+    @MockBean
+    private FindClientByCpfUseCase findClientByCpfUseCase;
 
     private String BASE_URL;
     private final ObjectMapper mapper = new ObjectMapper();
@@ -52,7 +65,7 @@ public class ClientControllerTest {
         Client client1 = new ClientBuilder().build();
         Client client2 = new ClientBuilder().build();
 
-        when(clientService.list()).thenReturn(List.of(client2,client1));
+        when(findClientsUseCase.execute()).thenReturn(List.of(client2,client1));
 
         ResponseEntity<List> resultList  = this.restTemplate.getForEntity(getFullUrl("/client"),
                 List.class);
@@ -72,7 +85,7 @@ public class ClientControllerTest {
     void listByCPFTest_Success() throws ResourceNotFoundException, ValidationException {
         Client client1 = new ClientBuilder().build();
 
-        when(clientService.getByCpf(client1.getCpf())).thenReturn(client1);
+        when(findClientByCpfUseCase.execute(client1.getCpf())).thenReturn(client1);
 
         ResponseEntity<List> resultList = this.restTemplate.getForEntity(getFullUrl("/client?cpf=" + client1.getCpf()),
                 List.class);
@@ -90,7 +103,7 @@ public class ClientControllerTest {
     @Test
     void listByCPFTest_NotFound() throws ResourceNotFoundException, ValidationException {
         String cpf = "324.553.080-30";
-        when(clientService.getByCpf(cpf)).thenThrow(ResourceNotFoundException.class);
+        when(findClientByCpfUseCase.execute(cpf)).thenThrow(ResourceNotFoundException.class);
 
         ResponseEntity<MessageResponse> resultList = this.restTemplate.getForEntity(getFullUrl("/client?cpf=" + cpf),
                 MessageResponse.class);
@@ -101,7 +114,7 @@ public class ClientControllerTest {
     @Test
     void listByCPFTest_BadRequest() throws ValidationException, ResourceNotFoundException {
         String cpf = "324.553.080-3";
-        when(clientService.getByCpf(cpf)).thenThrow(ValidationException.class);
+        when(findClientByCpfUseCase.execute(cpf)).thenThrow(ValidationException.class);
 
         ResponseEntity<MessageResponse> resultList = this.restTemplate.getForEntity(getFullUrl("/client?cpf=" + cpf),
                 MessageResponse.class);
@@ -113,7 +126,7 @@ public class ClientControllerTest {
     void getByIdTest_Success() throws ResourceNotFoundException {
         Client client = new ClientBuilder().build();
 
-        when(clientService.getById(client.getId())).thenReturn(client);
+        when(findClientByIdUseCase.execute(client.getId())).thenReturn(client);
 
         ResponseEntity<Client> result = this.restTemplate.getForEntity(getFullUrl("/client/" + client.getId()),
                 Client.class);
@@ -128,7 +141,7 @@ public class ClientControllerTest {
     void getByIdTest_NotFound() throws ResourceNotFoundException {
         UUID id = UUID.randomUUID();
 
-        when(clientService.getById(id)).thenThrow(ResourceNotFoundException.class);
+        when(findClientByIdUseCase.execute(id)).thenThrow(ResourceNotFoundException.class);
 
         ResponseEntity<MessageResponse> result = this.restTemplate.getForEntity(getFullUrl("/client/" + id),
                 MessageResponse.class);
@@ -151,7 +164,7 @@ public class ClientControllerTest {
         Client client = new ClientBuilder().withId(null).build();
         Client createdClient = new ClientBuilder().build();
 
-        when(clientService.create(any())).thenReturn(createdClient);
+        when(createClientUseCase.execute(any())).thenReturn(createdClient);
 
         ResponseEntity<Client> result = this.restTemplate.postForEntity(
                 getFullUrl("/client"),
@@ -169,7 +182,7 @@ public class ClientControllerTest {
     void createTest_BadRequest() throws ValidationException {
         Client client = new ClientBuilder().withId(null).build();
 
-        when(clientService.create(any())).thenThrow(ValidationException.class);
+        when(createClientUseCase.execute(any())).thenThrow(ValidationException.class);
 
         ResponseEntity<MessageResponse> result = this.restTemplate.postForEntity(
                 getFullUrl("/client"),

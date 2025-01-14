@@ -6,8 +6,7 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.UsedProduct
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.*;
-import com.tech.challenge.tech_challenge.core.domain.services.ClientService;
-import com.tech.challenge.tech_challenge.core.domain.services.ProductService;
+import com.tech.challenge.tech_challenge.core.domain.useCases.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +39,26 @@ public class ProductControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @MockBean
-    private ProductService productService;
-
     private String BASE_URL;
     private final ObjectMapper mapper = new ObjectMapper();
+
+    @MockBean
+    private CreateProductUseCase createProductUseCase;
+
+    @MockBean
+    private DeleteProductUseCase deleteProductUseCase;
+
+    @MockBean
+    private FindProductByIdUseCase findProductByIdUseCase;
+
+    @MockBean
+    private FindProductsByCategoryUseCase findProductsByCategoryUseCase;
+
+    @MockBean
+    private FindProductsUseCase findProductsUseCase;
+
+    @MockBean
+    private UpdateProductUseCase updateProductUseCase;
 
     @BeforeEach
     public void setUp(){
@@ -56,7 +70,7 @@ public class ProductControllerTest {
         Product product1 = new ProductBuilder().build();
         Product product2 = new ProductBuilder().build();
 
-        when(productService.list()).thenReturn(List.of(product1,product2));
+        when(findProductsUseCase.execute()).thenReturn(List.of(product1,product2));
 
         ResponseEntity<List> resultList  = this.restTemplate.getForEntity(getFullUrl("/product"),
                 List.class);
@@ -77,7 +91,7 @@ public class ProductControllerTest {
         Product product1 = new ProductBuilder().build();
         Product product2 = new ProductBuilder().build();
 
-        when(productService.listByCategory(EProductCategory.SNACK)).thenReturn(List.of(product1,product2));
+        when(findProductsByCategoryUseCase.execute(EProductCategory.SNACK)).thenReturn(List.of(product1,product2));
 
         ResponseEntity<List> resultList  = this.restTemplate.getForEntity(getFullUrl("/product?category=SNACK"),
                 List.class);
@@ -98,7 +112,7 @@ public class ProductControllerTest {
         Product product1 = new ProductBuilder().build();
         Product product2 = new ProductBuilder().build();
 
-        when(productService.listByCategory(EProductCategory.SNACK)).thenReturn(List.of(product1,product2));
+        when(findProductsByCategoryUseCase.execute(EProductCategory.SNACK)).thenReturn(List.of(product1,product2));
 
         ResponseEntity<MessageResponse> resultList  = this.restTemplate.getForEntity(getFullUrl("/product?category=SNAC"),
                 MessageResponse.class);
@@ -129,7 +143,7 @@ public class ProductControllerTest {
     void getByIdTest_Success() throws ResourceNotFoundException {
         Product product = new ProductBuilder().build();
 
-        when(productService.getById(product.getId())).thenReturn(product);
+        when(findProductByIdUseCase.execute(product.getId())).thenReturn(product);
 
         ResponseEntity<Product> result = this.restTemplate.getForEntity(getFullUrl("/product/" + product.getId()),
                 Product.class);
@@ -144,7 +158,7 @@ public class ProductControllerTest {
     void getByIdTest_NotFound() throws ResourceNotFoundException {
         UUID id = UUID.randomUUID();
 
-        when(productService.getById(id)).thenThrow(ResourceNotFoundException.class);
+        when(findProductByIdUseCase.execute(id)).thenThrow(ResourceNotFoundException.class);
 
         ResponseEntity<MessageResponse> result = this.restTemplate.getForEntity(getFullUrl("/product/" + id),
                 MessageResponse.class);
@@ -167,7 +181,7 @@ public class ProductControllerTest {
         Product product = new ProductBuilder().withId(null).build();
         Product createdProduct = new ProductBuilder().build();
 
-        when(productService.create(any())).thenReturn(createdProduct);
+        when(createProductUseCase.execute(any())).thenReturn(createdProduct);
 
         ResponseEntity<Product> result = this.restTemplate.postForEntity(
                 getFullUrl("/product"),
@@ -185,7 +199,7 @@ public class ProductControllerTest {
     void createTest_BadRequest() throws ValidationException {
         Product product = new ProductBuilder().withId(null).build();
 
-        when(productService.create(any())).thenThrow(ValidationException.class);
+        when(createProductUseCase.execute(any())).thenThrow(ValidationException.class);
 
         ResponseEntity<MessageResponse> result = this.restTemplate.postForEntity(
                 getFullUrl("/product"),
@@ -202,7 +216,7 @@ public class ProductControllerTest {
 
         HttpEntity<Product> entity = new HttpEntity<>(product);
 
-        when(productService.update(product.getId(), product)).thenReturn(product);
+        when(updateProductUseCase.execute(product.getId(), product)).thenReturn(product);
 
         ResponseEntity<Product> result = this.restTemplate.exchange(
                 getFullUrl("/product/" + product.getId()),
@@ -220,7 +234,7 @@ public class ProductControllerTest {
 
         HttpEntity<Product> entity = new HttpEntity<>(product);
 
-        when(productService.update(product.getId(), product)).thenThrow(ResourceNotFoundException.class);
+        when(updateProductUseCase.execute(product.getId(), product)).thenThrow(ResourceNotFoundException.class);
 
         ResponseEntity<MessageResponse> result = this.restTemplate.exchange(
                 getFullUrl("/product/" + product.getId()),
@@ -238,7 +252,7 @@ public class ProductControllerTest {
 
         HttpEntity<Product> entity = new HttpEntity<>(product);
 
-        when(productService.update(product.getId(), product)).thenThrow(ValidationException.class);
+        when(updateProductUseCase.execute(product.getId(), product)).thenThrow(ValidationException.class);
 
         ResponseEntity<MessageResponse> result = this.restTemplate.exchange(
                 getFullUrl("/product/" + product.getId()),
@@ -272,7 +286,7 @@ public class ProductControllerTest {
     void deleteTest_MethodNotAllowed() throws ResourceNotFoundException {
         UUID id = UUID.randomUUID();
 
-        doThrow(UsedProductCannotBeDeletedException.class).doNothing().when(productService).delete(id);
+        doThrow(UsedProductCannotBeDeletedException.class).doNothing().when(deleteProductUseCase).execute(id);
 
         ResponseEntity<MessageResponse> result = this.restTemplate.exchange(
                 getFullUrl("/product/" + id),
@@ -288,7 +302,7 @@ public class ProductControllerTest {
     void deleteTest_NotFound() throws ResourceNotFoundException {
         UUID id = UUID.randomUUID();
 
-        doThrow(ResourceNotFoundException.class).doNothing().when(productService).delete(id);
+        doThrow(ResourceNotFoundException.class).doNothing().when(deleteProductUseCase).execute(id);
 
         ResponseEntity<MessageResponse> result = this.restTemplate.exchange(
                 getFullUrl("/product/" + id),
