@@ -5,7 +5,8 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNot
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.*;
-import com.tech.challenge.tech_challenge.core.domain.services.extended.OrderPaymentService;
+import com.tech.challenge.tech_challenge.core.domain.useCases.AddPaymentToOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderPaymentUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +37,11 @@ public class PaymentControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+    @MockBean
+    private AddPaymentToOrderUseCase addPaymentToOrderUseCase;
 
     @MockBean
-    private OrderPaymentService orderPaymentService;
+    private UpdateOrderPaymentUseCase updateOrderPaymentUseCase;
 
     private String BASE_URL;
     private final ObjectMapper mapper = new ObjectMapper();
@@ -52,7 +55,7 @@ public class PaymentControllerTest {
     void addPaymentToOrderTest_Success() throws ValidationException, ResourceNotFoundException {
         Order order = new OrderBuilder().build();
 
-        when(orderPaymentService.addPaymentToOrder(order.getId())).thenReturn(order);
+        when(addPaymentToOrderUseCase.execute(order.getId())).thenReturn(order);
 
         ResponseEntity<Order> result  = this.restTemplate.postForEntity(getFullUrl(String.format("/order/%s/payment", order.getId())),
                 null,
@@ -68,7 +71,7 @@ public class PaymentControllerTest {
     void addPaymentToOrderTest_NotFound() throws ValidationException, ResourceNotFoundException {
         Order order = new OrderBuilder().build();
 
-        when(orderPaymentService.addPaymentToOrder(order.getId())).thenThrow(ResourceNotFoundException.class);
+        when(addPaymentToOrderUseCase.execute(order.getId())).thenThrow(ResourceNotFoundException.class);
 
         ResponseEntity<MessageResponse> result  = this.restTemplate.postForEntity(getFullUrl(String.format("/order/%s/payment", order.getId())),
                 null,
@@ -81,7 +84,7 @@ public class PaymentControllerTest {
     void addPaymentToOrderTest_BadRequest() throws ValidationException, ResourceNotFoundException {
         Order order = new OrderBuilder().build();
 
-        when(orderPaymentService.addPaymentToOrder(order.getId())).thenThrow(ValidationException.class);
+        when(addPaymentToOrderUseCase.execute(order.getId())).thenThrow(ValidationException.class);
 
         ResponseEntity<MessageResponse> result  = this.restTemplate.postForEntity(getFullUrl(String.format("/order/%s/payment", order.getId())),
                 null,
@@ -96,7 +99,7 @@ public class PaymentControllerTest {
         Payment payment = order.getPayment();
         HttpEntity<Payment> entity = new HttpEntity<>(payment);
 
-        when(orderPaymentService.updateOrderPayment(order.getId(),payment.getId(), payment.getStatus())).thenReturn(entity.getBody());
+        when(updateOrderPaymentUseCase.execute(order.getId(),payment.getId(), payment.getStatus())).thenReturn(entity.getBody());
 
         ResponseEntity<Payment> result  = this.restTemplate.exchange(
                 getFullUrl(String.format("/order/%s/payment/%s", order.getId(), payment.getId())),
@@ -113,7 +116,7 @@ public class PaymentControllerTest {
         Payment payment = order.getPayment();
         HttpEntity<Payment> entity = new HttpEntity<>(payment);
 
-        when(orderPaymentService.updateOrderPayment(order.getId(),payment.getId(), payment.getStatus())).thenThrow(ResourceNotFoundException.class);
+        when(updateOrderPaymentUseCase.execute(order.getId(),payment.getId(), payment.getStatus())).thenThrow(ResourceNotFoundException.class);
 
         ResponseEntity<MessageResponse> result  = this.restTemplate.exchange(
                 getFullUrl(String.format("/order/%s/payment/%s", order.getId(), payment.getId())),
@@ -130,7 +133,7 @@ public class PaymentControllerTest {
         Payment payment = order.getPayment();
         HttpEntity<Payment> entity = new HttpEntity<>(payment);
 
-        when(orderPaymentService.updateOrderPayment(order.getId(),payment.getId(), payment.getStatus())).thenThrow(ValidationException.class);
+        when(updateOrderPaymentUseCase.execute(order.getId(),payment.getId(), payment.getStatus())).thenThrow(ValidationException.class);
 
         ResponseEntity<MessageResponse> result  = this.restTemplate.exchange(
                 getFullUrl(String.format("/order/%s/payment/%s", order.getId(), payment.getId())),

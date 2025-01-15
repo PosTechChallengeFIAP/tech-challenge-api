@@ -1,33 +1,31 @@
-package com.tech.challenge.tech_challenge.core.domain.services.extended;
+package com.tech.challenge.tech_challenge.core.domain.useCases;
 
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.OrderRepository;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
-import com.tech.challenge.tech_challenge.core.domain.entities.Client;
-import com.tech.challenge.tech_challenge.core.domain.entities.Order;
-import com.tech.challenge.tech_challenge.core.domain.entities.OrderBuilder;
-import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByIdUseCase;
+import com.tech.challenge.tech_challenge.core.domain.entities.*;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class OrderClientServiceTest {
-
-    @Autowired
-    private OrderClientService orderClientService;
+public class AddClientToOrderUseCaseTest {
 
     @MockBean
     private OrderRepository orderRepository;
 
     @MockBean
     private FindClientByIdUseCase findClientByIdUseCase;
+
+    @MockBean
+    private AddClientToOrderUseCase addClientToOrderUseCase;
 
     @Test
     public void addClientToOrderTest_Success() throws Exception {
@@ -42,7 +40,7 @@ public class OrderClientServiceTest {
         when(orderRepository.save(order)).thenReturn(order);
         when(client.getId()).thenReturn(clientId);
 
-        Order orderResult = orderClientService.addClientToOrder(order.getId(),clientId);
+        Order orderResult = addClientToOrderUseCase.execute(order.getId(),clientId);
 
         assertEquals(client, orderResult.getClient());
     }
@@ -62,7 +60,7 @@ public class OrderClientServiceTest {
         when(client.getId()).thenReturn(clientId);
 
         assertThrows(ValidationException.class, ()->{
-            orderClientService.addClientToOrder(order.getId(),clientId);
+            addClientToOrderUseCase.execute(order.getId(),clientId);
         });
     }
 
@@ -83,7 +81,9 @@ public class OrderClientServiceTest {
         when(client.getId()).thenReturn(clientId);
 
         assertThrows(ValidationException.class, ()->{
-            orderClientService.addClientToOrder(order.getId(),clientId);
+            addClientToOrderUseCase.execute(order.getId(),clientId);
         });
     }
+
+
 }
