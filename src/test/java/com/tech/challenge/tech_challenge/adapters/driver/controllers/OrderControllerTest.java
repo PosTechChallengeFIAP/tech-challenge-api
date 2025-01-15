@@ -5,8 +5,7 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNot
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.*;
-import com.tech.challenge.tech_challenge.core.domain.services.OrderService;
-import com.tech.challenge.tech_challenge.core.domain.services.extended.OrderClientService;
+import com.tech.challenge.tech_challenge.core.domain.useCases.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +35,21 @@ public class OrderControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
-
     @MockBean
     @Qualifier("orderService")
-    private OrderService orderService;
+    private FindOrdersUseCase findOrdersUseCase;
 
     @MockBean
-    private OrderClientService orderClientService;
+    @Qualifier("findOrderByIdUseCase")
+    private FindOrderByIdUseCase findOrderByIdUseCase;
+
+    @MockBean
+    @Qualifier("createOrderUseCase")
+    private CreateOrderUseCase createOrderUseCase;
+
+    @MockBean
+    @Qualifier("addClientToOrderUseCase")
+    private AddClientToOrderUseCase addClientToOrderUseCase;
 
     private String BASE_URL;
     private final ObjectMapper mapper = new ObjectMapper();
@@ -65,7 +72,7 @@ public class OrderControllerTest {
                 .withStatus(EOrderStatus.ORDERING)
                 .build();
 
-        when(orderService.list()).thenReturn(List.of(order2,order1));
+        when(findOrdersUseCase.execute()).thenReturn(List.of(order2,order1));
 
         ResponseEntity<List> resultList  = this.restTemplate.getForEntity(getFullUrl("/order"),
                 List.class);
@@ -89,7 +96,7 @@ public class OrderControllerTest {
                 .withStatus(EOrderStatus.ORDERING)
                 .build();
 
-        when(orderService.getById(order.getId())).thenReturn(order);
+        when(findOrderByIdUseCase.execute(order.getId())).thenReturn(order);
         ResponseEntity<Order> result = this.restTemplate.getForEntity(getFullUrl("/order/" + order.getId()),
                 Order.class);
 
@@ -103,7 +110,7 @@ public class OrderControllerTest {
     void getByIdTest_NotFound() throws ResourceNotFoundException {
         UUID id = UUID.randomUUID();
 
-        when(orderService.getById(id)).thenThrow(ResourceNotFoundException.class);
+        when(findOrderByIdUseCase.execute(id)).thenThrow(ResourceNotFoundException.class);
         ResponseEntity<MessageResponse> result = this.restTemplate.getForEntity(getFullUrl("/order/" + id),
                 MessageResponse.class);
 
@@ -125,7 +132,7 @@ public class OrderControllerTest {
         Order order = new OrderBuilder().withId(null).build();
         Order createdOrder = new OrderBuilder().build();
 
-        when(orderService.create(any())).thenReturn(createdOrder);
+        when(createOrderUseCase.execute(any())).thenReturn(createdOrder);
 
         ResponseEntity<Order> result = this.restTemplate.postForEntity(
                 getFullUrl("/order"),
@@ -143,7 +150,7 @@ public class OrderControllerTest {
     void createTest_BadRequest() throws ValidationException {
         Order order = new OrderBuilder().build();
 
-        when(orderService.create(any())).thenThrow(ValidationException.class);
+        when(createOrderUseCase.execute(any())).thenThrow(ValidationException.class);
 
         ResponseEntity<MessageResponse> result = this.restTemplate.postForEntity(
                 getFullUrl("/order"),
@@ -159,7 +166,7 @@ public class OrderControllerTest {
         Client client = new ClientBuilder().build();
         Order order = new OrderBuilder().withClient(client).build();
 
-        when(orderClientService.addClientToOrder(order.getId(), client.getId())).thenReturn(order);
+        when(addClientToOrderUseCase.execute(order.getId(), client.getId())).thenReturn(order);
 
         ResponseEntity<Order> result = this.restTemplate.postForEntity(
                 getFullUrl(String.format("/order/%s/client/%s", order.getId(), client.getId())),
@@ -178,7 +185,7 @@ public class OrderControllerTest {
         Client client = new ClientBuilder().build();
         Order order = new OrderBuilder().withClient(client).build();
 
-        when(orderClientService.addClientToOrder(order.getId(), client.getId())).thenThrow(ResourceNotFoundException.class);
+        when(addClientToOrderUseCase.execute(order.getId(), client.getId())).thenThrow(ResourceNotFoundException.class);
 
         ResponseEntity<MessageResponse> result = this.restTemplate.postForEntity(
                 getFullUrl(String.format("/order/%s/client/%s", order.getId(), client.getId())),
@@ -194,7 +201,7 @@ public class OrderControllerTest {
         Client client = new ClientBuilder().build();
         Order order = new OrderBuilder().withClient(client).build();
 
-        when(orderClientService.addClientToOrder(order.getId(), client.getId())).thenThrow(ValidationException.class);
+        when(addClientToOrderUseCase.execute(order.getId(), client.getId())).thenThrow(ValidationException.class);
 
         ResponseEntity<MessageResponse> result = this.restTemplate.postForEntity(
                 getFullUrl(String.format("/order/%s/client/%s", order.getId(), client.getId())),

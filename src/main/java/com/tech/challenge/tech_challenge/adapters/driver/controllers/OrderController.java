@@ -5,10 +5,7 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationE
 import com.tech.challenge.tech_challenge.core.application.message.EMessageType;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
-import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
-import com.tech.challenge.tech_challenge.core.domain.entities.Product;
-import com.tech.challenge.tech_challenge.core.domain.services.OrderService;
-import com.tech.challenge.tech_challenge.core.domain.services.extended.OrderClientService;
+import com.tech.challenge.tech_challenge.core.domain.useCases.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,10 +26,19 @@ import java.util.UUID;
 public class OrderController {
 
     @Autowired
-    OrderService orderService;
+    private FindOrdersUseCase findOrdersUseCase;
 
     @Autowired
-    OrderClientService orderClientService;
+    private FindOrderByIdUseCase findOrderByIdUseCase;
+
+    @Autowired
+    private CreateOrderUseCase createOrderUseCase;
+
+    @Autowired
+    private AddClientToOrderUseCase addClientToOrderUseCase;
+
+    @Autowired
+    private UpdateOrderUseCase updateOrderUseCase;
 
     @GetMapping("/order")
     @Operation(summary = "Finds all orders", description = "This endpoint is used to find all orders",
@@ -48,7 +54,7 @@ public class OrderController {
             }
     )
     public ResponseEntity all(){
-        return ResponseEntity.status(HttpStatus.OK).body(orderService.list());
+        return ResponseEntity.status(HttpStatus.OK).body(findOrdersUseCase.execute());
     }
 
     @GetMapping("/order/{id}")
@@ -67,7 +73,7 @@ public class OrderController {
     )
     public ResponseEntity one(@PathVariable UUID id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(orderService.getById(id));
+            return ResponseEntity.status(HttpStatus.OK).body(findOrderByIdUseCase.execute(id));
         }catch (ResourceNotFoundException ex){
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
@@ -90,7 +96,7 @@ public class OrderController {
     )
     public ResponseEntity create(@RequestBody Order order) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(orderService.create(order));
+            return ResponseEntity.status(HttpStatus.CREATED).body(createOrderUseCase.execute(order));
         }catch (ValidationException ex){
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -114,7 +120,7 @@ public class OrderController {
     )
     public ResponseEntity addClient(@PathVariable(name = "orderId") UUID orderId, @PathVariable(name = "clientId") UUID clientId) throws Exception {
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(orderClientService.addClientToOrder(orderId, clientId));
+            return ResponseEntity.status(HttpStatus.OK).body(addClientToOrderUseCase.execute(orderId, clientId));
         }catch (ValidationException | DataIntegrityViolationException ex){
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -142,7 +148,7 @@ public class OrderController {
     )
     public ResponseEntity updateOrder(@PathVariable UUID id, @RequestBody Order product) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(orderService.update(id, product));
+            return ResponseEntity.status(HttpStatus.OK).body(updateOrderUseCase.execute(id, product));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)

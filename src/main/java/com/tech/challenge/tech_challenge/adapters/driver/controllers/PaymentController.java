@@ -6,7 +6,8 @@ import com.tech.challenge.tech_challenge.core.application.message.EMessageType;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
-import com.tech.challenge.tech_challenge.core.domain.services.extended.OrderPaymentService;
+import com.tech.challenge.tech_challenge.core.domain.useCases.AddPaymentToOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderPaymentUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,7 +26,10 @@ import java.util.UUID;
 public class PaymentController {
 
     @Autowired
-    private OrderPaymentService orderPaymentService;
+    private AddPaymentToOrderUseCase addPaymentToOrderUseCase;
+
+    @Autowired
+    private UpdateOrderPaymentUseCase updateOrderPaymentUseCase;
 
     @PostMapping("/order/{orderId}/payment")
     @Operation(summary = "Add new payment to an order", description = "This endpoint is used to add a new payment to an order",
@@ -43,7 +47,7 @@ public class PaymentController {
     )
     public ResponseEntity addPaymentoToOrder(@PathVariable UUID orderId){
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(orderPaymentService.addPaymentToOrder(orderId));
+            return ResponseEntity.status(HttpStatus.CREATED).body(addPaymentToOrderUseCase.execute(orderId));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
@@ -71,7 +75,7 @@ public class PaymentController {
     )
     public ResponseEntity updateOrderPayment(@PathVariable UUID orderId, @PathVariable UUID paymentId, @RequestBody Payment payment) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(orderPaymentService.updateOrderPayment(orderId, paymentId, payment.getStatus()));
+            return ResponseEntity.status(HttpStatus.OK).body(updateOrderPaymentUseCase.execute(orderId, paymentId, payment.getStatus()));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)

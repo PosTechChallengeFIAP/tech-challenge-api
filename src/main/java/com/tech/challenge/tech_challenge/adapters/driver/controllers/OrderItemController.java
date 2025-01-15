@@ -6,7 +6,9 @@ import com.tech.challenge.tech_challenge.core.application.message.EMessageType;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
-import com.tech.challenge.tech_challenge.core.domain.services.OrderService;
+import com.tech.challenge.tech_challenge.core.domain.useCases.AddItemToOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.EditItemToOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.RemoveItemToOrderUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,7 +28,13 @@ import java.util.UUID;
 public class OrderItemController {
 
     @Autowired
-    OrderService orderService;
+    private AddItemToOrderUseCase addItemToOrderUseCase;
+
+    @Autowired
+    private RemoveItemToOrderUseCase removeItemToOrderUseCase;
+
+    @Autowired
+    private EditItemToOrderUseCase editItemToOrderUseCase;
 
     @PostMapping("/order/{orderId}/orderItem")
     @Operation(summary = "Add item in an order and creates OrderItem", description = "This endpoint is used to add item in an order and creates OrderItem",
@@ -44,7 +52,7 @@ public class OrderItemController {
     )
     public ResponseEntity addItem(@PathVariable UUID orderId, @RequestBody OrderItem orderItem) {
         try{
-            return ResponseEntity.status(HttpStatus.CREATED).body(orderService.addItem(orderId, orderItem));
+            return ResponseEntity.status(HttpStatus.CREATED).body(addItemToOrderUseCase.execute(orderId, orderItem));
         }catch (ValidationException | DataIntegrityViolationException ex){
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -72,7 +80,7 @@ public class OrderItemController {
     )
     public ResponseEntity removeItem(@PathVariable UUID orderId, @PathVariable UUID itemId) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(orderService.removeItem(orderId, itemId));
+            return ResponseEntity.status(HttpStatus.OK).body(removeItemToOrderUseCase.execute(orderId, itemId));
         }catch (ResourceNotFoundException | NoSuchElementException ex){
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
@@ -96,7 +104,7 @@ public class OrderItemController {
     )
     public ResponseEntity editItem(@PathVariable UUID orderId, @PathVariable UUID itemId, @RequestBody OrderItem orderItem) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(orderService.editItem(orderId, itemId, orderItem));
+            return ResponseEntity.status(HttpStatus.OK).body(editItemToOrderUseCase.execute(orderId, itemId, orderItem));
         } catch (ResourceNotFoundException | NoSuchElementException ex) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
