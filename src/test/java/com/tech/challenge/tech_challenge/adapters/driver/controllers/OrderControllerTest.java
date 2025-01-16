@@ -36,7 +36,7 @@ public class OrderControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
     @MockBean
-    @Qualifier("orderService")
+    @Qualifier("findOrdersUseCase")
     private FindOrdersUseCase findOrdersUseCase;
 
     @MockBean
