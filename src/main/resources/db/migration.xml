@@ -13,4 +13,5 @@
     <include file="db/migrations/add_payment_to_order.xml" />
     <include file="db/migrations/queue.xml" />
     <include file="db/migrations/queue_seq.xml" />
+    <include file="db/migrations/add_url_to_payment.xml" />
 </databaseChangeLog>

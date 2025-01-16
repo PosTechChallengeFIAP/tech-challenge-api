@@ -1,12 +1,12 @@
 package com.tech.challenge.tech_challenge.adapters.driver.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.*;
 import com.tech.challenge.tech_challenge.core.domain.useCases.AddPaymentToOrderUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderPaymentUseCase;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +20,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -44,7 +37,6 @@ public class PaymentControllerTest {
     private UpdateOrderPaymentUseCase updateOrderPaymentUseCase;
 
     private String BASE_URL;
-    private final ObjectMapper mapper = new ObjectMapper();
 
     @BeforeEach
     public void setUp(){
