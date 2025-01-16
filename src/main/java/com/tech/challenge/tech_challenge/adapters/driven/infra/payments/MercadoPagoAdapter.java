@@ -24,7 +24,7 @@ public class MercadoPagoAdapter implements IPaymentGateway {
     }
     
     @Override
-    public String generatePaymentLink(List<GeneratePaymentLinkRequestDTO> items) {
+    public String generatePaymentLink(List<GeneratePaymentLinkRequestDTO> items, String callbackURL) {
         String link = null;
 
         List<PreferenceItemRequest> mercadoPagoItems = MercadoPagoAdapterMapper.toPreferenceItemRequest(items);
@@ -32,7 +32,7 @@ public class MercadoPagoAdapter implements IPaymentGateway {
         PreferenceClient preferenceClient = new PreferenceClient();
         PreferenceRequest preferenceRequest = PreferenceRequest.builder()
             .items(mercadoPagoItems)
-            .notificationUrl("http://localhost:8080/test")
+            .backUrls(this.getBackURLs(callbackURL))
             .build();
 
         try {
@@ -49,11 +49,11 @@ public class MercadoPagoAdapter implements IPaymentGateway {
         return link;
     }
 
-    private PreferenceBackUrlsRequest getBackURLs() {
+    private PreferenceBackUrlsRequest getBackURLs(String defaultURL) {
         PreferenceBackUrlsRequest backUrls = PreferenceBackUrlsRequest.builder()
-            .success("https://www.teste/pending")
-            .pending("https://www.teste/pending")
-            .failure("https://www.teste/failure")
+            .success(String.format("%s?status=success", defaultURL))
+            .pending(String.format("%s?status=pending", defaultURL))
+            .failure(String.format("%s?status=failure", defaultURL))
             .build();
         return backUrls;
     }
