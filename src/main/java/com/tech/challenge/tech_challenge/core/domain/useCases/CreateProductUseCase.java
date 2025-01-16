@@ -12,6 +12,7 @@ public class CreateProductUseCase {
     private ProductRepository productRepository;
 
     public Product execute(Product product) throws ValidationException {
+        product.setActive(true);
         product.validate();
 
         return productRepository.save(product);

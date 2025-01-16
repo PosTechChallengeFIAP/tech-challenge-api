@@ -8,6 +8,7 @@ import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
 import com.tech.challenge.tech_challenge.core.domain.useCases.AddPaymentToOrderUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderPaymentUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdatePaymentStatusUseCase;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,6 +32,9 @@ public class PaymentController {
 
     @Autowired
     private UpdateOrderPaymentUseCase updateOrderPaymentUseCase;
+
+    @Autowired
+    private UpdatePaymentStatusUseCase updatePaymentStatusUseCase;
 
     @PostMapping("/order/{orderId}/payment")
     @Operation(summary = "Add new payment to an order", description = "This endpoint is used to add a new payment to an order",
@@ -85,6 +89,15 @@ public class PaymentController {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));
+        }
+    }
+
+    @GetMapping("/order/{orderId}/payment/{paymentId}")
+    public ResponseEntity updatePaymentFromMercadoPago(@PathVariable UUID orderId, @PathVariable UUID paymentId, @RequestParam String status) {
+        try {
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(updatePaymentStatusUseCase.execute(orderId, paymentId, status));
+        } catch(Error err) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MessageResponse.type(EMessageType.ERROR).withMessage(err.getMessage()));
         }
     }
 }
