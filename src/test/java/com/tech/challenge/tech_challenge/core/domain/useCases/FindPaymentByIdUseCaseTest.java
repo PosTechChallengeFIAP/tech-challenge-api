@@ -4,6 +4,7 @@ import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.Paym
 import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -19,7 +20,7 @@ public class FindPaymentByIdUseCaseTest {
     @MockBean
     private PaymentRepository paymentRepository;
 
-    @MockBean
+    @Autowired
     private FindPaymentByIdUseCase findPaymentByIdUseCase;
 
     @Test

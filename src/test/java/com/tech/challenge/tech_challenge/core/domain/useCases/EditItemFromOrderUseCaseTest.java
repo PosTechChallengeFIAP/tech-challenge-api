@@ -5,6 +5,7 @@ import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -23,7 +24,7 @@ public class EditItemFromOrderUseCaseTest {
     @MockBean
     private OrderRepository orderRepository;
 
-    @MockBean
+    @Autowired
     private EditItemToOrderUseCase editItemFromOrderUseCase;
 
     @Test

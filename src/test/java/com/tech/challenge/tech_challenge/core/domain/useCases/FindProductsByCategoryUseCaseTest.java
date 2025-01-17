@@ -3,6 +3,7 @@ import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.Prod
 import com.tech.challenge.tech_challenge.core.domain.entities.EProductCategory;
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -18,7 +19,7 @@ public class FindProductsByCategoryUseCaseTest {
     @MockBean
     private ProductRepository productRepository;
 
-    @MockBean
+    @Autowired
     private FindProductsByCategoryUseCase findProductsByCategoryUseCase;
 
     @Test

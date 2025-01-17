@@ -4,6 +4,7 @@ import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.Orde
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -17,7 +18,7 @@ public class UpdateOrderUseCaseTest {
     @MockBean
     private OrderRepository orderRepository;
 
-    @MockBean
+    @Autowired
     private UpdateOrderUseCase updateOrderUseCase;
 
     @Test
