@@ -1,6 +1,7 @@
 package com.tech.challenge.tech_challenge.core.application.exceptions;
 
-public class ResourceNotFoundException extends Exception{
+@SuppressWarnings("rawtypes")
+public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(Class resourceClass) {
         super(String.format("%s not found.", resourceClass.getSimpleName()));
     }
