@@ -41,6 +41,7 @@ public class ClientController {
     @Autowired
     private FindClientByCpfUseCase findClientByCpfUseCase;
 
+    @SuppressWarnings("rawtypes")
     @GetMapping("/client")
     @Operation(summary = "Finds clients", description = "This endpoint is used to find client. " +
             "If the request has a CPF it returns the Client with the same CPF value. Otherwise it returns all clients",
@@ -77,6 +78,7 @@ public class ClientController {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @GetMapping("/client/{id}")
     @Operation(summary = "Finds client by Id", description = "This endpoint is used to find client by Id",
             tags = {"Client"},
@@ -101,6 +103,7 @@ public class ClientController {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @PostMapping("/client")
     @Operation(summary = "Create client", description = "This endpoint is used to create a new client",
             tags = {"Client"},

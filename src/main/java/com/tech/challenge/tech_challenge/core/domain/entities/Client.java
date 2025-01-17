@@ -1,6 +1,5 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
 
-import com.tech.challenge.tech_challenge.core.application.exceptions.ClientMustHaveNameAndEmailOrValidCPFException;
 import com.tech.challenge.tech_challenge.core.application.exceptions.InvalidClientCPF;
 import com.tech.challenge.tech_challenge.core.application.exceptions.InvalidClientName;
 import com.tech.challenge.tech_challenge.core.application.exceptions.InvalidEmailAddress;

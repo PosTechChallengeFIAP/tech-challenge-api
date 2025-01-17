@@ -19,12 +19,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -50,6 +48,7 @@ public class ProductController {
     @Autowired
     private UpdateProductUseCase updateProductUseCase;
 
+    @SuppressWarnings("rawtypes")
     @GetMapping("/productCategory")
     @Operation(summary = "Finds all product categories", description = "This endpoint is used to find all product categories",
             tags = {"Product"},
@@ -67,6 +66,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(Arrays.stream(EProductCategory.values()).toList());
     }
 
+    @SuppressWarnings("rawtypes")
     @GetMapping("/product")
     @Operation(summary = "Finds products", description = "This endpoint is used to find products. " +
             "If the request has a category it returns the products from this category",
@@ -90,6 +90,7 @@ public class ProductController {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @GetMapping("/product/{id}")
     @Operation(summary = "Finds product by Id", description = "This endpoint is used to find product by Id",
             tags = {"Product"},
@@ -114,6 +115,7 @@ public class ProductController {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @PostMapping("/product")
     @Operation(summary = "Create product", description = "This endpoint is used to create a new product",
             tags = {"Product"},
@@ -137,6 +139,7 @@ public class ProductController {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @PatchMapping("/product/{id}")
     @Operation(summary = "Update Product", description = "This endpoint is used to update product",
             tags = {"Product"},

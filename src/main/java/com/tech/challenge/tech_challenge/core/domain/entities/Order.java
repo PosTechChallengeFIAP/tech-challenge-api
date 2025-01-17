@@ -13,15 +13,12 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "`order`")
 public class Order {
-    private static final Consumer<? super OrderItem> OrderItem = null;
-
     @Id
     @UuidGenerator
     private UUID id;

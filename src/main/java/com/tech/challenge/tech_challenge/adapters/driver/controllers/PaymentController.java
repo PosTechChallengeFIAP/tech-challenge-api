@@ -36,6 +36,7 @@ public class PaymentController {
     @Autowired
     private UpdatePaymentStatusUseCase updatePaymentStatusUseCase;
 
+    @SuppressWarnings("rawtypes")
     @PostMapping("/order/{orderId}/payment")
     @Operation(summary = "Add new payment to an order", description = "This endpoint is used to add a new payment to an order",
             tags = {"Payment"},
@@ -64,6 +65,7 @@ public class PaymentController {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @PatchMapping("/order/{orderId}/payment/{paymentId}")
     @Operation(summary = "Update payment from an order", description = "This endpoint is used to update payment from an order",
             tags = {"Payment"},
@@ -92,6 +94,7 @@ public class PaymentController {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @GetMapping("/order/{orderId}/payment/{paymentId}")
     public ResponseEntity updatePaymentFromMercadoPago(@PathVariable UUID orderId, @PathVariable UUID paymentId, @RequestParam String status) {
         try {

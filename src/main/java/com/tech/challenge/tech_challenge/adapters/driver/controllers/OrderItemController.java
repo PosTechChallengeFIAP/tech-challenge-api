@@ -36,6 +36,7 @@ public class OrderItemController {
     @Autowired
     private EditItemToOrderUseCase editItemToOrderUseCase;
 
+    @SuppressWarnings("rawtypes")
     @PostMapping("/order/{orderId}/orderItem")
     @Operation(summary = "Add item in an order and creates OrderItem", description = "This endpoint is used to add item in an order and creates OrderItem",
             tags = {"OrderItem"},
@@ -64,6 +65,7 @@ public class OrderItemController {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @DeleteMapping("/order/{orderId}/orderItem/{itemId}")
     @Operation(summary = "Delete item from Order", description = "This endpoint is used to Delete item from Order",
             tags = {"OrderItem"},
@@ -88,6 +90,7 @@ public class OrderItemController {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @PatchMapping("/order/{orderId}/orderItem/{itemId}")
     @Operation(summary = "Edit item from Order", description = "This endpoint is used to edit item from Order",
             tags = {"OrderItem"},

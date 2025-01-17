@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @RestController
@@ -40,6 +39,7 @@ public class OrderController {
     @Autowired
     private UpdateOrderUseCase updateOrderUseCase;
 
+    @SuppressWarnings("rawtypes")
     @GetMapping("/order")
     @Operation(summary = "Finds all orders", description = "This endpoint is used to find all orders",
             tags = {"Order"},
@@ -57,6 +57,7 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(findOrdersUseCase.execute());
     }
 
+    @SuppressWarnings("rawtypes")
     @GetMapping("/order/{id}")
     @Operation(summary = "Finds order by Id", description = "This endpoint is used to find order by Id",
             tags = {"Order"},
@@ -81,6 +82,7 @@ public class OrderController {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @PostMapping("/order")
     @Operation(summary = "Create order", description = "This endpoint is used to create order",
             tags = {"Order"},
@@ -104,6 +106,7 @@ public class OrderController {
         }
     }
     
+    @SuppressWarnings("rawtypes")
     @PostMapping("/order/{orderId}/client/{clientId}")
     @Operation(summary = "Create order with client", description = "This endpoint is used to create order with client",
             tags = {"Order"},
@@ -132,6 +135,7 @@ public class OrderController {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @PatchMapping("/order/{id}")
     @Operation(summary = "Update order", description = "This endpoint is used to update order",
             tags = {"Order"},
