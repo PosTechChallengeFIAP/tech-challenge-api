@@ -32,6 +32,9 @@ public class Payment {
     @Enumerated(EnumType.ORDINAL)
     private EPaymentStatus status;
 
+    @Column(name = "payment_url")
+    private String paymentURL;
+
     public void validate() throws ValidationException {
         if (Objects.isNull(this.value) || this.value == 0) {
             throw new ValidationException("Invalid payment value");
