@@ -4,6 +4,7 @@ import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.Paym
 import com.tech.challenge.tech_challenge.core.domain.entities.EPaymentStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -13,7 +14,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class CreatePaymentUseCaseTest {
-    @MockBean
+    @Autowired
     private CreatePaymentUseCase createPaymentUseCase;
     @MockBean
     private PaymentRepository paymentRepository;

@@ -5,6 +5,7 @@ import com.tech.challenge.tech_challenge.core.domain.entities.EQueueStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.Queue;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -18,7 +19,7 @@ public class ReceiveOrderUseCaseTest {
     @MockBean
     private QueueRepository queueRepository;
 
-    @MockBean
+    @Autowired
     private ReceiveOrderUseCase receiveOrderUseCase;
     @Test
     public void receiveOrderTest() throws Exception {
