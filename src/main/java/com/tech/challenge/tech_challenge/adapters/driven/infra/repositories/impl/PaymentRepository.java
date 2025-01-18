@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.jpa.PaymentRepositoryJPA;
-import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.mappers.PaymentEntityMapper;
-import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.orm.PaymentEntity;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IPaymentRepository;
 
@@ -20,23 +18,11 @@ public class PaymentRepository implements IPaymentRepository {
 
     @Override
     public Optional<Payment> findById(UUID id) {
-        Optional<Payment> payment = paymentRepositoryJPA.findById(id).map(paymentEntity -> toDomain(paymentEntity));
-        return payment;
+        return paymentRepositoryJPA.findById(id);
     }
 
     @Override
     public Payment save(Payment paymentToSave) {
-        PaymentEntity paymentEntityToSave = toEntity(paymentToSave);
-        PaymentEntity paymentEntity = paymentRepositoryJPA.save(paymentEntityToSave);
-        Payment payment = toDomain(paymentEntity);
-        return payment;
-    }
-
-    private Payment toDomain(PaymentEntity payment) {
-        return PaymentEntityMapper.toDomain(payment);
-    }
-
-    private PaymentEntity toEntity(Payment payment) {
-        return PaymentEntityMapper.toEntity(payment);
+        return paymentRepositoryJPA.save(paymentToSave);
     }
 }

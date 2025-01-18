@@ -1,22 +1,61 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tech.challenge.tech_challenge.core.application.exceptions.UnableToAddPaymentToOrder;
 
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
-import lombok.Data;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-@Data
+import org.hibernate.annotations.UuidGenerator;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "`order`")
 public class Order {
+    @Id
+    @UuidGenerator
     private UUID id;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "\"client_id\"")
     private Client client;
+
+    @OneToMany(
+            mappedBy = "order",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JsonManagedReference
     private Set<OrderItem> orderItems;
+
+    @Transient
     private double price;
+
+    @Enumerated(EnumType.ORDINAL)
     private EOrderStatus status;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "payment_id", referencedColumnName = "id")
     private Payment payment;
 
 

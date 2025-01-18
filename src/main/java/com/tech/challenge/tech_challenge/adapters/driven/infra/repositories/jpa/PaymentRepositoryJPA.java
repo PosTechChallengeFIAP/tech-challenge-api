@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.orm.PaymentEntity;
+import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
 
-public interface PaymentRepositoryJPA extends JpaRepository<PaymentEntity, UUID>{
+public interface PaymentRepositoryJPA extends JpaRepository<Payment, UUID>{
 }

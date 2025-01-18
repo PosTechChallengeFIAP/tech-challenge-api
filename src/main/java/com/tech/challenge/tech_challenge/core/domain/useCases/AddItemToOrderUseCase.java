@@ -18,6 +18,7 @@ public class AddItemToOrderUseCase {
 
     @Autowired
     private FindOrderByIdUseCase findOrderByIdUseCase;
+    
     @Autowired
     private FindProductByIdUseCase findProductByIdUseCase;
 
@@ -27,6 +28,7 @@ public class AddItemToOrderUseCase {
     public Order execute(UUID orderId, OrderItem orderItem) throws ResourceNotFoundException, ValidationException {
         Order order = findOrderByIdUseCase.execute(orderId);
         order.addItem(orderItem);
+        orderItem.setOrder(order);
         orderItem.validate();
 
         if(!checkIfProductIsActive(orderItem)){
