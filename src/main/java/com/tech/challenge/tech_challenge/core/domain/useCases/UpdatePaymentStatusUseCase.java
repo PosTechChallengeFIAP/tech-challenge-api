@@ -30,7 +30,7 @@ public class UpdatePaymentStatusUseCase {
             order.setPayment(payment);
 
             receiveOrderUseCase.execute(order);
-            payment.setSatus(EPaymentStatus.PAID);
+            payment.setStatus(EPaymentStatus.PAID);
 
             Payment updatedPayment = paymentRepository.save(payment);
             orderRepository.save(order);
