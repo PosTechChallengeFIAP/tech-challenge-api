@@ -3,11 +3,14 @@ package com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.orm
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tech.challenge.tech_challenge.core.domain.entities.EOrderStatus;
 import jakarta.persistence.*;
+import lombok.Data;
+
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Set;
 import java.util.UUID;
 
+@Data
 @Entity
 @Table(name = "`order`")
 public class OrderEntity {

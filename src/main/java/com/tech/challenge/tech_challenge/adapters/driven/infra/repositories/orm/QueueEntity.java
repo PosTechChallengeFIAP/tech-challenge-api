@@ -20,8 +20,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import lombok.Data;
 import jakarta.persistence.Id;
 
+@Data
 @Entity
 @Table(name = "queue")
 @EntityListeners(AuditingEntityListener.class)
