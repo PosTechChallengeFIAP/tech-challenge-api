@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tech-challenge-db-deployment
+  namespace: tech-challenge
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tech-challenge-db
+  template:
+    metadata:
+      labels:
+        app: tech-challenge-db
+    spec:
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: tech-challenge-db-pvc
+      containers:
+        - name: tech-challenge-db
+          image: mysql:8.0
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tech-challenge-admin-secret
+                  key: DB_ROOT_PASSWORD
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: tech-challenge-admin-secret
+                  key: DB_NAME
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tech-challenge-admin-secret
+                  key: DB_USER
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tech-challenge-admin-secret
+                  key: DB_PASSWORD
+            - name: MYSQL_INITDB_SKIP_TZINFO
+              valueFrom:
+                configMapKeyRef:
+                  name: tech-challenge-config-map
+                  key: MYSQL_INITDB_SKIP_TZINFO
+          ports:
+            - containerPort: 3306
+              name: db-port
+              protocol: TCP
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: var/lib/mysql

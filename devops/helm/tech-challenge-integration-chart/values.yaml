@@ -1,0 +1,40 @@
+tech-challenge-database:
+  fullnameOverride: tech-challenge-database
+  image: "mysql"
+  imageTag: "8.0"
+  mysqlRootPassword: tech-pass
+
+  mysqlUser: tech-user
+  mysqlPassword: tech-pass
+  mysqlAllowEmptyPassword: false
+  mysqlDatabase: tech-challenge
+
+  persistence:
+    enabled: true
+    ## database data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
+    accessMode: ReadWriteOnce
+    size: 10Gi
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+  service:
+    annotations: {}
+    ## Specify a service type
+    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services---service-types
+    type: NodePort
+    port: 3306
+    nodePort: 32060
+
+tech-challenge-app:
+  fullnameOverride: tech-challenge-app
+  database:
+    host: tech-challenge-database
+

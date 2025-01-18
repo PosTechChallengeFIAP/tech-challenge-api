@@ -1,0 +1,14 @@
+apiVersion: v2
+dependencies:
+  - name: tech-challenge-app
+    repository: "file://../tech-challenge-app"
+    version: 0.1.0
+  - alias: tech-challenge-database
+    name: mysql
+    repository: https://helm.wso2.com
+    version: 1.6.9
+name: tech-challenge
+description: A Helm chart for Kubernetes
+type: application
+version: 0.1.0
+appVersion: "1.16.0"
