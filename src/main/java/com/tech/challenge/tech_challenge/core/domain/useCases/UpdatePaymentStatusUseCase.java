@@ -26,14 +26,15 @@ public class UpdatePaymentStatusUseCase {
         Payment payment = paymentRepository.findById(paymentId).orElseThrow();
         
         if (paymentStatus.contains("success")) {
+            payment.setStatus(EPaymentStatus.PAID);
+
             Order order = orderRepository.findById(orderId).orElseThrow();
             order.setPayment(payment);
 
-            receiveOrderUseCase.execute(order);
-            payment.setStatus(EPaymentStatus.PAID);
-
             Payment updatedPayment = paymentRepository.save(payment);
             orderRepository.save(order);
+            
+            receiveOrderUseCase.execute(order);
 
             return updatedPayment;
         }
