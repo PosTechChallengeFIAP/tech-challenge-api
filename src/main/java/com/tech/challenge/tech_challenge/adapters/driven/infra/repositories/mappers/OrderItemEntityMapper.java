@@ -9,6 +9,11 @@ import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
 public class OrderItemEntityMapper {
     public static OrderItem toDomain(OrderItemEntity orderItemEntity) {
         OrderItem orderItem = new OrderItem();
+        orderItem.setId(orderItemEntity.getId());
+        orderItem.setProduct(
+            ProductEntityMapper.toDomain(orderItemEntity.getProduct())
+        );
+        orderItem.setQuantity(orderItemEntity.getQuantity());
         return orderItem;
     }
 
@@ -26,6 +31,11 @@ public class OrderItemEntityMapper {
 
     public static OrderItemEntity toEntity(OrderItem orderItem) {
         OrderItemEntity orderItemEntity = new OrderItemEntity();
+        orderItemEntity.setId(orderItem.getId());
+        orderItemEntity.setProduct(
+            ProductEntityMapper.toEntity(orderItem.getProduct())
+        );
+        orderItemEntity.setQuantity(orderItem.getQuantity());
         return orderItemEntity;
     }
 
