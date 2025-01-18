@@ -11,7 +11,7 @@ public class OrderItemEntityMapper {
         OrderItem orderItem = new OrderItem();
         orderItem.setId(orderItemEntity.getId());
         orderItem.setProduct(
-            ProductEntityMapper.toDomain(orderItemEntity.getProduct())
+            orderItemEntity.getProduct() != null ? ProductEntityMapper.toDomain(orderItemEntity.getProduct()) : null
         );
         orderItem.setQuantity(orderItemEntity.getQuantity());
         return orderItem;
@@ -33,7 +33,7 @@ public class OrderItemEntityMapper {
         OrderItemEntity orderItemEntity = new OrderItemEntity();
         orderItemEntity.setId(orderItem.getId());
         orderItemEntity.setProduct(
-            ProductEntityMapper.toEntity(orderItem.getProduct())
+            orderItem.getProduct() != null ? ProductEntityMapper.toEntity(orderItem.getProduct()) : null
         );
         orderItemEntity.setQuantity(orderItem.getQuantity());
         return orderItemEntity;

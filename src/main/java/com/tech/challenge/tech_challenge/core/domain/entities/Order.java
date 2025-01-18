@@ -1,48 +1,22 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tech.challenge.tech_challenge.core.application.exceptions.UnableToAddPaymentToOrder;
 
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.UuidGenerator;
+import lombok.Data;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-@Getter
-@Setter
-@Entity
-@Table(name = "`order`")
+@Data
 public class Order {
-    @Id
-    @UuidGenerator
     private UUID id;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "\"client_id\"")
     private Client client;
-
-    @OneToMany(
-            mappedBy = "order",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    @JsonManagedReference
     private Set<OrderItem> orderItems;
-
-    @Transient
     private double price;
-
-    @Enumerated(EnumType.ORDINAL)
     private EOrderStatus status;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "payment_id", referencedColumnName = "id")
     private Payment payment;
 
 
@@ -101,7 +75,6 @@ public class Order {
 
     public void removeItem(OrderItem orderItem) {
         this.orderItems.remove(orderItem);
-        orderItem.setOrder(null);
     }
 
     public void setPayment(Payment newPayment) {

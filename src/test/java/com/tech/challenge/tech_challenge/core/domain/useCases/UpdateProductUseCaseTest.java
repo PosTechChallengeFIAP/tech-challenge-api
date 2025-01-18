@@ -1,6 +1,6 @@
 package com.tech.challenge.tech_challenge.core.domain.useCases;
-import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.ProductRepository;
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
+import com.tech.challenge.tech_challenge.core.domain.repositories.IProductRepository;
 import com.tech.challenge.tech_challenge.core.domain.services.generic.Patcher;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class UpdateProductUseCaseTest {
     @MockBean
-    private ProductRepository productRepository;
+    private IProductRepository productRepository;
 
     @Autowired
     private UpdateProductUseCase updateProductUseCase;

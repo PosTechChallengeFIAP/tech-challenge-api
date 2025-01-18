@@ -10,7 +10,7 @@ public class QueueEntityMapper {
         queue.setId(queueEntity.getId());
         queue.setStatus(queueEntity.getStatus());
         queue.setOrder(
-            OrderEntityMapper.toDomain(queueEntity.getOrder())
+            queueEntity.getOrder() != null ? OrderEntityMapper.toDomain(queueEntity.getOrder()) : null
         );
         queue.setCreatedAt(queueEntity.getCreatedAt());
         queue.setUpdatedAt(queueEntity.getUpdatedAt());
@@ -22,7 +22,7 @@ public class QueueEntityMapper {
         queueEntity.setId(queue.getId());
         queueEntity.setStatus(queue.getStatus());
         queueEntity.setOrder(
-            OrderEntityMapper.toEntity(queue.getOrder())
+            queue.getOrder() != null ? OrderEntityMapper.toEntity(queue.getOrder()) : null
         );
         queueEntity.setCreatedAt(queue.getCreatedAt());
         queueEntity.setUpdatedAt(queue.getUpdatedAt());

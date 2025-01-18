@@ -1,8 +1,8 @@
 package com.tech.challenge.tech_challenge.core.domain.useCases;
 
-import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.ClientRepository;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.Client;
+import com.tech.challenge.tech_challenge.core.domain.repositories.IClientRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class CreateClientUseCaseTest {
     private CreateClientUseCase createClientUseCase;
 
     @MockBean
-    private ClientRepository clientRepository;
+    private IClientRepository clientRepository;
     @Test
     public void createTest_Success() throws ValidationException {
         Client client = mock(Client.class);

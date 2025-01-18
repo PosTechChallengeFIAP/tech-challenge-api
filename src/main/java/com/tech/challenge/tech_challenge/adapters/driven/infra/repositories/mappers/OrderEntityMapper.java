@@ -8,15 +8,15 @@ public class OrderEntityMapper {
         Order order = new Order();
         order.setId(orderEntity.getId());
         order.setClient(
-            ClientEntityMapper.toDomain(orderEntity.getClient())
+            orderEntity.getClient() != null ? ClientEntityMapper.toDomain(orderEntity.getClient()) : null
         );
         order.setOrderItems(
-            OrderItemEntityMapper.toDomain(orderEntity.getOrderItems())
+            orderEntity.getOrderItems() != null ? OrderItemEntityMapper.toDomain(orderEntity.getOrderItems()) : null
         );
         order.setPrice(orderEntity.getPrice());
         order.setStatus(orderEntity.getStatus());
         order.setPayment(
-            PaymentEntityMapper.toDomain(orderEntity.getPayment())
+            orderEntity.getPayment() != null ? PaymentEntityMapper.toDomain(orderEntity.getPayment()) : null
         );
         return order;
     }
@@ -25,15 +25,15 @@ public class OrderEntityMapper {
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setId(order.getId());
         orderEntity.setClient(
-            ClientEntityMapper.toEntity(order.getClient())
+            order.getClient() != null ? ClientEntityMapper.toEntity(order.getClient()) : null
         );
         orderEntity.setOrderItems(
-            OrderItemEntityMapper.toEntity(order.getOrderItems())
+            order.getOrderItems() != null ? OrderItemEntityMapper.toEntity(order.getOrderItems()) : null
         );
         orderEntity.setPrice(order.getPrice());
         orderEntity.setStatus(order.getStatus());
         orderEntity.setPayment(
-            PaymentEntityMapper.toEntity(order.getPayment())
+            order.getPayment() != null ? PaymentEntityMapper.toEntity(order.getPayment()) : null
         );
         return orderEntity;
     }

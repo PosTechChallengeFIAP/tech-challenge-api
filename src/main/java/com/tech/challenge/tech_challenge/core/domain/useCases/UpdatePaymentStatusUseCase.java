@@ -5,19 +5,19 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.OrderRepository;
-import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.PaymentRepository;
 import com.tech.challenge.tech_challenge.core.domain.entities.EPaymentStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
+import com.tech.challenge.tech_challenge.core.domain.repositories.IOrderRepository;
+import com.tech.challenge.tech_challenge.core.domain.repositories.IPaymentRepository;
 
 @Service
 public class UpdatePaymentStatusUseCase {
     @Autowired
-    private PaymentRepository paymentRepository;
+    private IPaymentRepository paymentRepository;
 
     @Autowired
-    private OrderRepository orderRepository;
+    private IOrderRepository orderRepository;
 
     @Autowired
     private ReceiveOrderUseCase receiveOrderUseCase;

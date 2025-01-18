@@ -9,6 +9,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ClientRepositoryJPA extends JpaRepository<ClientEntity, UUID> {
-    @Query("SELECT c FROM Client c WHERE c.cpf =:cpf")
+    @Query("SELECT c FROM ClientEntity c WHERE c.cpf =:cpf")
     Optional<ClientEntity>  findByCpf ( @Param("cpf") String cpf);
 }

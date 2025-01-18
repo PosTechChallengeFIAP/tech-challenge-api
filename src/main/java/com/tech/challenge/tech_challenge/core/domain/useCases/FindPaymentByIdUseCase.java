@@ -1,8 +1,9 @@
 package com.tech.challenge.tech_challenge.core.domain.useCases;
 
-import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.PaymentRepository;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
+import com.tech.challenge.tech_challenge.core.domain.repositories.IPaymentRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import java.util.UUID;
 public class FindPaymentByIdUseCase {
 
     @Autowired
-    private PaymentRepository paymentRepository;
+    private IPaymentRepository paymentRepository;
 
     public Payment execute(UUID id) throws ResourceNotFoundException {
         return paymentRepository.findById(id).orElseThrow(

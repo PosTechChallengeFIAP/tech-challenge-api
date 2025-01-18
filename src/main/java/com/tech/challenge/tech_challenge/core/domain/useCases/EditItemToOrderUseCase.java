@@ -1,10 +1,11 @@
 package com.tech.challenge.tech_challenge.core.domain.useCases;
 
-import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.OrderRepository;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
+import com.tech.challenge.tech_challenge.core.domain.repositories.IOrderRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,8 @@ public class EditItemToOrderUseCase {
     private FindOrderByIdUseCase findOrderByIdUseCase;
 
     @Autowired
-    private OrderRepository orderRepository;
+    private IOrderRepository orderRepository;
+
     public Order execute(UUID orderId, UUID itemId, OrderItem newOrderItem) throws ResourceNotFoundException, ValidationException {
         Order order = findOrderByIdUseCase.execute(orderId);
         OrderItem oldOrderItem = findOrderItemByIdUseCase.execute(order, itemId);
@@ -29,7 +31,6 @@ public class EditItemToOrderUseCase {
             order.removeItem(oldOrderItem);
             newOrderItem.setId(oldOrderItem.getId());
             newOrderItem.setProduct(oldOrderItem.getProduct());
-            newOrderItem.setOrder(order);
             order.addItem(newOrderItem);
             newOrderItem.validate();
         }else throw new ValidationException("Only the 'quantity' property can be edited for order items.");

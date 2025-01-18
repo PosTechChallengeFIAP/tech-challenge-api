@@ -1,9 +1,10 @@
 package com.tech.challenge.tech_challenge.core.domain.useCases;
 
-import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.OrderRepository;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderBuilder;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
+import com.tech.challenge.tech_challenge.core.domain.repositories.IOrderRepository;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +20,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class AddItemToOrderUseCaseTest {
     @MockBean
-    private OrderRepository orderRepository;
+    private IOrderRepository orderRepository;
 
     @MockBean
     private FindProductByIdUseCase findProductByIdUseCase;
@@ -32,7 +33,6 @@ public class AddItemToOrderUseCaseTest {
         Order order = new OrderBuilder().build();
         OrderItem orderItem = order.getOrderItems().iterator().next();
         order.setOrderItems(new HashSet<>());
-        orderItem.setOrder(null);
 
         when(findProductByIdUseCase.execute(orderItem.getProduct().getId())).thenReturn(orderItem.getProduct());
         when(orderRepository.findById(order.getId())).thenReturn(Optional.of(order));

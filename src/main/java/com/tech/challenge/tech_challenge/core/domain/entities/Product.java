@@ -1,36 +1,17 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.UuidGenerator;
+import lombok.Data;
 
 import java.util.Objects;
 import java.util.UUID;
 
-@Getter
-@Setter
-@Entity
-@Table(name = "product")
+@Data
 public class Product {
-
-    @Id
-    @UuidGenerator
     private UUID id;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
     private String description;
-
-    @Enumerated(EnumType.ORDINAL)
     private EProductCategory category;
-
-    @Column(nullable = false)
     private Double price;
-
-    @Column
     private Boolean active;
 
     public void validate() throws ValidationException {
