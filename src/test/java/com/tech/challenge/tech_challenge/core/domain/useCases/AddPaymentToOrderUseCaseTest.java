@@ -44,7 +44,7 @@ public class AddPaymentToOrderUseCaseTest {
     }
     private Payment buildNewPayment(double value){
         Payment payment = new Payment();
-        payment.setSatus(EPaymentStatus.PENDING);
+        payment.setStatus(EPaymentStatus.PENDING);
         payment.setValue(value);
 
         return payment;

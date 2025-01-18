@@ -19,7 +19,7 @@ public class OrderBuilder {
 
         payment = new Payment();
         payment.setId(UUID.randomUUID());
-        payment.setSatus(EPaymentStatus.PENDING);
+        payment.setStatus(EPaymentStatus.PENDING);
         payment.setValue(60.0);
 
         Product product = new Product();
