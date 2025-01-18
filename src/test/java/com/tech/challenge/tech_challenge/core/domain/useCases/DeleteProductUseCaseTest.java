@@ -32,7 +32,7 @@ public class DeleteProductUseCaseTest {
         doThrow(DataIntegrityViolationException.class).when(productRepository).delete(product);
         when(productRepository.findById(any())).thenReturn(Optional.of(product));
 
-        UsedProductCannotBeDeletedException ex = assertThrows(UsedProductCannotBeDeletedException.class, ()->{
+        assertThrows(UsedProductCannotBeDeletedException.class, ()->{
             deleteProductUseCase.execute(UUID.randomUUID());
         });
     }
