@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -44,6 +45,7 @@ public class AddPaymentToOrderUseCaseTest {
     }
     private Payment buildNewPayment(double value){
         Payment payment = new Payment();
+        payment.setId(UUID.randomUUID());
         payment.setStatus(EPaymentStatus.PENDING);
         payment.setValue(value);
 

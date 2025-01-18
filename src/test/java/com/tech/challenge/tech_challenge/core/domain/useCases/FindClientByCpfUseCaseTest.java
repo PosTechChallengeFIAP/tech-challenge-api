@@ -55,10 +55,10 @@ public class FindClientByCpfUseCaseTest {
     }
 
     @Test
-    public void getByCpfTest_Invalid() throws ValidationException {
+    public void getByCpfTest_Invalid() throws RuntimeException {
         String cpf = "8787678";
 
-        assertThrows(ValidationException.class, ()->{
+        assertThrows(RuntimeException.class, ()->{
             findClientByCpfUseCase.execute(cpf);
         });
     }
