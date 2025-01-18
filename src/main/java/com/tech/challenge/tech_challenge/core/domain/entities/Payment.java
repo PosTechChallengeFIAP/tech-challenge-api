@@ -41,7 +41,7 @@ public class Payment {
         }
     }
 
-    public void setSatus(EPaymentStatus newStatus) {
+    public void setStatus(EPaymentStatus newStatus) {
         if(!Objects.isNull(this.status)) {
             boolean changeIsValid = this.status == EPaymentStatus.PENDING || 
                 (this.status == EPaymentStatus.NOT_PAID && newStatus == EPaymentStatus.CANCELED);

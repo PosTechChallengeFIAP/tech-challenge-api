@@ -14,7 +14,7 @@ public class CreatePaymentUseCase {
 
     public Payment execute(double value) throws ValidationException {
         Payment payment = new Payment();
-        payment.setSatus(EPaymentStatus.PENDING);
+        payment.setStatus(EPaymentStatus.PENDING);
         payment.setValue(value);
         payment.validate();
         return paymentRepository.save(payment);
