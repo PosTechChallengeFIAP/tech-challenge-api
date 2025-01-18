@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.jpa.OrderRepositoryJPA;
 import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.mappers.OrderEntityMapper;
@@ -13,6 +14,7 @@ import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.orm.
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IOrderRepository;
 
+@Repository
 public class OrderRepository implements IOrderRepository {
 
     @Autowired
