@@ -116,23 +116,23 @@ será redirecionado para a página de pagamentos do mercado pago.
 
 7. Dentro da página de pagamentos do mercado pago, você precisará realizar o login com
 as credenciais abaixo:
-__Usuário:__ TESTUSER1220079481
-__Senha:__ TD5F0oZom5
+__Usuário:__ TESTUSER1220079481  
+__Senha:__ TD5F0oZom5  
 
-8. Ao logar com o usuário teste, deverá escolher “Outro meio de pagamento” e, na próxima
+9. Ao logar com o usuário teste, deverá escolher “Outro meio de pagamento” e, na próxima
 tela, escolher cartão de crédito. Após isso, deverá preencher com as informações abaixo:
-__Numero:__ 5031 4332 1540 6351
-__Nome:__ APRO
-__Cod de Segurança:__ 123
-__Validade:__ 11/25
-__CPF:__ Gerar aleatoriamente
+__Numero:__ 5031 4332 1540 6351  
+__Nome:__ APRO  
+__Cod de Segurança:__ 123  
+__Validade:__ 11/25  
+__CPF:__ Gerar aleatoriamente  
 
-9. Com as informações preenchidas, clique em continuar. Selecione qualquer parcela e
+10. Com as informações preenchidas, clique em continuar. Selecione qualquer parcela e
 continue e finalize o pagamento.
 
-10. Com o pagamento finalizado clique OBRIGATORIAMENTE no botão de ‘<- Voltar para a
+11. Com o pagamento finalizado clique OBRIGATORIAMENTE no botão de ‘<- Voltar para a
 página’
 
-11. Internamente, o status do pedido estará informando que ele está na fila (QUEUE) e que
+12. Internamente, o status do pedido estará informando que ele está na fila (QUEUE) e que
 o pagamento foi finalizado (PAID). Assim, você pode conferir os pedidos da fila no endpoint
 GET /queue
