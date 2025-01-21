@@ -5,10 +5,11 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationE
 import com.tech.challenge.tech_challenge.core.application.message.EMessageType;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.Client;
-import com.tech.challenge.tech_challenge.core.domain.useCases.CreateClientUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByCpfUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByIdUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientsUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.CreateClientUseCase.CreateClientUseCase;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;

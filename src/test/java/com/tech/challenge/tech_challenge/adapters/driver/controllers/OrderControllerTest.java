@@ -30,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("rawtypes")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class OrderControllerTest {
     @LocalServerPort

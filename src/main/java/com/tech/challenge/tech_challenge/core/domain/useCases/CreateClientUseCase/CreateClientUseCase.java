@@ -1,6 +1,5 @@
-package com.tech.challenge.tech_challenge.core.domain.useCases;
+package com.tech.challenge.tech_challenge.core.domain.useCases.CreateClientUseCase;
 
-import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.Client;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IClientRepository;
 
@@ -13,7 +12,7 @@ public class CreateClientUseCase {
     @Autowired
     private IClientRepository clientRepository;
     
-    public Client execute(Client client) throws ValidationException {
+    public Client execute(Client client) {
         client.validate();
         return clientRepository.save(client);
     }
