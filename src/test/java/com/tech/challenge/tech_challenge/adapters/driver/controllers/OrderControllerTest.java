@@ -7,6 +7,7 @@ import com.tech.challenge.tech_challenge.core.application.message.MessageRespons
 import com.tech.challenge.tech_challenge.core.domain.entities.*;
 import com.tech.challenge.tech_challenge.core.domain.useCases.*;
 import com.tech.challenge.tech_challenge.core.domain.useCases.AddClientToOrderUseCase.AddClientToOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.CreateOrderUseCase.CreateOrderUseCase;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

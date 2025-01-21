@@ -7,6 +7,7 @@ import com.tech.challenge.tech_challenge.core.application.message.MessageRespons
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.useCases.*;
 import com.tech.challenge.tech_challenge.core.domain.useCases.AddClientToOrderUseCase.AddClientToOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.CreateOrderUseCase.CreateOrderUseCase;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
