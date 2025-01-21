@@ -6,9 +6,9 @@ import com.tech.challenge.tech_challenge.core.application.message.EMessageType;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
-import com.tech.challenge.tech_challenge.core.domain.useCases.AddPaymentToOrderUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderPaymentUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.UpdatePaymentStatusUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.AddPaymentToOrderUseCase.AddPaymentToOrderUseCase;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

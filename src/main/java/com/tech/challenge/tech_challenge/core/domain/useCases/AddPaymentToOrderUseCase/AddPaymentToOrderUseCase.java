@@ -1,13 +1,15 @@
-package com.tech.challenge.tech_challenge.core.domain.useCases;
+package com.tech.challenge.tech_challenge.core.domain.useCases.AddPaymentToOrderUseCase;
 
 import com.tech.challenge.tech_challenge.core.application.dtos.GeneratePaymentLinkRequestDTO;
-import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
-import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.application.ports.IPaymentGateway;
 import com.tech.challenge.tech_challenge.core.domain.entities.EOrderStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
-import com.tech.challenge.tech_challenge.core.domain.useCases.mappers.AddPaymentToOrderMapper;
+import com.tech.challenge.tech_challenge.core.domain.useCases.CreatePaymentUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindOrderByIdUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdatePaymentUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.AddPaymentToOrderUseCase.mappers.AddPaymentToOrderMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class AddPaymentToOrderUseCase {
+public class AddPaymentToOrderUseCase implements IAddPaymentToOrderUseCase {
 
     @Autowired
     private FindOrderByIdUseCase findOrderByIdUseCase;
@@ -33,7 +35,7 @@ public class AddPaymentToOrderUseCase {
     @Autowired
     private UpdatePaymentUseCase updatePaymentUseCase;
 
-    public Order execute(UUID orderId) throws ValidationException, ResourceNotFoundException {
+    public Order execute(UUID orderId) {
         Order order = findOrderByIdUseCase.execute(orderId);
 
         Payment createdPayment = createPaymentUseCase.execute(order.getPrice());

@@ -1,4 +1,4 @@
-package com.tech.challenge.tech_challenge.core.domain.useCases.mappers;
+package com.tech.challenge.tech_challenge.core.domain.useCases.AddPaymentToOrderUseCase.mappers;
 
 import java.util.ArrayList;
 import java.util.List;
