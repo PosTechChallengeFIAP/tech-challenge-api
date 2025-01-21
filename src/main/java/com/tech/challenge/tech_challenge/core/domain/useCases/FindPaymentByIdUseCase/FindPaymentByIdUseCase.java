@@ -1,4 +1,4 @@
-package com.tech.challenge.tech_challenge.core.domain.useCases;
+package com.tech.challenge.tech_challenge.core.domain.useCases.FindPaymentByIdUseCase;
 
 import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
@@ -15,7 +15,7 @@ public class FindPaymentByIdUseCase {
     @Autowired
     private IPaymentRepository paymentRepository;
 
-    public Payment execute(UUID id) throws ResourceNotFoundException {
+    public Payment execute(UUID id) {
         return paymentRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException(Payment.class, String.format("No payment with ID %s.", id))
         );
