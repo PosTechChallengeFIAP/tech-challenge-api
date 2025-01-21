@@ -3,6 +3,7 @@ package com.tech.challenge.tech_challenge.core.domain.useCases;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IOrderRepository;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindOrderByIdUseCase.FindOrderByIdUseCase;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

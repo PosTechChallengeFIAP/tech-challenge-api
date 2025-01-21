@@ -4,6 +4,7 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationE
 import com.tech.challenge.tech_challenge.core.domain.entities.EOrderStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IOrderRepository;
+import com.tech.challenge.tech_challenge.core.domain.useCases.CreateOrderUseCase.CreateOrderUseCase;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

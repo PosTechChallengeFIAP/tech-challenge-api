@@ -2,6 +2,8 @@ package com.tech.challenge.tech_challenge.core.domain.useCases;
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IProductRepository;
 import com.tech.challenge.tech_challenge.core.domain.services.generic.Patcher;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateProductUseCase.UpdateProductUseCase;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

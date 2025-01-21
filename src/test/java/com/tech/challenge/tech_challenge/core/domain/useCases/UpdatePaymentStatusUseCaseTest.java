@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IPaymentRepository;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdatePaymentStatusUseCase.UpdatePaymentStatusUseCase;
 
 @SpringBootTest
 public class UpdatePaymentStatusUseCaseTest {

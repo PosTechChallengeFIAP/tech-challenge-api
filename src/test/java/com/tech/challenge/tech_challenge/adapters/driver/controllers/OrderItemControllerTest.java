@@ -6,9 +6,10 @@ import com.tech.challenge.tech_challenge.core.application.message.MessageRespons
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderBuilder;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
-import com.tech.challenge.tech_challenge.core.domain.useCases.AddItemToOrderUseCase;
-import com.tech.challenge.tech_challenge.core.domain.useCases.EditItemToOrderUseCase;
-import com.tech.challenge.tech_challenge.core.domain.useCases.RemoveItemToOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.AddItemToOrderUseCase.AddItemToOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.EditItemToOrderUseCase.EditItemToOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.RemoveItemToOrderUseCase.RemoveItemToOrderUseCase;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

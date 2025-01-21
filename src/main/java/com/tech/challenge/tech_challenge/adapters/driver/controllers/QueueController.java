@@ -2,7 +2,7 @@ package com.tech.challenge.tech_challenge.adapters.driver.controllers;
 
 import java.util.List;
 
-import com.tech.challenge.tech_challenge.core.domain.useCases.FindNotFinishedItemsUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindNotFinishedItemsUseCase.IFindNotFinishedItemsUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateItemQueueUseCase.IUpdateItemQueueUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateItemQueueUseCase.DTOs.UpdateItemQueueUseCaseRequest;
 
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 public class QueueController {
 
     @Autowired
-    private FindNotFinishedItemsUseCase findNotFinishedItemsUseCase;
+    private IFindNotFinishedItemsUseCase findNotFinishedItemsUseCase;
 
     @Autowired
     private IUpdateItemQueueUseCase updateItemQueueUseCase;

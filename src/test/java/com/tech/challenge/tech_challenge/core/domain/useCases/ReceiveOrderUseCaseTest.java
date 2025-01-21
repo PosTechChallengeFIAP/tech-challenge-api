@@ -4,6 +4,7 @@ import com.tech.challenge.tech_challenge.core.domain.entities.EQueueStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.Queue;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IQueueRepository;
+import com.tech.challenge.tech_challenge.core.domain.useCases.ReceiveOrderUseCase.ReceiveOrderUseCase;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

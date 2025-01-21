@@ -8,7 +8,13 @@ import com.tech.challenge.tech_challenge.core.application.message.MessageRespons
 import com.tech.challenge.tech_challenge.core.domain.entities.EProductCategory;
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
 
-import com.tech.challenge.tech_challenge.core.domain.useCases.*;
+import com.tech.challenge.tech_challenge.core.domain.useCases.CreateProductUseCase.ICreateProductUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.DeleteProductUseCase.IDeleteProductUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindProductByIdUseCase.IFindProductByIdUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindProductsByCategoryUseCase.IFindProductsByCategoryUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindProductsUseCase.IFindProductsUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateProductUseCase.IUpdateProductUseCase;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,22 +37,22 @@ import java.util.UUID;
 public class ProductController {
 
     @Autowired
-    private CreateProductUseCase createProductUseCase;
+    private ICreateProductUseCase createProductUseCase;
 
     @Autowired
-    private DeleteProductUseCase deleteProductUseCase;
+    private IDeleteProductUseCase deleteProductUseCase;
 
     @Autowired
-    private FindProductByIdUseCase findProductByIdUseCase;
+    private IFindProductByIdUseCase findProductByIdUseCase;
 
     @Autowired
-    private FindProductsByCategoryUseCase findProductsByCategoryUseCase;
+    private IFindProductsByCategoryUseCase findProductsByCategoryUseCase;
 
     @Autowired
-    private FindProductsUseCase findProductsUseCase;
+    private IFindProductsUseCase findProductsUseCase;
 
     @Autowired
-    private UpdateProductUseCase updateProductUseCase;
+    private IUpdateProductUseCase updateProductUseCase;
 
     @SuppressWarnings("rawtypes")
     @GetMapping("/productCategory")

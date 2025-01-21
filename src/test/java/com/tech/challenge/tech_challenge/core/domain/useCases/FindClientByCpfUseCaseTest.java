@@ -5,6 +5,7 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationE
 import com.tech.challenge.tech_challenge.core.application.util.CPFValidator;
 import com.tech.challenge.tech_challenge.core.domain.entities.Client;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IClientRepository;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByCpfUseCase.FindClientByCpfUseCase;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

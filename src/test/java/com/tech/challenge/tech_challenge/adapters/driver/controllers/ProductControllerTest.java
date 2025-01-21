@@ -6,7 +6,13 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.UsedProduct
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.*;
-import com.tech.challenge.tech_challenge.core.domain.useCases.*;
+import com.tech.challenge.tech_challenge.core.domain.useCases.CreateProductUseCase.CreateProductUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.DeleteProductUseCase.DeleteProductUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindProductByIdUseCase.FindProductByIdUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindProductsByCategoryUseCase.FindProductsByCategoryUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindProductsUseCase.FindProductsUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateProductUseCase.UpdateProductUseCase;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +37,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("rawtypes")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ProductControllerTest {
     @LocalServerPort

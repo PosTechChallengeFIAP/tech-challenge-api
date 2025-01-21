@@ -3,6 +3,8 @@ package com.tech.challenge.tech_challenge.core.domain.useCases;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.*;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IOrderRepository;
+import com.tech.challenge.tech_challenge.core.domain.useCases.AddClientToOrderUseCase.AddClientToOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByIdUseCase.FindClientByIdUseCase;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

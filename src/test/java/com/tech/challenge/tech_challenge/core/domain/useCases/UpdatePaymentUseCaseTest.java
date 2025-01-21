@@ -3,6 +3,7 @@ package com.tech.challenge.tech_challenge.core.domain.useCases;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IPaymentRepository;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdatePaymentUseCase.UpdatePaymentUseCase;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
