@@ -3,8 +3,8 @@ package com.tech.challenge.tech_challenge.core.domain.useCases.AddClientToOrderU
 import com.tech.challenge.tech_challenge.core.domain.entities.Client;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IOrderRepository;
-import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByIdUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindOrderByIdUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByIdUseCase.FindClientByIdUseCase;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
