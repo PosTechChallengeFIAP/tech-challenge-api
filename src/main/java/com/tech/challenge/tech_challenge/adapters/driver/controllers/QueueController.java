@@ -2,7 +2,7 @@ package com.tech.challenge.tech_challenge.adapters.driver.controllers;
 
 import java.util.List;
 
-import com.tech.challenge.tech_challenge.core.domain.useCases.FindNotFinishedItemsUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindNotFinishedItemsUseCase.FindNotFinishedItemsUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateItemQueueUseCase.IUpdateItemQueueUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateItemQueueUseCase.DTOs.UpdateItemQueueUseCaseRequest;
 

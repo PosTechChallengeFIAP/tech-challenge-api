@@ -1,4 +1,4 @@
-package com.tech.challenge.tech_challenge.core.domain.useCases;
+package com.tech.challenge.tech_challenge.core.domain.useCases.FindNotFinishedItemsUseCase;
 
 import com.tech.challenge.tech_challenge.core.domain.entities.Queue;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IQueueRepository;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class FindNotFinishedItemsUseCase {
+public class FindNotFinishedItemsUseCase implements IFindNotFinishedItemsUseCase {
 
     @Autowired
     private IQueueRepository queueRepository;
