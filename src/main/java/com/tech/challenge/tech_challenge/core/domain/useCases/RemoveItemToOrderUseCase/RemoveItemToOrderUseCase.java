@@ -1,6 +1,5 @@
-package com.tech.challenge.tech_challenge.core.domain.useCases;
+package com.tech.challenge.tech_challenge.core.domain.useCases.RemoveItemToOrderUseCase;
 
-import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IOrderRepository;
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindOrderByIdUseCase.FindOrderByIdUseCase;
@@ -9,11 +8,10 @@ import com.tech.challenge.tech_challenge.core.domain.useCases.FindOrderItemByIdU
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
-public class RemoveItemToOrderUseCase {
+public class RemoveItemToOrderUseCase implements IRemoveItemToOrderUseCase {
 
     @Autowired
     private FindOrderByIdUseCase findOrderByIdUseCase;
@@ -24,7 +22,7 @@ public class RemoveItemToOrderUseCase {
     @Autowired
     private IOrderRepository orderRepository;
 
-    public Order execute(UUID orderId, UUID itemId) throws ResourceNotFoundException, NoSuchElementException {
+    public Order execute(UUID orderId, UUID itemId) {
         Order order = findOrderByIdUseCase.execute(orderId);
         order.removeItem(findOrderItemByIdUseCase.execute(order, itemId));
 
