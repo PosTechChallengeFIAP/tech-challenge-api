@@ -6,3 +6,4 @@ metadata:
 data:
   DB_HOST: "tech-challenge-svc-db" ## Descobrir IP da sua maquina local e informar aqui
   MYSQL_INITDB_SKIP_TZINFO: 'yes'
+  BACK_URL_MERCADO_PAGO: "http://localhost:30808"

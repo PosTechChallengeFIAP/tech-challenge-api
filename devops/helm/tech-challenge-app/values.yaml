@@ -36,3 +36,5 @@ autoscaling:
 database:
   host: tech-challenge-database-mysql
 
+mercadoPago:
+  backUrl: "http://localhost:30808"
