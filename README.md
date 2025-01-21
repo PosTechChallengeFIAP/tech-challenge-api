@@ -115,7 +115,7 @@ resposta do endpoint de criação de pagamento. paymentURL. Após clicar na URL,
 será redirecionado para a página de pagamentos do mercado pago.
 
 7. Dentro da página de pagamentos do mercado pago, você precisará realizar o login com
-as credenciais abaixo:
+as credenciais abaixo:  
 __Usuário:__ TESTUSER1220079481  
 __Senha:__ TD5F0oZom5  
 
