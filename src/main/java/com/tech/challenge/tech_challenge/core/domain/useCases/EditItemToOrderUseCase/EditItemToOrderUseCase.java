@@ -1,18 +1,20 @@
-package com.tech.challenge.tech_challenge.core.domain.useCases;
+package com.tech.challenge.tech_challenge.core.domain.useCases.EditItemToOrderUseCase;
 
-import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IOrderRepository;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindOrderByIdUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindOrderItemByIdUseCase;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.UUID;
+
 @Service
-public class EditItemToOrderUseCase {
+public class EditItemToOrderUseCase implements IEditItemToOrderUseCase{
 
     @Autowired
     private FindOrderItemByIdUseCase findOrderItemByIdUseCase;
@@ -23,7 +25,7 @@ public class EditItemToOrderUseCase {
     @Autowired
     private IOrderRepository orderRepository;
 
-    public Order execute(UUID orderId, UUID itemId, OrderItem newOrderItem) throws ResourceNotFoundException, ValidationException {
+    public Order execute(UUID orderId, UUID itemId, OrderItem newOrderItem) {
         Order order = findOrderByIdUseCase.execute(orderId);
         OrderItem oldOrderItem = findOrderItemByIdUseCase.execute(order, itemId);
 
