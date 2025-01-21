@@ -77,7 +77,7 @@ O autoscaling está habilitado por padrão, mas pode ser desabilitado em tech-ch
 
 ## Caso de Uso End-to-End
 
-Observação importante: Para montar o body de requisições, utilize a documentação do
+__Observação importante:__ Para montar o body de requisições, utilize a documentação do
 SWAGGER disponibilizada.
 
 1. Para que o projeto possa ser executado de maneira correta primeiro devemos gerar a
