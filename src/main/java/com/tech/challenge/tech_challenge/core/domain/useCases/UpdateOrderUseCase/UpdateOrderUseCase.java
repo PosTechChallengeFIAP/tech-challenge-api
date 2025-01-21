@@ -1,7 +1,5 @@
-package com.tech.challenge.tech_challenge.core.domain.useCases;
+package com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderUseCase;
 
-import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
-import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IOrderRepository;
 import com.tech.challenge.tech_challenge.core.domain.services.generic.Patcher;
@@ -13,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class UpdateOrderUseCase {
+public class UpdateOrderUseCase implements IUpdateOrderUseCase {
 
     @Autowired
     private IOrderRepository orderRepository;
@@ -24,13 +22,13 @@ public class UpdateOrderUseCase {
     @Autowired
     private Patcher<Order> orderPatcher;
 
-    public Order execute(Order order) throws ValidationException {
+    public Order execute(Order order) {
         order.validate();
 
         return orderRepository.save(order);
     }
 
-    public Order execute(UUID id, Order order) throws ResourceNotFoundException, ValidationException, IllegalAccessException  {
+    public Order execute(UUID id, Order order) throws IllegalAccessException  {
 
         Order orderRecord = findOrderByIdUseCase.execute(id);
 

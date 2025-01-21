@@ -10,6 +10,7 @@ import com.tech.challenge.tech_challenge.core.domain.useCases.AddClientToOrderUs
 import com.tech.challenge.tech_challenge.core.domain.useCases.CreateOrderUseCase.CreateOrderUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindOrderByIdUseCase.FindOrderByIdUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindOrdersUseCase.FindOrdersUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderUseCase.UpdateOrderUseCase;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
