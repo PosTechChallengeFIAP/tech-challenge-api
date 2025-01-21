@@ -1,6 +1,5 @@
-package com.tech.challenge.tech_challenge.core.domain.useCases;
+package com.tech.challenge.tech_challenge.core.domain.useCases.CreatePaymentUseCase;
 
-import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.EPaymentStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IPaymentRepository;
@@ -13,7 +12,7 @@ public class CreatePaymentUseCase {
     @Autowired
     private IPaymentRepository paymentRepository;
 
-    public Payment execute(double value) throws ValidationException {
+    public Payment execute(double value) {
         Payment payment = new Payment();
         payment.setStatus(EPaymentStatus.PENDING);
         payment.setValue(value);
