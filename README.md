@@ -120,7 +120,7 @@ __Usuário:__ TESTUSER1220079481
 __Senha:__ TD5F0oZom5  
 
 9. Ao logar com o usuário teste, deverá escolher “Outro meio de pagamento” e, na próxima
-tela, escolher cartão de crédito. Após isso, deverá preencher com as informações abaixo:
+tela, escolher cartão de crédito. Após isso, deverá preencher com as informações abaixo:  
 __Numero:__ 5031 4332 1540 6351  
 __Nome:__ APRO  
 __Cod de Segurança:__ 123  
