@@ -1,4 +1,4 @@
-package com.tech.challenge.tech_challenge.core.domain.useCases;
+package com.tech.challenge.tech_challenge.core.domain.useCases.UpdatePaymentStatusUseCase;
 
 import java.util.UUID;
 
@@ -13,7 +13,7 @@ import com.tech.challenge.tech_challenge.core.domain.repositories.IPaymentReposi
 import com.tech.challenge.tech_challenge.core.domain.useCases.ReceiveOrderUseCase.ReceiveOrderUseCase;
 
 @Service
-public class UpdatePaymentStatusUseCase {
+public class UpdatePaymentStatusUseCase implements IUpdatePaymentStatusUseCase {
     @Autowired
     private IPaymentRepository paymentRepository;
 
