@@ -1,6 +1,5 @@
 package com.tech.challenge.tech_challenge.adapters.driver.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
@@ -50,7 +49,6 @@ public class OrderItemControllerTest {
     private EditItemToOrderUseCase editItemToOrderUseCase;
 
     private String BASE_URL;
-    private final ObjectMapper mapper = new ObjectMapper();
 
     @BeforeEach
     public void setUp(){

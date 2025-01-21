@@ -1,7 +1,7 @@
 package com.tech.challenge.tech_challenge.core.domain.useCases;
 
-import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.OrderRepository;
 import com.tech.challenge.tech_challenge.core.domain.entities.*;
+import com.tech.challenge.tech_challenge.core.domain.repositories.IOrderRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -17,7 +18,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class AddPaymentToOrderUseCaseTest {
     @MockBean
-    private OrderRepository orderRepository;
+    private IOrderRepository orderRepository;
 
     @MockBean
     private CreatePaymentUseCase createPaymentUseCase;
@@ -44,7 +45,8 @@ public class AddPaymentToOrderUseCaseTest {
     }
     private Payment buildNewPayment(double value){
         Payment payment = new Payment();
-        payment.setSatus(EPaymentStatus.PENDING);
+        payment.setId(UUID.randomUUID());
+        payment.setStatus(EPaymentStatus.PENDING);
         payment.setValue(value);
 
         return payment;

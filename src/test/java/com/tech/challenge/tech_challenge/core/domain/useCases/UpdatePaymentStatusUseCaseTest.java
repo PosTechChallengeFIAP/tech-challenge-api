@@ -11,13 +11,13 @@ import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.PaymentRepository;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
+import com.tech.challenge.tech_challenge.core.domain.repositories.IPaymentRepository;
 
 @SpringBootTest
 public class UpdatePaymentStatusUseCaseTest {
     @MockBean
-    private PaymentRepository paymentRepository;
+    private IPaymentRepository paymentRepository;
 
     @MockBean
     private UpdatePaymentStatusUseCase updatePaymentStatusUseCase;

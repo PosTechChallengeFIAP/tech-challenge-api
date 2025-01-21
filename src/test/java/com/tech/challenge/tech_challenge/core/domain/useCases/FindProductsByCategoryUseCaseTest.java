@@ -1,7 +1,9 @@
 package com.tech.challenge.tech_challenge.core.domain.useCases;
-import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.ProductRepository;
+
 import com.tech.challenge.tech_challenge.core.domain.entities.EProductCategory;
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
+import com.tech.challenge.tech_challenge.core.domain.repositories.IProductRepository;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +19,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class FindProductsByCategoryUseCaseTest {
     @MockBean
-    private ProductRepository productRepository;
+    private IProductRepository productRepository;
 
     @Autowired
     private FindProductsByCategoryUseCase findProductsByCategoryUseCase;

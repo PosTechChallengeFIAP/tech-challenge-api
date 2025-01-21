@@ -1,11 +1,12 @@
 package com.tech.challenge.tech_challenge.core.domain.useCases;
 
-import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.OrderRepository;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
+import com.tech.challenge.tech_challenge.core.domain.repositories.IOrderRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,12 @@ public class AddItemToOrderUseCase {
 
     @Autowired
     private FindOrderByIdUseCase findOrderByIdUseCase;
+    
     @Autowired
     private FindProductByIdUseCase findProductByIdUseCase;
 
     @Autowired
-    private OrderRepository orderRepository;
+    private IOrderRepository orderRepository;
 
     public Order execute(UUID orderId, OrderItem orderItem) throws ResourceNotFoundException, ValidationException {
         Order order = findOrderByIdUseCase.execute(orderId);

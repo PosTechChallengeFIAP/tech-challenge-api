@@ -1,8 +1,9 @@
 package com.tech.challenge.tech_challenge.core.domain.useCases;
 
-import com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.PaymentRepository;
 import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
+import com.tech.challenge.tech_challenge.core.domain.repositories.IPaymentRepository;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class FindPaymentByIdUseCaseTest {
     @MockBean
-    private PaymentRepository paymentRepository;
+    private IPaymentRepository paymentRepository;
 
     @Autowired
     private FindPaymentByIdUseCase findPaymentByIdUseCase;

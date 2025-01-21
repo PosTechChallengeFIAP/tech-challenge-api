@@ -30,7 +30,7 @@ public class UpdateOrderPaymentUseCase {
 
     public Payment execute(UUID orderId, UUID paymentId, EPaymentStatus status) throws ResourceNotFoundException, ValidationException {
         Payment payment = findPaymentByIdUseCase.execute(paymentId);
-        payment.setSatus(status);
+        payment.setStatus(status);
 
         Order order = findOrderByIdUseCase.execute(orderId);
         order.setPayment(payment);

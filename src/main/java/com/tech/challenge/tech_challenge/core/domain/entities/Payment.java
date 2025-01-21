@@ -1,9 +1,6 @@
 package com.tech.challenge.tech_challenge.core.domain.entities;
 
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
-import org.hibernate.annotations.UuidGenerator;
-
-import com.tech.challenge.tech_challenge.core.application.exceptions.UnableToChangePaymentStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,11 +8,16 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
+import com.tech.challenge.tech_challenge.core.application.exceptions.UnableToChangePaymentStatus;
+
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Objects;
 import java.util.UUID;
+
+import org.hibernate.annotations.UuidGenerator;
 
 @Getter
 @Setter
@@ -41,7 +43,7 @@ public class Payment {
         }
     }
 
-    public void setSatus(EPaymentStatus newStatus) {
+    public void setStatus(EPaymentStatus newStatus) {
         if(!Objects.isNull(this.status)) {
             boolean changeIsValid = this.status == EPaymentStatus.PENDING || 
                 (this.status == EPaymentStatus.NOT_PAID && newStatus == EPaymentStatus.CANCELED);
