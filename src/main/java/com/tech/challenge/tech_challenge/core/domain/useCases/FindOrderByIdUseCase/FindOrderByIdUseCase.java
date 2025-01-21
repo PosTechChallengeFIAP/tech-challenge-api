@@ -1,4 +1,4 @@
-package com.tech.challenge.tech_challenge.core.domain.useCases;
+package com.tech.challenge.tech_challenge.core.domain.useCases.FindOrderByIdUseCase;
 
 import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class FindOrderByIdUseCase {
+public class FindOrderByIdUseCase implements IFindOrderByIdUseCase {
 
     @Autowired
     private IOrderRepository orderRepository;
 
-    public Order execute(UUID id) throws ResourceNotFoundException {
+    public Order execute(UUID id) {
         return orderRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException(Order.class, String.format("No order with ID %s.", id))
         );
