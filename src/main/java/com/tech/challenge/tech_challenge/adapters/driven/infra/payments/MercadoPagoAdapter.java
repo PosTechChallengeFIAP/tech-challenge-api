@@ -40,8 +40,10 @@ public class MercadoPagoAdapter implements IPaymentGateway {
             link = preference.getInitPoint();
         } catch (MPApiException ex) {
             System.out.printf(
-                "MercadoPago Error. Status: %s, Content: %s%n",
-                ex.getApiResponse().getStatusCode(), ex.getApiResponse().getContent());
+                "MercadoPago Error. Status: %s, Content: %s%n, Token: %s",
+                ex.getApiResponse().getStatusCode(), ex.getApiResponse().getContent(),
+                System.getenv("KEY_MERCADO_PAGO")
+            );
         } catch (MPException ex) {
             ex.printStackTrace();
         }
