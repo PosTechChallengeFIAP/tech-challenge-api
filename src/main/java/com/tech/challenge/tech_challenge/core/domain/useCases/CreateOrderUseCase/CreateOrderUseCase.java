@@ -1,6 +1,5 @@
-package com.tech.challenge.tech_challenge.core.domain.useCases;
+package com.tech.challenge.tech_challenge.core.domain.useCases.CreateOrderUseCase;
 
-import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.EOrderStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IOrderRepository;
@@ -16,7 +15,7 @@ public class CreateOrderUseCase {
     @Autowired
     private IOrderRepository orderRepository;
 
-    public Order execute(Order order) throws ValidationException {
+    public Order execute(Order order) {
         order.setOrderItems(Collections.emptySet());
         order.setStatus(EOrderStatus.ORDERING);
         order.validate();
