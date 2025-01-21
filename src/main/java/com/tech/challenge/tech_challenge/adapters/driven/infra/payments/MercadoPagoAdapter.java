@@ -20,7 +20,7 @@ import com.tech.challenge.tech_challenge.core.application.ports.IPaymentGateway;
 public class MercadoPagoAdapter implements IPaymentGateway {
     
     public MercadoPagoAdapter() {
-        MercadoPagoConfig.setAccessToken(System.getenv("APP_USR-2294323759964042-011214-fe2787640823fb66d57ce7c27dde60d6-2202504787"));
+        MercadoPagoConfig.setAccessToken(System.getenv("KEY_MERCADO_PAGO"));
     }
     
     @Override
