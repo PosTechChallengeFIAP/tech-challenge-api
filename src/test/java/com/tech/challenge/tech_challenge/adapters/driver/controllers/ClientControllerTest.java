@@ -6,10 +6,10 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationE
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.Client;
 import com.tech.challenge.tech_challenge.core.domain.entities.ClientBuilder;
-import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByCpfUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByIdUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientsUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.CreateClientUseCase.CreateClientUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByCpfUseCase.FindClientByCpfUseCase;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
