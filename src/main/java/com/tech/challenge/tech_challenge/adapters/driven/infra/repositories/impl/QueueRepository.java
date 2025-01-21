@@ -1,6 +1,7 @@
 package com.tech.challenge.tech_challenge.adapters.driven.infra.repositories.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,12 @@ public class QueueRepository implements IQueueRepository {
 
     @Autowired
     private QueueRepositoryJPA queueRepositoryJPA;
+
+    @Override
+    public Optional<Queue> findById(Integer id) {
+        Optional<Queue> queueItem = queueRepositoryJPA.findById(id);
+        return queueItem;
+    }
 
     @Override
     public Queue save(Queue queueToSave) {
