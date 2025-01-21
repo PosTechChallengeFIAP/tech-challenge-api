@@ -8,6 +8,7 @@ import com.tech.challenge.tech_challenge.core.application.message.MessageRespons
 import com.tech.challenge.tech_challenge.core.domain.entities.*;
 import com.tech.challenge.tech_challenge.core.domain.useCases.*;
 import com.tech.challenge.tech_challenge.core.domain.useCases.CreateProductUseCase.CreateProductUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.DeleteProductUseCase.DeleteProductUseCase;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

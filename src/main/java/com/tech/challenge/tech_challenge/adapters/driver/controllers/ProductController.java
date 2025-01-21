@@ -10,6 +10,7 @@ import com.tech.challenge.tech_challenge.core.domain.entities.Product;
 
 import com.tech.challenge.tech_challenge.core.domain.useCases.*;
 import com.tech.challenge.tech_challenge.core.domain.useCases.CreateProductUseCase.CreateProductUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.DeleteProductUseCase.DeleteProductUseCase;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
