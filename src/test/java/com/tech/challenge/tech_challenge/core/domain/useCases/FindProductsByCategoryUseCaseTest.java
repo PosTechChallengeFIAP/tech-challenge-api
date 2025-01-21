@@ -3,6 +3,7 @@ package com.tech.challenge.tech_challenge.core.domain.useCases;
 import com.tech.challenge.tech_challenge.core.domain.entities.EProductCategory;
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IProductRepository;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindProductsByCategoryUseCase.FindProductsByCategoryUseCase;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

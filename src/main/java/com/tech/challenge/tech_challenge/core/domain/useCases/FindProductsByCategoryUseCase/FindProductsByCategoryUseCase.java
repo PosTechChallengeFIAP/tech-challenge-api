@@ -1,4 +1,4 @@
-package com.tech.challenge.tech_challenge.core.domain.useCases;
+package com.tech.challenge.tech_challenge.core.domain.useCases.FindProductsByCategoryUseCase;
 
 import com.tech.challenge.tech_challenge.core.domain.entities.EProductCategory;
 import com.tech.challenge.tech_challenge.core.domain.entities.Product;
@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class FindProductsByCategoryUseCase {
+public class FindProductsByCategoryUseCase implements IFindProductsByCategoryUseCase {
     @Autowired
     private IProductRepository productRepository;
 
-    public List<Product> execute(EProductCategory category){
+    public List<Product> execute(EProductCategory category) {
         return productRepository.findProductByCategory(category.ordinal());
     }
 }
