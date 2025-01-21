@@ -74,3 +74,63 @@ O desenho contempla dois cenários sendo o primeiro um cenário em que o sistema
 O autoscaling está habilitado por padrão, mas pode ser desabilitado em tech-challenge-app/values.yaml.
 
 [![image](https://github.com/PosTechChallengeFIAP/tech-challenge/blob/main/docs/TechC.drawio.png)](/)
+
+## Caso de Uso End-to-End
+
+Observação importante: Para montar o body de requisições, utilize a documentação do
+SWAGGER disponibilizada.
+
+1- Para que o projeto possa ser executado de maneira correta primeiro devemos gerar a
+estrutura de nossa lanchonete, que no caso serão os produtos. Para cadastrar novos
+produtos basta utilizar o endpoint http://localhost:8080/product e realizar uma requisição
+HTTP do tipo POST. Lembre-se de incluir o body seguindo a documentação.
+
+2- Após gerar produtos, o fluxo de pedidos pode ser inicializado. Nesse caso realize uma
+requisição POST para o endpoint http://localhost:8080/Order e armazene seu ID.
+
+3 - Nesse fluxo há a possibilidade do cliente realizar identificação ou não.
+
+    3.A- Caso deseje cadastrar um cliente realize uma requisição POST ao endpoint
+http://localhost:8080/client (lembre-se de incluir o body seguindo a documentação) e
+armazene seu ID. Logo em seguida será necessário vincular ao pedido através do seguinte
+endpoint com uma requisição POST http://localhost:8080/order/{orderId}/client/{clientId}
+    3.B- Caso não queira informar o cliente, basta seguir em frente.
+
+4 - Seguindo esses passos, já podemos adicionar itens ao nosso pedido. Para isso realize
+uma requisição POST ao seguinte endpoint http://localhost:8080/order/{orderId}/orderItem.
+É importante ressaltar que nesse caso o ID do pedido deve ser informado no endpoint da
+requisição {orderId} e além disso deve haver o corpo da requisição informando o ID de
+algum produto criado anteriormente.
+Isso já é o suficiente para a estrutura básica, pois o pedido deve conter ao menos 1
+item para que seja possível realizar o pagamento.
+
+5 - Nesse passo o pedido estará com o status de “ordering” que significa que o cliente ainda
+está realizando seu pedido. Para prosseguir devemos realizar uma requisição POST no
+endpoint /order/:orderid/payment, para atualizar o pedido para “payment pending” e criar um
+pagamento (pagamento pendente) simulando a ação do cliente de clicar em “finalizar
+pedido” na tela do totem.
+
+6 - Com o status de pagamento pendente é hora de realizar o pagamento através da url de
+resposta do endpoint de criação de pagamento. paymentURL. Após clicar na URL, você
+será redirecionado para a página de pagamentos do mercado pago.
+
+7- Dentro da página de pagamentos do mercado pago, você precisará realizar o login com
+as credenciais abaixo:
+Usuário: TESTUSER1220079481
+Senha: TD5F0oZom5
+
+8- Ao logar com o usuário teste, deverá escolher “Outro meio de pagamento” e, na próxima
+tela, escolher cartão de crédito. Após isso, deverá preencher com as informações abaixo:
+Numero: 5031 4332 1540 6351 / Nome: APRO
+Cod de Segurança: 123 / Validade: 11/25
+CPF: Gerar aleatoriamente
+
+9- Com as informações preenchidas, clique em continuar. Selecione qualquer parcela e
+continue e finalize o pagamento.
+
+10- Com o pagamento finalizado clique OBRIGATORIAMENTE no botão de ‘<- Voltar para a
+página’
+
+11- Internamente, o status do pedido estará informando que ele está na fila (QUEUE) e que
+o pagamento foi finalizado (PAID). Assim, você pode conferir os pedidos da fila no endpoint
+GET /queue
