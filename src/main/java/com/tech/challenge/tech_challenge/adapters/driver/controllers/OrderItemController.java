@@ -6,9 +6,9 @@ import com.tech.challenge.tech_challenge.core.application.message.EMessageType;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
-import com.tech.challenge.tech_challenge.core.domain.useCases.RemoveItemToOrderUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.AddItemToOrderUseCase.AddItemToOrderUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.EditItemToOrderUseCase.EditItemToOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.RemoveItemToOrderUseCase.RemoveItemToOrderUseCase;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

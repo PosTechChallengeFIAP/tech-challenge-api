@@ -3,6 +3,7 @@ package com.tech.challenge.tech_challenge.core.domain.useCases;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IOrderRepository;
+import com.tech.challenge.tech_challenge.core.domain.useCases.RemoveItemToOrderUseCase.RemoveItemToOrderUseCase;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

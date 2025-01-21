@@ -1,10 +1,10 @@
-package com.tech.challenge.tech_challenge.core.domain.useCases;
+package com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderPaymentUseCase;
 
-import com.tech.challenge.tech_challenge.core.application.exceptions.ResourceNotFoundException;
-import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.domain.entities.EPaymentStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdatePaymentUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindOrderByIdUseCase.FindOrderByIdUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindPaymentByIdUseCase.FindPaymentByIdUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.ReceiveOrderUseCase.ReceiveOrderUseCase;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class UpdateOrderPaymentUseCase {
+public class UpdateOrderPaymentUseCase implements IUpdateOrderPaymentUseCase {
 
     @Autowired
     private FindPaymentByIdUseCase findPaymentByIdUseCase;
@@ -32,7 +32,7 @@ public class UpdateOrderPaymentUseCase {
     @Autowired
     private FindOrderByIdUseCase findOrderByIdUseCase;
 
-    public Payment execute(UUID orderId, UUID paymentId, EPaymentStatus status) throws ResourceNotFoundException, ValidationException {
+    public Payment execute(UUID orderId, UUID paymentId, EPaymentStatus status) {
         Payment payment = findPaymentByIdUseCase.execute(paymentId);
         payment.setStatus(status);
 
