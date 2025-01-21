@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 @Service
-public class CreateOrderUseCase {
+public class CreateOrderUseCase implements ICreateOrderUseCase {
 
     @Autowired
     private IOrderRepository orderRepository;
