@@ -14,6 +14,7 @@ import com.tech.challenge.tech_challenge.core.domain.useCases.DeleteProductUseCa
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindProductByIdUseCase.FindProductByIdUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindProductsByCategoryUseCase.FindProductsByCategoryUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindProductsUseCase.FindProductsUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateProductUseCase.UpdateProductUseCase;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
