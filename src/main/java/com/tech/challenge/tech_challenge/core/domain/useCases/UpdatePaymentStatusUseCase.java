@@ -10,6 +10,7 @@ import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IOrderRepository;
 import com.tech.challenge.tech_challenge.core.domain.repositories.IPaymentRepository;
+import com.tech.challenge.tech_challenge.core.domain.useCases.ReceiveOrderUseCase.ReceiveOrderUseCase;
 
 @Service
 public class UpdatePaymentStatusUseCase {
