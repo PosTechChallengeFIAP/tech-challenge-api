@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: tech-challenge-configmap
-  labels:
-    app: {{ include "tech-challenge-app.fullname" . }}
-data:
-  DB_HOST: {{ .Values.database.host }}
-  MYSQL_INITDB_SKIP_TZINFO: 'yes'
