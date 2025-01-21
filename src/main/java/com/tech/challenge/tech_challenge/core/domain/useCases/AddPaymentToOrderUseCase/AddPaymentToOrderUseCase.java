@@ -5,11 +5,11 @@ import com.tech.challenge.tech_challenge.core.application.ports.IPaymentGateway;
 import com.tech.challenge.tech_challenge.core.domain.entities.EOrderStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
-import com.tech.challenge.tech_challenge.core.domain.useCases.UpdatePaymentUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.AddPaymentToOrderUseCase.mappers.AddPaymentToOrderMapper;
 import com.tech.challenge.tech_challenge.core.domain.useCases.CreatePaymentUseCase.CreatePaymentUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindOrderByIdUseCase.FindOrderByIdUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderUseCase.UpdateOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdatePaymentUseCase.UpdatePaymentUseCase;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

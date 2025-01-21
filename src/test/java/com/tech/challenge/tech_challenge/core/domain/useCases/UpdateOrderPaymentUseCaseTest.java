@@ -5,6 +5,7 @@ import com.tech.challenge.tech_challenge.core.domain.repositories.IOrderReposito
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindPaymentByIdUseCase.FindPaymentByIdUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.ReceiveOrderUseCase.ReceiveOrderUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderPaymentUseCase.UpdateOrderPaymentUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdatePaymentUseCase.UpdatePaymentUseCase;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

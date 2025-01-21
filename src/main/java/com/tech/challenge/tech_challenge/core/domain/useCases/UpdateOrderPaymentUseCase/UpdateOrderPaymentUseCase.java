@@ -3,11 +3,11 @@ package com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderPaymen
 import com.tech.challenge.tech_challenge.core.domain.entities.EPaymentStatus;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
-import com.tech.challenge.tech_challenge.core.domain.useCases.UpdatePaymentUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindOrderByIdUseCase.FindOrderByIdUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindPaymentByIdUseCase.FindPaymentByIdUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.ReceiveOrderUseCase.ReceiveOrderUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderUseCase.UpdateOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdatePaymentUseCase.UpdatePaymentUseCase;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
