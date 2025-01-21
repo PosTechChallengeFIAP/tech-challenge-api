@@ -6,9 +6,9 @@ import com.tech.challenge.tech_challenge.core.application.message.EMessageType;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.OrderItem;
-import com.tech.challenge.tech_challenge.core.domain.useCases.AddItemToOrderUseCase.AddItemToOrderUseCase;
-import com.tech.challenge.tech_challenge.core.domain.useCases.EditItemToOrderUseCase.EditItemToOrderUseCase;
-import com.tech.challenge.tech_challenge.core.domain.useCases.RemoveItemToOrderUseCase.RemoveItemToOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.AddItemToOrderUseCase.IAddItemToOrderuseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.EditItemToOrderUseCase.IEditItemToOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.RemoveItemToOrderUseCase.IRemoveItemToOrderUseCase;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,13 +29,13 @@ import java.util.UUID;
 public class OrderItemController {
 
     @Autowired
-    private AddItemToOrderUseCase addItemToOrderUseCase;
+    private IAddItemToOrderuseCase addItemToOrderUseCase;
 
     @Autowired
-    private RemoveItemToOrderUseCase removeItemToOrderUseCase;
+    private IRemoveItemToOrderUseCase removeItemToOrderUseCase;
 
     @Autowired
-    private EditItemToOrderUseCase editItemToOrderUseCase;
+    private IEditItemToOrderUseCase editItemToOrderUseCase;
 
     @SuppressWarnings("rawtypes")
     @PostMapping("/order/{orderId}/orderItem")

@@ -6,9 +6,9 @@ import com.tech.challenge.tech_challenge.core.application.message.EMessageType;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
 import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
-import com.tech.challenge.tech_challenge.core.domain.useCases.AddPaymentToOrderUseCase.AddPaymentToOrderUseCase;
-import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderPaymentUseCase.UpdateOrderPaymentUseCase;
-import com.tech.challenge.tech_challenge.core.domain.useCases.UpdatePaymentStatusUseCase.UpdatePaymentStatusUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.AddPaymentToOrderUseCase.IAddPaymentToOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderPaymentUseCase.IUpdateOrderPaymentUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdatePaymentStatusUseCase.IUpdatePaymentStatusUseCase;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,13 +28,13 @@ import java.util.UUID;
 public class PaymentController {
 
     @Autowired
-    private AddPaymentToOrderUseCase addPaymentToOrderUseCase;
+    private IAddPaymentToOrderUseCase addPaymentToOrderUseCase;
 
     @Autowired
-    private UpdateOrderPaymentUseCase updateOrderPaymentUseCase;
+    private IUpdateOrderPaymentUseCase updateOrderPaymentUseCase;
 
     @Autowired
-    private UpdatePaymentStatusUseCase updatePaymentStatusUseCase;
+    private IUpdatePaymentStatusUseCase updatePaymentStatusUseCase;
 
     @SuppressWarnings("rawtypes")
     @PostMapping("/order/{orderId}/payment")

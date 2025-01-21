@@ -5,12 +5,11 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationE
 import com.tech.challenge.tech_challenge.core.application.message.EMessageType;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.Order;
-import com.tech.challenge.tech_challenge.core.domain.useCases.*;
-import com.tech.challenge.tech_challenge.core.domain.useCases.AddClientToOrderUseCase.AddClientToOrderUseCase;
-import com.tech.challenge.tech_challenge.core.domain.useCases.CreateOrderUseCase.CreateOrderUseCase;
-import com.tech.challenge.tech_challenge.core.domain.useCases.FindOrderByIdUseCase.FindOrderByIdUseCase;
-import com.tech.challenge.tech_challenge.core.domain.useCases.FindOrdersUseCase.FindOrdersUseCase;
-import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderUseCase.UpdateOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.AddClientToOrderUseCase.IAddClientToOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.CreateOrderUseCase.ICreateOrderUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindOrderByIdUseCase.IFindOrderByIdUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindOrdersUseCase.IFindOrdersUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderUseCase.IUpdateOrderUseCase;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -31,19 +30,19 @@ import java.util.UUID;
 public class OrderController {
 
     @Autowired
-    private FindOrdersUseCase findOrdersUseCase;
+    private IFindOrdersUseCase findOrdersUseCase;
 
     @Autowired
-    private FindOrderByIdUseCase findOrderByIdUseCase;
+    private IFindOrderByIdUseCase findOrderByIdUseCase;
 
     @Autowired
-    private CreateOrderUseCase createOrderUseCase;
+    private ICreateOrderUseCase createOrderUseCase;
 
     @Autowired
-    private AddClientToOrderUseCase addClientToOrderUseCase;
+    private IAddClientToOrderUseCase addClientToOrderUseCase;
 
     @Autowired
-    private UpdateOrderUseCase updateOrderUseCase;
+    private IUpdateOrderUseCase updateOrderUseCase;
 
     @SuppressWarnings("rawtypes")
     @GetMapping("/order")

@@ -6,7 +6,6 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.UsedProduct
 import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationException;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.*;
-import com.tech.challenge.tech_challenge.core.domain.useCases.*;
 import com.tech.challenge.tech_challenge.core.domain.useCases.CreateProductUseCase.CreateProductUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.DeleteProductUseCase.DeleteProductUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.FindProductByIdUseCase.FindProductByIdUseCase;

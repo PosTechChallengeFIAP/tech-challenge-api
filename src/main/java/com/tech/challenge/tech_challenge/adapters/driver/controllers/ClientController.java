@@ -5,10 +5,10 @@ import com.tech.challenge.tech_challenge.core.application.exceptions.ValidationE
 import com.tech.challenge.tech_challenge.core.application.message.EMessageType;
 import com.tech.challenge.tech_challenge.core.application.message.MessageResponse;
 import com.tech.challenge.tech_challenge.core.domain.entities.Client;
-import com.tech.challenge.tech_challenge.core.domain.useCases.CreateClientUseCase.CreateClientUseCase;
-import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByCpfUseCase.FindClientByCpfUseCase;
-import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByIdUseCase.FindClientByIdUseCase;
-import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientsUseCase.FindClientsUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.CreateClientUseCase.ICreateClientUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByCpfUseCase.IFindClientByCpfUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientByIdUseCase.IFindClientByIdUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.FindClientsUseCase.IFindClientsUseCase;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -31,16 +31,16 @@ import java.util.UUID;
 public class ClientController {
 
     @Autowired
-    private CreateClientUseCase createClientUseCase;
+    private ICreateClientUseCase createClientUseCase;
 
     @Autowired
-    private FindClientsUseCase findClientsUseCase;
+    private IFindClientsUseCase findClientsUseCase;
 
     @Autowired
-    private FindClientByIdUseCase findClientByIdUseCase;
+    private IFindClientByIdUseCase findClientByIdUseCase;
 
     @Autowired
-    private FindClientByCpfUseCase findClientByCpfUseCase;
+    private IFindClientByCpfUseCase findClientByCpfUseCase;
 
     @SuppressWarnings("rawtypes")
     @GetMapping("/client")
