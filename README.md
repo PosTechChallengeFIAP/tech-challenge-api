@@ -66,6 +66,7 @@ helm uninstall tech-challenge-application
 Documentação de endpoints:
 ```
 http://localhost:8080/swagger-ui/index.html ## documentação Swagger da aplicação
+https://youtu.be/wGReklgdP-E ## Link para o video de apresentação da estrutura e funcionamento da aplicação
 ```
 
 ## Escalabilidade HPA
