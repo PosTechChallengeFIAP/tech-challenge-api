@@ -1,5 +1,5 @@
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "ecs-cluster"
+  name = "tech-challenge-ecs-cluster"
 }
 
 resource "aws_instance" "ecs_instance" {
@@ -35,6 +35,36 @@ resource "aws_ecs_task_definition" "app_task" {
         {
           containerPort = 8080
           hostPort      = 80
+        }
+      ]
+      environment = [
+        {
+          name  = "DB_HOST"
+          value = aws_rds_cluster.aurora_cluster.endpoint
+        },
+        {
+          name  = "DB_PORT"
+          value = "3306"
+        },
+        {
+          name  = "DB_USER"
+          value = var.db_username
+        },
+        {
+          name  = "DB_PASSWORD"
+          value = var.db_password
+        },
+        {
+          name  = "DB_NAME"
+          value = var.db_name
+        },
+        {
+          name = "BACK_URL_MERCADO_PAGO",
+          value = aws_instance.ecs_instance.public_ip
+        },
+        {
+          name  = "KEY_MERCADO_PAGO"
+          value = var.key_mercado_pago
         }
       ]
     }

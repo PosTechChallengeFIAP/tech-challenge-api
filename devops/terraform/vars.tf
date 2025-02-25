@@ -12,3 +12,9 @@ variable "db_password" {
   description = "The password for the database"
   type        = string
 }
+
+variable "key_mercado_pago" {
+  description = "Key Mercado Pago"
+  type        = string
+  sensitive   = true
+}

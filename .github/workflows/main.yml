@@ -33,4 +33,7 @@ jobs:
 
       - name: Terraform Apply
         working-directory: ./devops/terraform
-        run: terraform apply -auto-approve
+        run: |
+          terraform apply -auto-approve \
+            -var "key_mercado_pago=${{ secrets.KEY_MERCADO_PAGO }}"
+
