@@ -20,61 +20,63 @@ resource "aws_instance" "ecs_instance" {
   }
 }
 
-resource "aws_ecs_task_definition" "app_task" {
-  family                   = "ecs-task"
-  network_mode             = "bridge"
-  requires_compatibilities = ["EC2"]
-  container_definitions = jsonencode([
-    {
-      name      = "tech-challenge-app"
-      image     = "loadinggreg/tech-challenge:latest"
-      cpu       = 256
-      memory    = 512
-      essential = true
-      portMappings = [
-        {
-          containerPort = 8080
-          hostPort      = 80
-        }
-      ]
-      environment = [
-        {
-          name  = "DB_HOST"
-          value = aws_rds_cluster.aurora_cluster.endpoint
-        },
-        {
-          name  = "DB_PORT"
-          value = "3306"
-        },
-        {
-          name  = "DB_USER"
-          value = var.db_username
-        },
-        {
-          name  = "DB_PASSWORD"
-          value = var.db_password
-        },
-        {
-          name  = "DB_NAME"
-          value = var.db_name
-        },
-        {
-          name = "BACK_URL_MERCADO_PAGO",
-          value = aws_instance.ecs_instance.public_ip
-        },
-        {
-          name  = "KEY_MERCADO_PAGO"
-          value = var.key_mercado_pago
-        }
-      ]
-    }
-  ])
-}
+# resource "aws_ecs_task_definition" "app_task" {
+#   family                   = "ecs-task"
+#   network_mode             = "bridge"
+#   requires_compatibilities = ["EC2"]
+#   container_definitions = jsonencode([
+#     {
+#       name      = "tech-challenge-app"
+#       image     = "loadinggreg/tech-challenge:latest"
+#       cpu       = 256
+#       memory    = 512
+#       essential = true
+#       portMappings = [
+#         {
+#           containerPort = 8080
+#           hostPort      = 80
+#         }
+#       ]
+#       environment = [
+#         {
+#           name  = "DB_HOST"
+#           value = aws_rds_cluster.aurora_cluster.endpoint
+#         },
+#         {
+#           name  = "DB_PORT"
+#           value = "3306"
+#         },
+#         {
+#           name  = "DB_USER"
+#           value = var.db_username
+#         },
+#         {
+#           name  = "DB_PASSWORD"
+#           value = var.db_password
+#         },
+#         {
+#           name  = "DB_NAME"
+#           value = var.db_name
+#         },
+#         {
+#           name = "BACK_URL_MERCADO_PAGO",
+#           value = aws_instance.ecs_instance.public_ip
+#         },
+#         {
+#           name  = "KEY_MERCADO_PAGO"
+#           value = var.key_mercado_pago
+#         }
+#       ]
+#     }
+#   ])
+# }
 
-resource "aws_ecs_service" "app_service" {
-  name            = "tech-challenge-ecs-service"
-  cluster         = aws_ecs_cluster.ecs_cluster.id
-  task_definition = aws_ecs_task_definition.app_task.arn
-  desired_count   = 1
-  launch_type     = "EC2"
-}
+# resource "aws_ecs_service" "app_service" {
+#   name            = "tech-challenge-ecs-service"
+#   cluster         = aws_ecs_cluster.ecs_cluster.id
+#   task_definition = aws_ecs_task_definition.app_task.arn
+#   desired_count   = 1
+#   launch_type     = "EC2"
+
+#   depends_on = [aws_instance.ecs_instance]
+# }
