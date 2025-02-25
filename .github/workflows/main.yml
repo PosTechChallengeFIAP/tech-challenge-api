@@ -36,4 +36,7 @@ jobs:
         run: |
           terraform apply -auto-approve \
             -var "key_mercado_pago=${{ secrets.KEY_MERCADO_PAGO }}"
+            -var "db_password=${{ secrets.TF_VAR_DB_PASSWORD }}"
+            -var "db_username=${{ secrets.TF_VAR_DB_USER }}"
+            -var "db_name=${{ secrets.TF_VAR_DB_NAME }}"
 
