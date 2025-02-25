@@ -9,7 +9,7 @@ resource "aws_iam_instance_profile" "ecs_instance_profile" {
 
 resource "aws_instance" "ecs_instance" {
   ami                         = "ami-09245d5773578a1d6"
-  instance_type               = "t2.micro"
+  instance_type               = "t3.micro"
   subnet_id                   = data.terraform_remote_state.network.outputs.public_subnet_id
   vpc_security_group_ids      = [data.terraform_remote_state.network.outputs.security_group_id]
   associate_public_ip_address = true
