@@ -92,5 +92,5 @@ resource "aws_ecs_service" "app_service" {
   desired_count   = 1
   launch_type     = "EC2"
 
-  depends_on = [aws_instance.ecs_instance]
+  depends_on = [aws_rds_cluster.aurora_cluster, aws_rds_cluster_instance.aurora_instance]
 }
