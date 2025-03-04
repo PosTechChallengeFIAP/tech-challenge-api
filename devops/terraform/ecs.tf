@@ -29,6 +29,7 @@ resource "aws_ecs_task_definition" "app_task" {
   family                   = "ecs-task"
   network_mode             = "bridge"
   requires_compatibilities = ["EC2"]
+
   container_definitions = jsonencode([
     {
       name      = "tech-challenge-app"
@@ -36,6 +37,14 @@ resource "aws_ecs_task_definition" "app_task" {
       cpu       = 256
       memory    = 512
       essential = true
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = "/ecs/tech-challenge-app"
+          "awslogs-region"        = "us-west-2"
+          "awslogs-stream-prefix" = "app-ecs"
+        }
+      }
       portMappings = [
         {
           containerPort = 8080
