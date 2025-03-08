@@ -7,7 +7,7 @@ resource "aws_rds_cluster" "aurora_cluster" {
   master_password    = var.db_password
   skip_final_snapshot = true
 
-  db_subnet_group_name = data.terraform_remote_state.network.outputs.aurora_sg_name
+  db_subnet_group_name = data.terraform_remote_state.network.outputs.aurora_subnet_group_name
   vpc_security_group_ids = [data.terraform_remote_state.network.outputs.aurora_sg_id]
 
   storage_encrypted = true

@@ -1,5 +1,5 @@
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "tech-challenge-ecs-cluster"
+  name = "tech-challenge-api-ecs-cluster"
 }
 
 resource "aws_iam_instance_profile" "ecs_instance_profile" {
@@ -10,8 +10,8 @@ resource "aws_iam_instance_profile" "ecs_instance_profile" {
 resource "aws_instance" "ecs_instance" {
   ami                         = "ami-001338ee8479f6dc1"
   instance_type               = "t3.micro"
-  subnet_id                   = data.terraform_remote_state.network.outputs.app_public_subnet_id
-  vpc_security_group_ids      = [data.terraform_remote_state.network.outputs.app_sg_id]
+  subnet_id                   = data.terraform_remote_state.network.outputs.api_public_subnet_id
+  vpc_security_group_ids      = [data.terraform_remote_state.network.outputs.api_sg_id]
   associate_public_ip_address = true
   iam_instance_profile        = aws_iam_instance_profile.ecs_instance_profile.name
 
@@ -21,7 +21,7 @@ resource "aws_instance" "ecs_instance" {
   EOF
 
   tags = {
-    Name = "tech-challenge-ecs-instance"
+    Name = "tech-challenge-api-ecs-instance"
   }
 }
 
@@ -86,7 +86,7 @@ resource "aws_ecs_task_definition" "app_task" {
 }
 
 resource "aws_ecs_service" "app_service" {
-  name            = "tech-challenge-ecs-service"
+  name            = "tech-challenge-api-ecs-service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.app_task.arn
   desired_count   = 1
