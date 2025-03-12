@@ -31,9 +31,6 @@ import java.util.UUID;
 public class ClientController {
 
     @Autowired
-    private ICreateClientUseCase createClientUseCase;
-
-    @Autowired
     private IFindClientsUseCase findClientsUseCase;
 
     @Autowired
@@ -100,30 +97,6 @@ public class ClientController {
         }catch (ResourceNotFoundException ex){
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
-                    .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));
-        }
-    }
-
-    @SuppressWarnings("rawtypes")
-    @PostMapping("/client")
-    @Operation(summary = "Create client", description = "This endpoint is used to create a new client",
-            tags = {"Client"},
-            responses ={
-                    @ApiResponse(description = "Created", responseCode = "201",
-                            content = {
-                                    @Content(schema = @Schema(implementation = Client.class))
-                            }),
-                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
-                    @ApiResponse(description = "Unauthorized Access", responseCode = "401", content = @Content),
-                    @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
-            }
-    )
-    public ResponseEntity newClient(@RequestBody Client client){
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(createClientUseCase.execute(client));
-        }catch (ValidationException | DataIntegrityViolationException ex){
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
                     .body(MessageResponse.type(EMessageType.ERROR).withMessage(ex.getMessage()));
         }
     }
