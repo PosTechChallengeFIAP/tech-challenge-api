@@ -2,16 +2,7 @@ resource "aws_cognito_user_pool" "app_user_pool" {
   name = "tech-challenge-user-pool"
 
   auto_verified_attributes = ["email"]
-  alias_attributes         = []
-
   username_attributes = ["cpf"]
-  
-  schema {
-    name                     = "email"
-    attribute_data_type      = "String"
-    required                 = true
-    mutable                  = false
-  }
 
   schema {
     name                     = "name"
