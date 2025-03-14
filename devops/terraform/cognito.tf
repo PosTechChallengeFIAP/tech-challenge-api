@@ -4,7 +4,7 @@ resource "aws_cognito_user_pool" "app_user_pool" {
   auto_verified_attributes = ["email"]
   alias_attributes         = []
 
-  username_attributes = []
+  username_attributes = ["cpf"]
   
   schema {
     name                     = "email"
