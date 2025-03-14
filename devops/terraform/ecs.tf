@@ -79,6 +79,10 @@ resource "aws_ecs_task_definition" "app_task" {
         {
           name  = "KEY_MERCADO_PAGO"
           value = var.key_mercado_pago
+        },
+        {
+          name  = "COGNITO_API_URL"
+          value = "https://tech-challenge-severino.us-west-2.amazonaws.com/"
         }
       ]
     }
