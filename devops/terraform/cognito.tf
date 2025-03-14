@@ -12,7 +12,7 @@ resource "aws_cognito_user_pool" "app_user_pool" {
   }
 
   schema {
-    name                     = "custom:cpf"
+    name                     = "cpf"
     attribute_data_type      = "String"
     mutable                  = false
     required                 = true
