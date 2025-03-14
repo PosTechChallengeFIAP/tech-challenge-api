@@ -44,7 +44,7 @@ resource "aws_cognito_user_pool" "app_user_pool" {
   }
 }
 
-resource "aws_cognito_user_pool_client" "my_user_pool_client" {
+resource "aws_cognito_user_pool_client" "app_user_pool_client" {
   name         = "tech-challenge-client"
   user_pool_id = aws_cognito_user_pool.app_user_pool.id
 
@@ -59,5 +59,5 @@ resource "aws_cognito_user_pool_client" "my_user_pool_client" {
 
 resource "aws_cognito_user_pool_domain" "my_domain" {
   domain       = "tech-challenge-severino"
-  user_pool_id = aws_cognito_user_pool.my_user_pool.id
+  user_pool_id = aws_cognito_user_pool.app_user_pool.id
 }
