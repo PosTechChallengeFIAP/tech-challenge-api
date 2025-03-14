@@ -18,3 +18,8 @@ variable "key_mercado_pago" {
   type        = string
   sensitive   = true
 }
+
+variable "tc_image_tag" {
+  description = "Tag for the docker image"
+  type        = string
+}

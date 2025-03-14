@@ -14,6 +14,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Get Short Commit Hash
+        run: echo "TC_IMAGE_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -38,5 +41,6 @@ jobs:
             -var "key_mercado_pago=${{ secrets.KEY_MERCADO_PAGO }}" \
             -var "db_password=${{ secrets.TF_VAR_DB_PASSWORD }}" \
             -var "db_username=${{ secrets.TF_VAR_DB_USER }}" \
-            -var "db_name=${{ secrets.TF_VAR_DB_NAME }}"
+            -var "db_name=${{ secrets.TF_VAR_DB_NAME }}" \
+            -var "tc_image_tag=${{ env.TC_IMAGE_TAG }}"
 
