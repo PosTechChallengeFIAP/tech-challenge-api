@@ -34,9 +34,8 @@ resource "aws_ecs_task_definition" "app_task" {
     {
       name      = "tech-challenge-app"
       image     = "loadinggreg/tech-challenge:${var.tc_image_tag}"
-      cpu       = 256
-      memory    = 512
       essential = true
+
       logConfiguration = {
         logDriver = "awslogs"
         options = {
@@ -45,12 +44,14 @@ resource "aws_ecs_task_definition" "app_task" {
           "awslogs-stream-prefix" = "app-ecs"
         }
       }
+
       portMappings = [
         {
           containerPort = 8080
           hostPort      = 80
         }
       ]
+      
       environment = [
         {
           name  = "DB_HOST"
