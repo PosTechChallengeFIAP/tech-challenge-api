@@ -5,17 +5,10 @@ resource "aws_cognito_user_pool" "app_user_pool" {
   alias_attributes = ["preferred_username"]
 
   schema {
-    name                     = "name"
+    name                     = "preferred_username"
     attribute_data_type      = "String"
     required                 = true
-    mutable                  = true
-  }
-
-  schema {
-    name                     = "cpf"
-    attribute_data_type      = "String"
     mutable                  = false
-    required                 = true
     string_attribute_constraints {
       min_length = 11
       max_length = 11
