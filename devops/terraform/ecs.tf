@@ -35,17 +35,8 @@ resource "aws_ecs_task_definition" "app_task" {
       name      = "tech-challenge-app"
       image     = "loadinggreg/tech-challenge:${var.tc_image_tag}"
       cpu       = 256
-      memory    = 1024
+      memory    = 512
       essential = true
-
-      logConfiguration = {
-        logDriver = "awslogs"
-        options = {
-          "awslogs-group"         = "/ecs/tech-challenge-app"
-          "awslogs-region"        = "us-west-2"
-          "awslogs-stream-prefix" = "app-ecs"
-        }
-      }
 
       portMappings = [
         {
