@@ -44,6 +44,15 @@ resource "aws_ecs_task_definition" "app_task" {
           hostPort      = 80
         }
       ]
+
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = "/ecs/tech-challenge-api"
+          "awslogs-region"        = "us-west-2"
+          "awslogs-stream-prefix" = "app-ecs"
+        }
+      }
       
       environment = [
         {
@@ -91,4 +100,8 @@ resource "aws_ecs_service" "app_service" {
   launch_type     = "EC2"
 
   depends_on = [aws_rds_cluster.aurora_cluster, aws_rds_cluster_instance.aurora_instance]
+}
+
+resource "aws_cloudwatch_log_group" "ecs_log_group" {
+  name = "/ecs/tech-challenge-api"
 }
