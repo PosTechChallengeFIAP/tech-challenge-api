@@ -77,7 +77,7 @@ resource "aws_ecs_task_definition" "app_task" {
         },
         {
           name = "BACK_URL_MERCADO_PAGO",
-          value = aws_instance.ecs_instance.public_ip
+          value = aws_apigatewayv2_api.ecs_api.api_endpoint
         },
         {
           name  = "KEY_MERCADO_PAGO"
