@@ -28,19 +28,6 @@ resource "aws_cognito_user_pool" "app_user_pool" {
   }
 }
 
-resource "aws_cognito_user_pool_client" "app_user_pool_client" {
-  name         = "tech-challenge-client"
-  user_pool_id = aws_cognito_user_pool.app_user_pool.id
-
-  explicit_auth_flows = [
-    "ALLOW_USER_PASSWORD_AUTH",
-    "ALLOW_REFRESH_TOKEN_AUTH",
-    "ALLOW_USER_SRP_AUTH"
-  ]
-
-  generate_secret = false
-}
-
 resource "aws_cognito_user_pool_domain" "my_domain" {
   domain       = "tech-challenge-severino"
   user_pool_id = aws_cognito_user_pool.app_user_pool.id
