@@ -98,6 +98,7 @@ resource "aws_ecs_service" "app_service" {
   task_definition = aws_ecs_task_definition.app_task.arn
   desired_count   = 1
   launch_type     = "EC2"
+  force_new_deployment = true
 
   depends_on = [aws_rds_cluster.aurora_cluster, aws_rds_cluster_instance.aurora_instance]
 }
