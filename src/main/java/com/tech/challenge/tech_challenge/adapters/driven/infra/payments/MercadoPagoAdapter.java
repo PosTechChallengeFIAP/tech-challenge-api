@@ -33,6 +33,7 @@ public class MercadoPagoAdapter implements IPaymentGateway {
         PreferenceRequest preferenceRequest = PreferenceRequest.builder()
             .items(mercadoPagoItems)
             .backUrls(this.getBackURLs(callbackURL))
+            .autoReturn("all")
             .build();
 
         try {
