@@ -13,7 +13,7 @@ resource "aws_apigatewayv2_api" "ecs_api" {
 resource "aws_apigatewayv2_integration" "ecs_integration" {
   api_id             = aws_apigatewayv2_api.ecs_api.id
   integration_type   = "HTTP_PROXY"
-  integration_uri    = "http://${aws_eip.api_eip.public_ip}:8080/{proxy}"
+  integration_uri    = "http://${aws_lb.ecs_lb.dns_name}:80/{proxy}"
   integration_method = "ANY"
 }
 

@@ -8,7 +8,7 @@ output "api_instance_id" {
   value       = aws_instance.ecs_instance.id
 }
 
-output "tech_challenge_api_eip" {
-  description = "EIP"
-  value       = aws_eip.api_eip.public_ip
+output "ecs_api_gateway_url" {
+  value = aws_apigatewayv2_api.ecs_api.api_endpoint
+  description = "API Gateway URL"
 }

@@ -45,7 +45,7 @@ resource "aws_ecs_task_definition" "app_task" {
       portMappings = [
         {
           containerPort = 8080
-          hostPort      = 8080
+          hostPort      = 0
         }
       ]
 
@@ -97,12 +97,21 @@ resource "aws_ecs_task_definition" "app_task" {
 }
 
 resource "aws_ecs_service" "app_service" {
-  name            = "tech-challenge-api-ecs-service"
-  cluster         = aws_ecs_cluster.ecs_cluster.id
-  task_definition = aws_ecs_task_definition.app_task.arn
-  desired_count   = 1
-  launch_type     = "EC2"
-  force_new_deployment = true
+  name                    = "tech-challenge-api-ecs-service"
+  cluster                 = aws_ecs_cluster.ecs_cluster.id
+  task_definition         = aws_ecs_task_definition.app_task.arn
+  desired_count           = 2
+  launch_type             = "EC2"
+  force_new_deployment    = true
+  deployment_controller   = "ECS"
+  minimum_healthy_percent = 50
+  maximum_percent         = 200
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.ecs_target_group.arn
+    container_name   = "tech-challenge-app"
+    container_port   = 8080
+  }
 
   depends_on = [aws_rds_cluster.aurora_cluster, aws_rds_cluster_instance.aurora_instance]
 }
