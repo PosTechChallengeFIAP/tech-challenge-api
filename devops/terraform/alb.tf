@@ -3,7 +3,7 @@ resource "aws_lb" "ecs_lb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [data.terraform_remote_state.network.outputs.api_sg_id]
-  subnets            = [data.terraform_remote_state.network.outputs.api_public_subnet_id]
+  subnets            = [data.terraform_remote_state.network.outputs.api_public_subnet_id, data.terraform_remote_state.network.outputs.api_public_subnet_b_id]
 
   enable_deletion_protection = false
 
