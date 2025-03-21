@@ -137,3 +137,4 @@ página’
 12. Internamente, o status do pedido estará informando que ele está na fila (QUEUE) e que
 o pagamento foi finalizado (PAID). Assim, você pode conferir os pedidos da fila no endpoint
 `GET /queue`
+
