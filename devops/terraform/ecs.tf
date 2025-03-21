@@ -20,6 +20,7 @@ resource "aws_instance" "ecs_instance" {
               #!/bin/bash
               echo "ECS_CLUSTER=${aws_ecs_cluster.ecs_cluster.name}" >> /etc/ecs/ecs.config
               echo "ECS_BACKEND_HOST=" >> /etc/ecs/ecs.config
+              yum update -y
               systemctl restart ecs
   EOF
 
