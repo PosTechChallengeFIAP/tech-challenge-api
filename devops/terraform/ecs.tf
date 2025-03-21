@@ -18,6 +18,8 @@ resource "aws_instance" "ecs_instance" {
   user_data = <<-EOF
               #!/bin/bash
               echo "ECS_CLUSTER=${aws_ecs_cluster.ecs_cluster.name}" >> /etc/ecs/ecs.config
+              echo "ECS_BACKEND_HOST=" >> /etc/ecs/ecs.config
+              systemctl restart ecs
   EOF
 
   tags = {
