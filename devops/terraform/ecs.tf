@@ -26,7 +26,7 @@ resource "aws_instance" "ecs_instance" {
 }
 
 resource "aws_ecs_task_definition" "app_task" {
-  family                   = "ecs-task"
+  family                   = "tech-challenge-api-ecs-task"
   network_mode             = "bridge"
   requires_compatibilities = ["EC2"]
 

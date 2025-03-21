@@ -29,6 +29,6 @@ resource "aws_cognito_user_pool" "app_user_pool" {
 }
 
 resource "aws_cognito_user_pool_domain" "my_domain" {
-  domain       = "tech-challenge-severino"
+  domain       = "tech-challenge-severino-d41d8"
   user_pool_id = aws_cognito_user_pool.app_user_pool.id
 }
