@@ -2,8 +2,8 @@ resource "aws_lb" "ecs_lb" {
   name               = "tech-challenge-api-lb"
   internal           = false
   load_balancer_type = "application"
-  security_groups   = [data.terraform_remote_state.network.outputs.api_sg_id]
-  subnets            = data.terraform_remote_state.network.outputs.api_public_subnet_id
+  security_groups    = [data.terraform_remote_state.network.outputs.api_sg_id]
+  subnets            = [data.terraform_remote_state.network.outputs.api_public_subnet_id]
 
   enable_deletion_protection = false
 
