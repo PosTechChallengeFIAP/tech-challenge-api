@@ -42,6 +42,14 @@ resource "aws_ecs_task_definition" "app_task" {
       memory    = 512
       essential = true
 
+      healthCheck = {
+        command = ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+        interval = 30
+        retries  = 3
+        start_period = 0
+        timeout = 5
+      }
+
       portMappings = [
         {
           containerPort = 8080
