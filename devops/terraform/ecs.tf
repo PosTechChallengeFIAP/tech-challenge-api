@@ -31,7 +31,7 @@ resource "aws_instance" "ecs_instance" {
 
 resource "aws_ecs_task_definition" "app_task" {
   family                   = "tech-challenge-api-ecs-task"
-  network_mode             = "bridge"
+  network_mode             = "awsvpc"
   requires_compatibilities = ["EC2"]
 
   container_definitions = jsonencode([
@@ -111,8 +111,12 @@ resource "aws_ecs_service" "app_service" {
   desired_count           = 2
   launch_type             = "EC2"
   force_new_deployment    = true
-  deployment_maximum_percent         = 200
-  deployment_minimum_healthy_percent = 50
+
+  network_configuration {
+    subnets          = [data.terraform_remote_state.network.outputs.api_public_subnet_id]
+    security_groups  = [data.terraform_remote_state.network.outputs.api_sg_id]
+    assign_public_ip = true
+  }
 
   load_balancer {
     target_group_arn = aws_lb_target_group.ecs_target_group.arn
