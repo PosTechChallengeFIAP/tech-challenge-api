@@ -13,7 +13,7 @@ resource "aws_lb" "ecs_lb" {
 }
 
 resource "aws_lb_target_group" "ecs_target_group" {
-  name        = "tech-challenge-api-target-group"
+  name        = "tech-challenge-api-target-group-2"
   port        = 8080
   protocol    = "HTTP"
   target_type = "ip"
