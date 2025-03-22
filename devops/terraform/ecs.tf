@@ -31,7 +31,7 @@ resource "aws_instance" "ecs_instance" {
 
 resource "aws_ecs_task_definition" "app_task" {
   family                   = "tech-challenge-api-ecs-task"
-  network_mode             = "bridge"
+  network_mode             = "awsvpc"
   requires_compatibilities = ["EC2"]
 
   container_definitions = jsonencode([
@@ -54,6 +54,7 @@ resource "aws_ecs_task_definition" "app_task" {
         {
           containerPort = 8080
           hostPort      = 0
+          protocol      = "tcp"
         }
       ]
 

@@ -14,20 +14,20 @@ resource "aws_lb" "ecs_lb" {
 
 resource "aws_lb_target_group" "ecs_target_group" {
   name        = "tech-challenge-api-target-group"
-  port        = 8080
+  port        = 80
   protocol    = "HTTP"
   target_type = "instance"
   vpc_id      = data.terraform_remote_state.network.outputs.main_vpc_id
 
-  health_check {
-    enabled             = true
-    interval            = 30
-    path                = "/health"
-    timeout             = 5
-    healthy_threshold   = 2
-    unhealthy_threshold = 5
-    port                = "traffic-port"
-  }
+  # health_check {
+  #   interval            = 30
+  #   path                = "/health"
+  #   timeout             = 5
+  #   healthy_threshold   = 2
+  #   unhealthy_threshold = 5
+  #   port                = "traffic-port"
+  #   matcher             = { http_code = "200-299" }
+  # }
 }
 
 resource "aws_lb_listener" "ecs_listener" {
