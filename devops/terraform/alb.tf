@@ -26,7 +26,6 @@ resource "aws_lb_target_group" "ecs_target_group" {
     healthy_threshold   = 2
     unhealthy_threshold = 5
     port                = "traffic-port"
-    matcher             = { http_code = "200-299" }
   }
 }
 
