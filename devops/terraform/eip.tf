@@ -1,29 +1,37 @@
-resource "aws_eip" "ecs_nat_eip" {
-  domain   = "vpc"
+resource "aws_subnet" "private" {
+  vpc_id                  = data.terraform_remote_state.network.outputs.main_vpc_id
+  cidr_block              = "10.0.6.0/24"
+  availability_zone       = "us-west-2a"
+  map_public_ip_on_launch = false
+
   tags = {
-    Name = "tech-challenge-api-ecs-instance-eip"
+    Name = "tech-challenge-api-private-subnet"
   }
 }
 
-resource "aws_nat_gateway" "ecs_nat_gateway" {
-  allocation_id = aws_eip.ecs_nat_eip.id
+resource "aws_eip" "nat" {
+  domain = "vpc"
+}
+
+resource "aws_nat_gateway" "nat" {
+  allocation_id = aws_eip.nat.id
   subnet_id     = data.terraform_remote_state.network.outputs.api_public_subnet_id
-
-  tags = {
-    Name = "tech-challenge-nat-gateway"
-  }
 }
 
-resource "aws_route" "private_subnet_nat_route" {
-  route_table_id         = aws_route_table.private_route_table.id
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.ecs_nat_gateway.id
-}
-
-resource "aws_route_table" "private_route_table" {
+resource "aws_route_table" "private" {
   vpc_id = data.terraform_remote_state.network.outputs.main_vpc_id
 
-  tags = {
-    Name = "private-route-table"
+  route {
+    cidr_block = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat.id
   }
+
+  tags = {
+    Name = "tech-challenge-api-private-route-table"
+  }
+}
+
+resource "aws_route_table_association" "private" {
+  subnet_id      = aws_subnet.private.id
+  route_table_id = aws_route_table.private.id
 }
