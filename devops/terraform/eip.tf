@@ -1,5 +1,4 @@
-resource "aws_eip" "ecs_instance_eip" {
-  instance = aws_instance.ecs_instance.id
+resource "aws_eip" "ecs_nat_eip" {
   domain   = "vpc"
   tags = {
     Name = "tech-challenge-api-ecs-instance-eip"
@@ -7,7 +6,7 @@ resource "aws_eip" "ecs_instance_eip" {
 }
 
 resource "aws_nat_gateway" "ecs_nat_gateway" {
-  allocation_id = aws_eip.ecs_instance_eip.id
+  allocation_id = aws_eip.ecs_nat_eip.id
   subnet_id     = data.terraform_remote_state.network.outputs.api_public_subnet_id
 
   tags = {
