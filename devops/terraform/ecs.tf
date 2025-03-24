@@ -9,7 +9,7 @@ resource "aws_iam_instance_profile" "ecs_instance_profile" {
 
 resource "aws_instance" "ecs_instance" {
   ami                         = "ami-001338ee8479f6dc1"
-  instance_type               = "t3.large"
+  instance_type               = "t3.medium"
   subnet_id                   = data.terraform_remote_state.network.outputs.api_public_subnet_id
   vpc_security_group_ids      = [data.terraform_remote_state.network.outputs.api_sg_id]
   associate_public_ip_address = true
@@ -21,7 +21,9 @@ resource "aws_instance" "ecs_instance" {
               echo "ECS_CLUSTER=${aws_ecs_cluster.ecs_cluster.name}" >> /etc/ecs/ecs.config
               echo "ECS_BACKEND_HOST=" >> /etc/ecs/ecs.config
               yum update -y
-              systemctl restart ecs
+              yum install -y ecs-init
+              systemctl enable ecs
+              systemctl start ecs
   EOF
 
   tags = {
