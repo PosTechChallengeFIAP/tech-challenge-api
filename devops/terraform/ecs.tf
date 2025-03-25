@@ -39,7 +39,7 @@ resource "aws_instance" "ecs_instance" {
 
 resource "aws_ecs_task_definition" "app_task" {
   family                   = "tech-challenge-api-ecs-task"
-  network_mode             = "bridge"
+  network_mode             = "awsvpc"
   requires_compatibilities = ["EC2"]
 
   container_definitions = jsonencode([
@@ -61,7 +61,7 @@ resource "aws_ecs_task_definition" "app_task" {
       portMappings = [
         {
           containerPort = 8080
-          hostPort      = 0
+          hostPort      = 8080
           protocol      = "tcp"
         }
       ]
@@ -124,7 +124,7 @@ resource "aws_ecs_service" "app_service" {
   network_configuration {
     subnets          = [data.terraform_remote_state.network.outputs.api_public_subnet_id]
     security_groups  = [data.terraform_remote_state.network.outputs.api_sg_id]
-    assign_public_ip = true
+    assign_public_ip = false
   }
 
   load_balancer {
