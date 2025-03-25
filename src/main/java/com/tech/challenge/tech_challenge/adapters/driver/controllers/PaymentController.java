@@ -109,7 +109,7 @@ public class PaymentController {
     }
 
     @SuppressWarnings("rawtypes")
-    @GetMapping("/sendToSQS/order/{orderId}/payment/{paymentId}")
+    @GetMapping("/sqs/order/{orderId}/payment/{paymentId}")
     public ResponseEntity sendToSQSTheUpdatePaymentFromMercadoPago(@PathVariable UUID orderId, @PathVariable UUID paymentId, @RequestParam String status) {
         try {
                 sendToSQSPayment.execute(orderId, paymentId, status);
