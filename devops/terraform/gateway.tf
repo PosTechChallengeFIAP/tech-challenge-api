@@ -17,10 +17,23 @@ resource "aws_apigatewayv2_integration" "ecs_integration" {
   integration_method = "ANY"
 }
 
+resource "aws_apigatewayv2_integration" "cognito_integration" {
+  api_id             = aws_apigatewayv2_api.ecs_api.id
+  integration_type   = "HTTP_PROXY"
+  integration_uri    = "https://${aws_cognito_user_pool_domain.my_domain.domain}.auth.us-west-2.amazoncognito.com/oauth2/token"
+  integration_method = "ANY"
+}
+
 resource "aws_apigatewayv2_route" "ecs_route" {
   api_id    = aws_apigatewayv2_api.ecs_api.id
   route_key = "ANY /{proxy+}"
   target    = "integrations/${aws_apigatewayv2_integration.ecs_integration.id}"
+}
+
+resource "aws_apigatewayv2_route" "cognito_route" {
+  api_id    = aws_apigatewayv2_api.ecs_api.id
+  route_key = "ANY /auth"
+  target    = "integrations/${aws_apigatewayv2_integration.cognito_integration.id}"
 }
 
 resource "aws_apigatewayv2_stage" "ecs_stage" {
