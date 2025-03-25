@@ -18,17 +18,14 @@ resource "aws_instance" "ecs_instance" {
 
   user_data = <<-EOF
               #!/bin/bash
-              set -ex  # Habilita logging para debug
+              set -ex
 
-              # Atualiza os pacotes e instala ecs-init
               yum update -y
               yum install -y ecs-init
 
-              # Configura o cluster ECS
               echo "ECS_CLUSTER=${aws_ecs_cluster.ecs_cluster.name}" >> /etc/ecs/ecs.config
               echo "ECS_BACKEND_HOST=" >> /etc/ecs/ecs.config
               
-              # Garante que o agente ECS está rodando
               systemctl enable --now ecs
   EOF
 
