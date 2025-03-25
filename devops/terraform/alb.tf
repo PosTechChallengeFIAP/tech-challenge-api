@@ -16,7 +16,6 @@ resource "aws_lb_target_group" "ecs_target_group" {
   name        = "tech-challenge-api-target-gp"
   port        = 8080
   protocol    = "HTTP"
-  target_type = "ip"
   vpc_id      = data.terraform_remote_state.network.outputs.main_vpc_id
 
   health_check {
