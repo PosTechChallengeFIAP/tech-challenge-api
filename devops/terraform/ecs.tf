@@ -122,7 +122,7 @@ resource "aws_ecs_service" "app_service" {
   force_new_deployment    = true
 
   network_configuration {
-    subnets          = [data.terraform_remote_state.network.outputs.api_public_subnet_id]
+    subnets          = [aws_subnet.private.id]
     security_groups  = [data.terraform_remote_state.network.outputs.api_sg_id]
     assign_public_ip = false
   }
