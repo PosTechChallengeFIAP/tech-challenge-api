@@ -19,6 +19,7 @@ resource "aws_instance" "ecs_instance" {
   user_data = <<-EOF
               #!/bin/bash
               set -ex
+              
               yum update -y
               yum install -y ecs-init
 
