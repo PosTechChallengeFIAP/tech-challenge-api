@@ -42,5 +42,8 @@ jobs:
             -var "db_password=${{ secrets.TF_VAR_DB_PASSWORD }}" \
             -var "db_username=${{ secrets.TF_VAR_DB_USER }}" \
             -var "db_name=${{ secrets.TF_VAR_DB_NAME }}" \
-            -var "tc_image_tag=${{ env.TC_IMAGE_TAG }}"
+            -var "tc_image_tag=${{ env.TC_IMAGE_TAG }}" \
+            -var "aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}" \
+            -var "aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
+            -var "aws_session_token=${{ secrets.AWS_SESSION_TOKEN }}" \
 

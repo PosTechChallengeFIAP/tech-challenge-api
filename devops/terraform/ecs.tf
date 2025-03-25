@@ -108,6 +108,18 @@ resource "aws_ecs_task_definition" "app_task" {
         {
           name  = "PAYMENT_QUEUE_URL"
           value = data.terraform_remote_state.lambda.outputs.payment_queue_url
+        },
+        {
+          name  = "AWS_ACCESS_KEY_ID"
+          value = var.aws_access_key_id
+        },
+        {
+          name  = "AWS_SECRET_ACCESS_KEY"
+          value = var.aws_secret_access_key
+        },
+        {
+          name  = "AWS_SESSION_TOKEN"
+          value = var.aws_session_token
         }
       ]
     }
