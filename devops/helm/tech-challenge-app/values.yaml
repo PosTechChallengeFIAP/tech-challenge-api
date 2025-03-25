@@ -38,3 +38,6 @@ database:
 
 mercadoPago:
   backUrl: "http://localhost:30808"
+
+cognito:
+  isuerUri: ""
