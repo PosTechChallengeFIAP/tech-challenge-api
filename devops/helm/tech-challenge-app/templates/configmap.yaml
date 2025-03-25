@@ -8,3 +8,4 @@ data:
   DB_HOST: {{ .Values.database.host }}
   MYSQL_INITDB_SKIP_TZINFO: 'yes'
   BACK_URL_MERCADO_PAGO: {{ .Values.mercadoPago.backUrl }}
+  COGNITO_ISSUER_URI: {{ .Values.cognito.issuerUri | b64enc }}
