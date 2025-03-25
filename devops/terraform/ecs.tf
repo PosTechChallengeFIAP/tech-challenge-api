@@ -104,8 +104,11 @@ resource "aws_ecs_task_definition" "app_task" {
         {
           name  = "COGNITO_API_URL"
           value = "https://tech-challenge-severino.us-west-2.amazonaws.com/"
+        },
+        {
+          name  = "PAYMENT_QUEUE_URL"
+          value = data.terraform_remote_state.lambda.outputs.payment_queue_url
         }
-      ]
     }
   ])
 }

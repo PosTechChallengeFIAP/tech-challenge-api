@@ -9,6 +9,7 @@ import com.tech.challenge.tech_challenge.core.domain.entities.Payment;
 import com.tech.challenge.tech_challenge.core.domain.useCases.AddPaymentToOrderUseCase.IAddPaymentToOrderUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.UpdateOrderPaymentUseCase.IUpdateOrderPaymentUseCase;
 import com.tech.challenge.tech_challenge.core.domain.useCases.UpdatePaymentStatusUseCase.IUpdatePaymentStatusUseCase;
+import com.tech.challenge.tech_challenge.core.domain.useCases.sendToSqsPayment.ISendToSQSPayment;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,6 +36,9 @@ public class PaymentController {
 
     @Autowired
     private IUpdatePaymentStatusUseCase updatePaymentStatusUseCase;
+
+    @Autowired
+    private ISendToSQSPayment sendToSQSPayment;
 
     @SuppressWarnings("rawtypes")
     @PostMapping("/order/{orderId}/payment")
@@ -99,6 +103,17 @@ public class PaymentController {
     public ResponseEntity updatePaymentFromMercadoPago(@PathVariable UUID orderId, @PathVariable UUID paymentId, @RequestParam String status) {
         try {
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(updatePaymentStatusUseCase.execute(orderId, paymentId, status));
+        } catch(Error err) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MessageResponse.type(EMessageType.ERROR).withMessage(err.getMessage()));
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    @GetMapping("/send-to-sqs/order/{orderId}/payment/{paymentId}")
+    public ResponseEntity sendToSQSTheUpdatePaymentFromMercadoPago(@PathVariable UUID orderId, @PathVariable UUID paymentId, @RequestParam String status) {
+        try {
+                sendToSQSPayment.execute(orderId, paymentId, status);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body("OK");
         } catch(Error err) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MessageResponse.type(EMessageType.ERROR).withMessage(err.getMessage()));
         }

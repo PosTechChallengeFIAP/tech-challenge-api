@@ -43,7 +43,7 @@ public class AddPaymentToOrderUseCase implements IAddPaymentToOrderUseCase {
         order.setPayment(createdPayment);
 
         String callbackURL = String.format(
-            "%s/order/%s/payment/%s", 
+            "/send-to-sqs/%s/order/%s/payment/%s", 
             System.getenv("BACK_URL_MERCADO_PAGO"),
             order.getId().toString(),
             createdPayment.getId().toString()
